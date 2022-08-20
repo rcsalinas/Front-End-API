@@ -12,13 +12,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 
 import { NavLink } from "react-router-dom";
 
 const MainNavigation = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const pages = ["Cursos", "Como Funciona", "Quienes Somos"];
 	const settings = ["Perfil", "Mis Cursos", "Mensajeria", isLoggedIn ? "Log In" : "Logout"];
 
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -94,9 +92,6 @@ const MainNavigation = (props) => {
 								<Typography textAlign="center">Mis Cursos</Typography>
 							</MenuItem>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign="center">Como funciona</Typography>
-							</MenuItem>
-							<MenuItem onClick={handleCloseNavMenu}>
 								<Typography textAlign="center">Quienes Somos</Typography>
 							</MenuItem>
 						</Menu>
@@ -126,12 +121,6 @@ const MainNavigation = (props) => {
 							sx={{ my: 2, color: "white", display: "block" }}
 						>
 							Mis Cursos
-						</Button>
-						<Button
-							onClick={handleCloseNavMenu}
-							sx={{ my: 2, color: "white", display: "block" }}
-						>
-							Como funciona
 						</Button>
 						<Button
 							onClick={handleCloseNavMenu}
