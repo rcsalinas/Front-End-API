@@ -1,15 +1,55 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+import { useState, useCallback } from "react";
 
 import MainNavigation from "./components/Navigation/MainNavigation";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
+import { AuthContext } from "./context/auth-context";
 function App() {
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [userType, setUserType] = useState("estudiante"); //cambiar a profesor para hacer pruebas con profesor
+	const login = useCallback(() => {
+		setIsLoggedIn(true);
+	}, []);
+	const logout = useCallback(() => {
+		setIsLoggedIn(false);
+	}, []);
 	return (
 		<>
-			<MainNavigation />
-			<Home />
-			<Footer />
+			<AuthContext.Provider
+				value={{ isLoggedIn: isLoggedIn, userType: userType, login: login, logout: logout }}
+			>
+				<Router>
+					<MainNavigation />
+					<Switch>
+						<Route path="/" exact>
+							<Home />
+						</Route>
+						<Route path="/:userId/perfil" exact>
+							{/*Solo mando el user id, el condicional de que tipo es lo manejo adentro del componente*/}
+							<div>PERFIL</div>
+						</Route>
+						<Route path="/:userId/cursos" exact>
+							<div>Cursos</div>
+						</Route>
+						<Route path="/quienesSomos" exact>
+							<div>Quienes Somos</div>
+						</Route>
+						<Route path="/:userId/mensajeria" exact>
+							<div>Mensajeria</div>
+						</Route>
+						<Route path="/:userId/notificaciones" exact>
+							<div>Notificaciones</div>
+						</Route>
+						<Route path="/comoFunciona" exact>
+							<div>Como Funciona</div>
+						</Route>
+						<Redirect to="/" />
+					</Switch>
+					<Footer />
+				</Router>
+			</AuthContext.Provider>
 		</>
 	);
 }

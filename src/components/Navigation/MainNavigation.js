@@ -17,7 +17,6 @@ import { NavLink } from "react-router-dom";
 
 const MainNavigation = (props) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const settings = ["Perfil", "Mis Cursos", "Mensajeria", isLoggedIn ? "Log In" : "Logout"];
 
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -41,23 +40,24 @@ const MainNavigation = (props) => {
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<Typography
-						variant="h6"
-						noWrap
-						component="a"
-						href="/"
-						sx={{
-							mr: 2,
-							display: { xs: "none", md: "flex" },
-							fontFamily: "monospace",
-							fontWeight: 700,
-							letterSpacing: ".3rem",
-							color: "inherit",
-							textDecoration: "none",
-						}}
-					>
-						TeachersMarket
-					</Typography>
+					<NavLink to="/" exact style={{ textDecoration: "none" }}>
+						<Typography
+							variant="h6"
+							noWrap
+							component="a"
+							sx={{
+								mr: 2,
+								display: { xs: "none", md: "flex" },
+								fontFamily: "monospace",
+								fontWeight: 700,
+								letterSpacing: ".3rem",
+								color: "inherit",
+								textDecoration: "none",
+							}}
+						>
+							TeachersMarket
+						</Typography>
+					</NavLink>
 
 					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
 						<IconButton
@@ -89,45 +89,55 @@ const MainNavigation = (props) => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign="center">Mis Cursos</Typography>
+								<NavLink to="/u1/cursos" style={{ textDecoration: "none" }}>
+									<Typography textAlign="center">Mis Cursos</Typography>
+								</NavLink>
 							</MenuItem>
+
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign="center">Quienes Somos</Typography>
+								<NavLink to="/quienesSomos" style={{ textDecoration: "none" }}>
+									<Typography textAlign="center">Quienes Somos</Typography>
+								</NavLink>
 							</MenuItem>
 						</Menu>
 					</Box>
 
-					<Typography
-						variant="h5"
-						noWrap
-						component="a"
-						href=""
-						sx={{
-							mr: 2,
-							display: { xs: "flex", md: "none" },
-							flexGrow: 1,
-							fontFamily: "monospace",
-							fontWeight: 700,
-							letterSpacing: ".3rem",
-							color: "inherit",
-							textDecoration: "none",
-						}}
-					>
-						TeachersMarket
-					</Typography>
+					<NavLink to="/" exact style={{ textDecoration: "none" }}>
+						<Typography
+							variant="h5"
+							noWrap
+							component="a"
+							sx={{
+								mr: 2,
+								display: { xs: "flex", md: "none" },
+								flexGrow: 1,
+								fontFamily: "monospace",
+								fontWeight: 700,
+								letterSpacing: ".3rem",
+								color: "inherit",
+								textDecoration: "none",
+							}}
+						>
+							TeachersMarket
+						</Typography>
+					</NavLink>
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						<Button
-							onClick={handleCloseNavMenu}
-							sx={{ my: 2, color: "white", display: "block" }}
-						>
-							Mis Cursos
-						</Button>
-						<Button
-							onClick={handleCloseNavMenu}
-							sx={{ my: 2, color: "white", display: "block" }}
-						>
-							Quienes Somos
-						</Button>
+						<NavLink to="/u1/cursos" style={{ textDecoration: "none" }}>
+							<Button
+								onClick={handleCloseNavMenu}
+								sx={{ my: 2, color: "white", display: "block" }}
+							>
+								Mis Cursos
+							</Button>
+						</NavLink>
+						<NavLink to="/quienesSomos" style={{ textDecoration: "none" }}>
+							<Button
+								onClick={handleCloseNavMenu}
+								sx={{ my: 2, color: "white", display: "block" }}
+							>
+								Quienes Somos
+							</Button>
+						</NavLink>
 					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
@@ -152,11 +162,26 @@ const MainNavigation = (props) => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">{setting}</Typography>
+							<NavLink to="/u1/perfil" style={{ textDecoration: "none" }}>
+								<MenuItem onClick={handleCloseUserMenu}>
+									<Typography textAlign="center">Perfil</Typography>
 								</MenuItem>
-							))}
+							</NavLink>
+							<NavLink to="/u1/mensajeria" style={{ textDecoration: "none" }}>
+								<MenuItem onClick={handleCloseUserMenu}>
+									<Typography textAlign="center">Mensajeria</Typography>
+								</MenuItem>
+							</NavLink>
+							<NavLink to="/u1/notificaciones" style={{ textDecoration: "none" }}>
+								<MenuItem onClick={handleCloseUserMenu}>
+									<Typography textAlign="center">Notificaciones</Typography>
+								</MenuItem>
+							</NavLink>
+							<MenuItem onClick={handleCloseUserMenu}>
+								<Button onClick={console.log("Log")}>
+									{isLoggedIn ? "Log In" : "Logout"}
+								</Button>
+							</MenuItem>
 						</Menu>
 					</Box>
 				</Toolbar>
