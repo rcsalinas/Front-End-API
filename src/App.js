@@ -12,8 +12,9 @@ function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(true);
 	const [userType, setUserType] = useState("estudiante"); //cambiar a profesor para hacer pruebas con profesor
 
-	const login = useCallback(() => {
+	const login = useCallback((tipo) => {
 		setIsLoggedIn(true);
+		setUserType(tipo);
 	}, []);
 	const logout = useCallback(() => {
 		setIsLoggedIn(false);

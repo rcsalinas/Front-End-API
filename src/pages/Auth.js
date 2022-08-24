@@ -28,62 +28,65 @@ const Auth = () => {
 		false
 	);
 	const switchModeHandler = () => {
-		if (!isLoginMode && tipoUsuario === "estudiante") {
-			setFormData(
-				{
-					...formState.inputs,
-					date: undefined,
-					estudios: undefined,
-				},
-				formState.inputs.email.isValid && formState.inputs.password.isValid
-			);
+		if (!isLoginMode) {
+			if (tipoUsuario === "estudiante") {
+				setFormData(
+					{
+						...formState.inputs,
+						date: undefined,
+						estudios: undefined,
+					},
+					formState.inputs.email.isValid && formState.inputs.password.isValid
+				);
+			} else if (tipoUsuario === "profesor") {
+				setFormData(
+					{
+						...formState.inputs,
+						titulo: undefined,
+						experiencia: undefined,
+					},
+					formState.inputs.email.isValid && formState.inputs.password.isValid
+				);
+			}
 		} else {
-			setFormData(
-				{
-					...formState.inputs,
-					date: {
-						value: "",
-						isValid: false,
+			if (tipoUsuario === "estudiante") {
+				setFormData(
+					{
+						...formState.inputs,
+						date: {
+							value: "",
+							isValid: false,
+						},
+						estudios: {
+							value: "",
+							isValid: false,
+						},
 					},
-					estudios: {
-						value: "",
-						isValid: false,
+					false
+				);
+			} else if (tipoUsuario === "profesor") {
+				setFormData(
+					{
+						...formState.inputs,
+						titulo: {
+							value: "",
+							isValid: false,
+						},
+						experiencia: {
+							value: "",
+							isValid: false,
+						},
 					},
-				},
-				false
-			);
-		}
-		if (!isLoginMode && tipoUsuario == "profesor") {
-			setFormData(
-				{
-					...formState.inputs,
-					titulo: undefined,
-					experiencia: undefined,
-				},
-				formState.inputs.email.isValid && formState.inputs.password.isValid
-			);
-		} else {
-			setFormData(
-				{
-					...formState.inputs,
-					titulo: {
-						value: "",
-						isValid: false,
-					},
-					experiencia: {
-						value: "",
-						isValid: false,
-					},
-				},
-				false
-			);
+					false
+				);
+			}
 		}
 		setIsLoginMode((prevMode) => !prevMode);
 	};
 	const authSubmitHandler = (event) => {
 		event.preventDefault();
 		console.log(formState.inputs);
-		auth.login();
+		auth.login(tipoUsuario);
 	};
 
 	const handleChange = (event, newAlignment) => {

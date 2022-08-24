@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 
 import ComoFunciona from "../components/ComoFunciona/ComoFunciona";
 import BuscadorCursos from "../components/Cursos/BuscadorCursos";
@@ -12,10 +13,11 @@ const mainFeaturedPost = {
 };
 
 const Home = () => {
+	const auth = useContext(AuthContext);
 	return (
 		<>
 			<ComoFunciona post={mainFeaturedPost} />
-			<h2>Cursos:</h2>
+			<h2>Cursos: {auth.userType}</h2>
 			<BuscadorCursos />
 		</>
 	);
