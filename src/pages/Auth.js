@@ -32,7 +32,8 @@ const Auth = () => {
 			if (tipoUsuario === "estudiante") {
 				setFormData(
 					{
-						...formState.inputs,
+						email: formState.inputs.email,
+						password: formState.inputs.password,
 						date: undefined,
 						estudios: undefined,
 					},
@@ -41,7 +42,8 @@ const Auth = () => {
 			} else if (tipoUsuario === "profesor") {
 				setFormData(
 					{
-						...formState.inputs,
+						email: formState.inputs.email,
+						password: formState.inputs.password,
 						titulo: undefined,
 						experiencia: undefined,
 					},
@@ -52,10 +54,11 @@ const Auth = () => {
 			if (tipoUsuario === "estudiante") {
 				setFormData(
 					{
-						...formState.inputs,
+						email: formState.inputs.email,
+						password: formState.inputs.password,
 						date: {
-							value: "",
-							isValid: false,
+							value: null,
+							isValid: true,
 						},
 						estudios: {
 							value: "",
@@ -67,7 +70,8 @@ const Auth = () => {
 			} else if (tipoUsuario === "profesor") {
 				setFormData(
 					{
-						...formState.inputs,
+						email: formState.inputs.email,
+						password: formState.inputs.password,
 						titulo: {
 							value: "",
 							isValid: false,
@@ -91,6 +95,26 @@ const Auth = () => {
 
 	const handleChange = (event, newAlignment) => {
 		setTipoUsuario(newAlignment);
+		if (tipoUsuario === "estudiante") {
+			setFormData(
+				{
+					email: formState.inputs.email,
+					password: formState.inputs.password,
+					date: undefined,
+					estudios: undefined,
+				},
+				formState.inputs.email.isValid && formState.inputs.password.isValid
+			);
+		}
+		setFormData(
+			{
+				email: formState.inputs.email,
+				password: formState.inputs.password,
+				titulo: undefined,
+				experiencia: undefined,
+			},
+			formState.inputs.email.isValid && formState.inputs.password.isValid
+		);
 	};
 
 	return (
