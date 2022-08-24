@@ -28,11 +28,12 @@ const Auth = () => {
 		false
 	);
 	const switchModeHandler = () => {
-		if (!isLoginMode) {
+		if (!isLoginMode && tipoUsuario === "estudiante") {
 			setFormData(
 				{
 					...formState.inputs,
-					name: undefined,
+					date: undefined,
+					estudios: undefined,
 				},
 				formState.inputs.email.isValid && formState.inputs.password.isValid
 			);
@@ -40,7 +41,36 @@ const Auth = () => {
 			setFormData(
 				{
 					...formState.inputs,
-					name: {
+					date: {
+						value: "",
+						isValid: false,
+					},
+					estudios: {
+						value: "",
+						isValid: false,
+					},
+				},
+				false
+			);
+		}
+		if (!isLoginMode && tipoUsuario == "profesor") {
+			setFormData(
+				{
+					...formState.inputs,
+					titulo: undefined,
+					experiencia: undefined,
+				},
+				formState.inputs.email.isValid && formState.inputs.password.isValid
+			);
+		} else {
+			setFormData(
+				{
+					...formState.inputs,
+					titulo: {
+						value: "",
+						isValid: false,
+					},
+					experiencia: {
 						value: "",
 						isValid: false,
 					},
@@ -66,32 +96,71 @@ const Auth = () => {
 				<h2>Inicio de Sesion Requerido</h2>
 				<hr />
 				<form onSubmit={authSubmitHandler}>
+					{!isLoginMode && (
+						<ToggleButtonGroup
+							color="primary"
+							value={tipoUsuario}
+							exclusive
+							onChange={handleChange}
+							aria-label="Platform"
+							style={{ marginTop: "4%" }}
+						>
+							<ToggleButton value="estudiante">Estudiante</ToggleButton>
+							<ToggleButton value="profesor">Profesor</ToggleButton>
+						</ToggleButtonGroup>
+					)}
 					{!isLoginMode && tipoUsuario == "estudiante" && (
-						<Input
-							element="input"
-							id="name"
-							type="text"
-							label="Nombre"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Porfavor ingresar nombre"
-							onInput={inputHandler}
-						/>
+						<>
+							<Input
+								element="input"
+								id="date"
+								type="date"
+								label="Fecha de Nacimiento"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar fecha de nacimiento"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="estudios"
+								type="text"
+								label="Estudios en curso y cursados"
+								placeholder="Cursados: () ,En curso:()"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar estudios cursados y en curso"
+								onInput={inputHandler}
+							/>
+						</>
 					)}
 					{!isLoginMode && tipoUsuario == "profesor" && (
-						<Input
-							element="input"
-							id="name"
-							type="text"
-							label="Nombre"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Porfavor ingresar nombre"
-							onInput={inputHandler}
-						/>
+						<>
+							<Input
+								element="input"
+								id="titulo"
+								type="text"
+								label="Titulo"
+								placeholder="Lic en informatica"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar titulo"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="experiencia"
+								type="text"
+								label="Experiencia"
+								placeholder="Semisenior Fullstack Engineer"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar experiencia"
+								onInput={inputHandler}
+							/>
+						</>
 					)}
 
 					<Input
 						element="input"
 						id="email"
+						placeholder="email@email.com"
 						type="email"
 						label="E-Mail"
 						validators={[VALIDATOR_EMAIL()]}
@@ -114,17 +183,6 @@ const Auth = () => {
 				<Button inverse onClick={switchModeHandler}>
 					SWITCH TO {isLoginMode ? "SIGNUP" : "LOGIN"}
 				</Button>
-				<ToggleButtonGroup
-					color="primary"
-					value={tipoUsuario}
-					exclusive
-					onChange={handleChange}
-					aria-label="Platform"
-					style={{ marginTop: "4%" }}
-				>
-					<ToggleButton value="estudiante">Estudiante</ToggleButton>
-					<ToggleButton value="profesor">Profesor</ToggleButton>
-				</ToggleButtonGroup>
 			</Card>
 		</React.Fragment>
 	);
