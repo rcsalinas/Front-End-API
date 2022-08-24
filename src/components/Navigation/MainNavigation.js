@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,8 +14,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../context/auth-context";
 
 const MainNavigation = (props) => {
+	const auth = useContext(AuthContext);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -177,11 +179,18 @@ const MainNavigation = (props) => {
 									<Typography textAlign="center">Notificaciones</Typography>
 								</MenuItem>
 							</NavLink>
-							<MenuItem onClick={handleCloseUserMenu}>
-								<Button onClick={console.log("Log")}>
-									{isLoggedIn ? "Log In" : "Logout"}
-								</Button>
-							</MenuItem>
+							{auth.isLoggedIn && (
+								<MenuItem onClick={handleCloseUserMenu}>
+									<Button onClick={auth.logout}>Logout</Button>
+								</MenuItem>
+							)}
+							{!auth.isLoggedIn && (
+								<NavLink to="/auth" style={{ textDecoration: "none" }}>
+									<MenuItem onClick={handleCloseUserMenu}>
+										<Typography textAlign="center">Iniciar Sesion</Typography>
+									</MenuItem>
+								</NavLink>
+							)}
 						</Menu>
 					</Box>
 				</Toolbar>

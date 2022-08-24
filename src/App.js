@@ -6,9 +6,12 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
 import { AuthContext } from "./context/auth-context";
+import Auth from "./pages/Auth";
+
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(true);
 	const [userType, setUserType] = useState("estudiante"); //cambiar a profesor para hacer pruebas con profesor
+
 	const login = useCallback(() => {
 		setIsLoggedIn(true);
 	}, []);
@@ -44,6 +47,9 @@ function App() {
 						</Route>
 						<Route path="/comoFunciona" exact>
 							<div>Como Funciona</div>
+						</Route>
+						<Route path="/auth" exact>
+							<Auth />
 						</Route>
 						<Redirect to="/" />
 					</Switch>

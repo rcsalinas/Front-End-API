@@ -3,7 +3,7 @@ import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faYoutube, faGithub, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
 	return (
 		<footer className="footer">
@@ -16,15 +16,27 @@ const Footer = () => {
 						Diego Mosquera
 					</span>
 				</div>
-				<a href="https://github.com/rcs532/Front-End-API" target="_blank" className="item3">
+				<Link
+					to={{ pathname: "https://github.com/rcs532/Front-End-API" }}
+					target="_blank"
+					className="item3"
+				>
 					<FontAwesomeIcon icon={faGithub} />
-				</a>
-				<a href="http://fb.com/" target="_blank" className="item4">
+				</Link>
+				<Link
+					to={{ pathname: "https://github.com/rcs532/Front-End-API" }}
+					target="_blank"
+					className="item4"
+				>
 					<FontAwesomeIcon icon={faFacebook} />
-				</a>
-				<a href="https://www.youtube.com/" target="_blank" className="item5">
+				</Link>
+				<Link
+					to={{ pathname: "https://github.com/rcs532/Front-End-API" }}
+					target="_blank"
+					className="item5"
+				>
 					<FontAwesomeIcon icon={faYoutube} />
-				</a>
+				</Link>
 			</div>
 		</footer>
 	);
