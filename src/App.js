@@ -37,12 +37,6 @@ function App() {
 						<Route path="/:userId/cursos" exact>
 							<div>Cursos del ususario</div>
 						</Route>
-						<Route path="/quienesSomos" exact>
-							<div>Quienes Somos</div>
-						</Route>
-						<Route path="/:userId/mensajeria" exact>
-							<div>Mensajeria</div>
-						</Route>
 						<Route path="/:userId/notificaciones" exact>
 							<div>Notificaciones</div>
 						</Route>

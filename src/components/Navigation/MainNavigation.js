@@ -91,14 +91,11 @@ const MainNavigation = (props) => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to="/u1/cursos" style={{ textDecoration: "none" }}>
+								<NavLink
+									to={`/${auth.userId}/cursos`}
+									style={{ textDecoration: "none" }}
+								>
 									<Typography textAlign="center">Mis Cursos</Typography>
-								</NavLink>
-							</MenuItem>
-
-							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to="/quienesSomos" style={{ textDecoration: "none" }}>
-									<Typography textAlign="center">Quienes Somos</Typography>
 								</NavLink>
 							</MenuItem>
 						</Menu>
@@ -124,20 +121,12 @@ const MainNavigation = (props) => {
 						</Typography>
 					</NavLink>
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						<NavLink to="/u1/cursos" style={{ textDecoration: "none" }}>
+						<NavLink to={`/${auth.userId}/cursos`} style={{ textDecoration: "none" }}>
 							<Button
 								onClick={handleCloseNavMenu}
 								sx={{ my: 2, color: "white", display: "block" }}
 							>
 								Mis Cursos
-							</Button>
-						</NavLink>
-						<NavLink to="/quienesSomos" style={{ textDecoration: "none" }}>
-							<Button
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}
-							>
-								Quienes Somos
 							</Button>
 						</NavLink>
 					</Box>
@@ -164,17 +153,18 @@ const MainNavigation = (props) => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<NavLink to="/u1/perfil" style={{ textDecoration: "none" }}>
+							<NavLink
+								to={`/${auth.userId}/perfil`}
+								style={{ textDecoration: "none" }}
+							>
 								<MenuItem onClick={handleCloseUserMenu}>
 									<Typography textAlign="center">Perfil</Typography>
 								</MenuItem>
 							</NavLink>
-							<NavLink to="/u1/mensajeria" style={{ textDecoration: "none" }}>
-								<MenuItem onClick={handleCloseUserMenu}>
-									<Typography textAlign="center">Mensajeria</Typography>
-								</MenuItem>
-							</NavLink>
-							<NavLink to="/u1/notificaciones" style={{ textDecoration: "none" }}>
+							<NavLink
+								to={`/${auth.userId}/notificaciones`}
+								style={{ textDecoration: "none" }}
+							>
 								<MenuItem onClick={handleCloseUserMenu}>
 									<Typography textAlign="center">Notificaciones</Typography>
 								</MenuItem>

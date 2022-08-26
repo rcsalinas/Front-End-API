@@ -8,7 +8,8 @@ const Cursos = (props) => {
 		<div className="cursos-buscados">
 			{props.cursos.map((curso) => (
 				<CursoCard
-					key={curso.id}
+					key={curso.idCurso}
+					id={curso.idCurso}
 					title={curso.nombreCurso}
 					image={curso.image}
 					description={curso.desc}

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 
 const CursoCard = (props) => {
-	const { title, image, description, price, teacher } = props;
+	const { id, title, image, description, price, teacher } = props;
 
 	return (
 		<Card sx={{ maxWidth: 345 }}>
@@ -28,7 +28,7 @@ const CursoCard = (props) => {
 				<Typography size="small" gutterBottom variant="p" component="div">
 					{price}
 				</Typography>
-				<NavLink to="/u1/cursos" style={{ textDecoration: "none" }}>
+				<NavLink to={`/cursos/${id}`} style={{ textDecoration: "none" }}>
 					<Button size="small">Ver detalles</Button>
 				</NavLink>
 			</CardActions>
