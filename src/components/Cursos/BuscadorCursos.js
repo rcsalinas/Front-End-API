@@ -1,22 +1,23 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import Cursos from "./Cursos";
 import SearchCursosForm from "./SearchForm";
 
-const cursos_dummy = [
-	{ profesor: "hola" },
-	{ profesor: "hola" },
-	{ profesor: "hola" },
-	{ profesor: "hola" },
-];
-
 const BuscadorCursos = () => {
-	const [cursos, setCursos] = useState(cursos_dummy);
+	const [cursos, setCursos] = useState([]);
+
+	const handleBuscar = (cursosResultado) => {
+		setCursos(cursosResultado);
+	};
+
+	useEffect(() => {
+		console.log(cursos);
+	}, [cursos]);
 
 	return (
 		<>
-			<SearchCursosForm />
+			<SearchCursosForm handleBuscar={handleBuscar} />
 			<Cursos cursos={cursos} />
 		</>
 	);

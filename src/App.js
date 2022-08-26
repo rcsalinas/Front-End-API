@@ -7,7 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
 import { AuthContext } from "./context/auth-context";
 import Auth from "./pages/Auth";
-
+import ComoFunciona from "./pages/ComoFunciona";
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(true);
 	const [userType, setUserType] = useState("estudiante"); //cambiar a profesor para hacer pruebas con profesor
@@ -32,10 +32,10 @@ function App() {
 						</Route>
 						<Route path="/:userId/perfil" exact>
 							{/*Solo mando el user id, el condicional de que tipo es lo manejo adentro del componente*/}
-							<div>PERFIL</div>
+							<div>PERFIL del usuario</div>
 						</Route>
 						<Route path="/:userId/cursos" exact>
-							<div>Cursos</div>
+							<div>Cursos del ususario</div>
 						</Route>
 						<Route path="/quienesSomos" exact>
 							<div>Quienes Somos</div>
@@ -47,8 +47,9 @@ function App() {
 							<div>Notificaciones</div>
 						</Route>
 						<Route path="/comoFunciona" exact>
-							<div>Como Funciona</div>
+							<ComoFunciona />
 						</Route>
+
 						<Route path="/auth" exact>
 							<Auth />
 						</Route>

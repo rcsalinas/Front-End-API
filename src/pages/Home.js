@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/auth-context";
-
-import ComoFunciona from "../components/ComoFunciona/ComoFunciona";
 import BuscadorCursos from "../components/Cursos/BuscadorCursos";
+import ComoFuncionaBanner from "../components/ComoFuncionaBanner/ComoFunciona";
 
 const mainFeaturedPost = {
 	title: "Teachers Market",
@@ -16,7 +15,7 @@ const Home = () => {
 	const auth = useContext(AuthContext);
 	return (
 		<>
-			<ComoFunciona post={mainFeaturedPost} />
+			<ComoFuncionaBanner post={mainFeaturedPost} />
 			<h2>Cursos: {auth.userType}</h2>
 			<BuscadorCursos />
 		</>

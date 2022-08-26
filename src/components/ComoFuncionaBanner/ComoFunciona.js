@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { NavLink } from "react-router-dom";
 
-function ComoFunciona(props) {
+function ComoFuncionaBanner(props) {
 	const { post } = props;
 	return (
 		<Paper
@@ -58,7 +58,7 @@ function ComoFunciona(props) {
 	);
 }
 
-ComoFunciona.propTypes = {
+ComoFuncionaBanner.propTypes = {
 	post: PropTypes.shape({
 		description: PropTypes.string.isRequired,
 		image: PropTypes.string.isRequired,
@@ -68,4 +68,4 @@ ComoFunciona.propTypes = {
 	}).isRequired,
 };
 
-export default ComoFunciona;
+export default ComoFuncionaBanner;

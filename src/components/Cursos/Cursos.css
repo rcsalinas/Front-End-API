@@ -1,0 +1,8 @@
+.cursos-buscados {
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	gap: 20px;
+	row-gap: 10px;
+	margin-bottom: 5%;
+}
