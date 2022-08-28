@@ -20,7 +20,7 @@ const dummy_users = [
 		mail: "testalu1@test.com",
 		celular: "1234",
 		fechaNacimiento: "2015-03-25",
-		estudiosCursados: ["primaria", "secundaria"],
+		estudiosCursados: "primaria, secundaria",
 		cursos: ["curso1", "curso3"],
 	},
 	{
@@ -31,7 +31,7 @@ const dummy_users = [
 		mail: "testalu2@test.com",
 		celular: "1234",
 		fechaNacimiento: "2015-03-25",
-		estudiosCursados: ["primaria", "secundaria"],
+		estudiosCursados: "primaria, secundaria",
 		cursos: ["curso1", "curso2", "curso4"],
 	},
 ];
@@ -67,8 +67,6 @@ const Auth = () => {
 	const auth = useContext(AuthContext);
 	const [isLoginMode, setIsLoginMode] = useState(true);
 	const [tipoUsuario, setTipoUsuario] = useState("estudiante");
-	const [idUsuario, setIdUsuario] = useState(null);
-	const [loginError, setLoginError] = useState(null);
 	const [formState, inputHandler, setFormData] = useForm(
 		{
 			email: {
@@ -192,13 +190,10 @@ const Auth = () => {
 					}
 				}
 
-				if (validacion === false && encontrado === true) {
-					setLoginError("Contraseña Incorrecta");
-				} else if (encontrado === false) {
-					setLoginError("No existe un usuario asociado a ese email");
-				} else if (validacion === true) {
-					console.log(tipoUsuario, idUsuario);
+				if (validacion === true) {
 					auth.login(tipoUsuario, formState.inputs.email.value);
+				} else {
+					alert("ocurrio un error");
 				}
 			} else {
 				//misma validacion pero para profesores. Asi va a ocurrir en el backend
@@ -212,15 +207,66 @@ const Auth = () => {
 						}
 					}
 				}
-
-				if (validacion === false && encontrado === true) {
-					setLoginError("Contraseña Incorrecta");
-				} else if (encontrado === false) {
-					setLoginError("No existe un usuario asociado a ese email");
-				} else if (validacion === true) {
+				if (validacion === true) {
 					//por el momento manejo el id como el mail ya que no estoy con token
 					auth.login(tipoUsuario, formState.inputs.email.value);
+				} else {
+					alert("ocurrio un error");
 				}
+			}
+		} else {
+			//es signup y le doy submit
+			if (tipoUsuario === "estudiante") {
+				let existe = false;
+				let user = {
+					id: `alu${dummy_users.length + 1}`,
+					nombre: formState.inputs.nombre.value,
+					apellido: formState.inputs.apellido.value,
+					password: formState.inputs.password.value,
+					mail: formState.inputs.email.value,
+					celular: formState.inputs.telefono.value,
+					fechaNacimiento: formState.inputs.date.value,
+					estudiosCursados: formState.inputs.estudios.value,
+					cursos: [],
+				};
+				dummy_users.forEach((user) => {
+					if (user.mail === formState.inputs.email.value) {
+						existe = true;
+					}
+				});
+				if (!existe) {
+					dummy_users.push(user);
+					auth.login(tipoUsuario, formState.inputs.email.value);
+				} else {
+					alert("Ya existe un usuario asociado a ese mail");
+				}
+				console.log(dummy_users);
+			} else {
+				let existe = false;
+				let user = {
+					id: `profesor${dummy_profesores.length + 1}`,
+					nombre: formState.inputs.nombre.value,
+					apellido: formState.inputs.apellido.value,
+					password: formState.inputs.password.value,
+					mail: formState.inputs.email.value,
+					celular: formState.inputs.telefono.value,
+					titulo: formState.inputs.titulo.value,
+					experiencia: formState.inputs.experiencia.value,
+					cursos: [],
+				};
+				dummy_profesores.forEach((user) => {
+					if (user.mail === formState.inputs.email.value) {
+						existe = true;
+					}
+				});
+				if (!existe) {
+					dummy_profesores.push(user);
+					auth.login(tipoUsuario, formState.inputs.email.value);
+				} else {
+					alert("Ya existe un usuario asociado a ese mail");
+				}
+
+				console.log(dummy_profesores);
 			}
 		}
 	};
