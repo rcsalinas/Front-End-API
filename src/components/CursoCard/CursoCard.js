@@ -26,7 +26,7 @@ const CursoCard = (props) => {
 			</CardContent>
 			<CardActions>
 				<Typography size="small" gutterBottom variant="p" component="div">
-					{price}
+					${price}
 				</Typography>
 				<NavLink to={`/cursos/${id}`} style={{ textDecoration: "none" }}>
 					<Button size="small">Ver detalles</Button>

@@ -9,20 +9,30 @@ import { AuthContext } from "./context/auth-context";
 import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(true);
-	const [userType, setUserType] = useState("estudiante"); //cambiar a profesor para hacer pruebas con profesor
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
+	const [userId, setUserId] = useState(null);
 
-	const login = useCallback((tipo) => {
+	const login = useCallback((tipo, usuario) => {
 		setIsLoggedIn(true);
 		setUserType(tipo);
+		setUserId(usuario);
 	}, []);
 	const logout = useCallback(() => {
 		setIsLoggedIn(false);
+		setUserType(null);
+		setUserId(null);
 	}, []);
 	return (
 		<>
 			<AuthContext.Provider
-				value={{ isLoggedIn: isLoggedIn, userType: userType, login: login, logout: logout }}
+				value={{
+					isLoggedIn: isLoggedIn,
+					userId: userId,
+					userType: userType,
+					login: login,
+					logout: logout,
+				}}
 			>
 				<Router>
 					<MainNavigation />

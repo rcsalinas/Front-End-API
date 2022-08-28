@@ -31,9 +31,9 @@ const cursos_dummy = [
 		idCurso: "curso2",
 		nombreCurso: "Biology101",
 		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor3",
+		profesor: "profesor2",
 		desc: "biologia",
-		alumnos: ["alu2", "alu3"],
+		alumnos: ["alu2"],
 		duracion: "2 meses",
 		frecuencia: "semanal",
 		tipo: "individual",
@@ -44,9 +44,9 @@ const cursos_dummy = [
 		idCurso: "curso3",
 		nombreCurso: "API101",
 		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor2",
+		profesor: "profesor1",
 		desc: "Aplicaciones Interactivas",
-		alumnos: ["alu1", "alu2"],
+		alumnos: ["alu1"],
 		duracion: "5 dias",
 		frecuencia: "Semanal",
 		tipo: "individual",
@@ -57,9 +57,9 @@ const cursos_dummy = [
 		idCurso: "curso4",
 		nombreCurso: "Statistics101",
 		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor4",
+		profesor: "profesor1",
 		desc: "Estadistica",
-		alumnos: ["alu5", "alu1"],
+		alumnos: ["alu2"],
 		duracion: "3 meses",
 		frecuencia: "Semanal",
 		tipo: "individual",
@@ -90,7 +90,6 @@ const SearchForm = (props) => {
 
 	useEffect(() => {
 		handleBuscar(cursos_dummy);
-		console.log(searchVal, rating, frecuencia, tipoClase);
 	}, [searchVal, rating, frecuencia, tipoClase]);
 
 	return (

@@ -9,11 +9,66 @@ import Card from "../components/UIElements/Card";
 import "./Auth.css";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { Redirect } from "react-router-dom";
+
+const dummy_users = [
+	{
+		id: "alu1",
+		nombre: "Roberto",
+		apellido: "Salinas",
+		password: "12345678",
+		mail: "testalu1@test.com",
+		celular: "1234",
+		fechaNacimiento: "2015-03-25",
+		estudiosCursados: ["primaria", "secundaria"],
+		cursos: ["curso1", "curso3"],
+	},
+	{
+		id: "alu2",
+		nombre: "Roberto",
+		apellido: "Salinas",
+		password: "12345678",
+		mail: "testalu2@test.com",
+		celular: "1234",
+		fechaNacimiento: "2015-03-25",
+		estudiosCursados: ["primaria", "secundaria"],
+		cursos: ["curso1", "curso2", "curso4"],
+	},
+];
+
+const dummy_profesores = [
+	{
+		id: "profesor1",
+		nombre: "Maria",
+		apellido: "Maria",
+		password: "12345678",
+		mail: "testprof1@test.com",
+		celular: "1234",
+		fechaNacimiento: "2015-03-25",
+		titulo: "licenciado en nada",
+		experiencia: "trabaje en microsoft",
+		cursos: ["curso1", "curso3", "curso4"],
+	},
+	{
+		id: "profesor2",
+		nombre: "Jose",
+		apellido: "Aguilar",
+		password: "12345678",
+		mail: "testprof2@test.com",
+		celular: "1234",
+		fechaNacimiento: "2017-03-25",
+		titulo: "Ingeniero en nada",
+		experiencia: "trabaje en Uber",
+		cursos: ["curso2"],
+	},
+];
 
 const Auth = () => {
 	const auth = useContext(AuthContext);
 	const [isLoginMode, setIsLoginMode] = useState(true);
 	const [tipoUsuario, setTipoUsuario] = useState("estudiante");
+	const [idUsuario, setIdUsuario] = useState(null);
+	const [loginError, setLoginError] = useState(null);
 	const [formState, inputHandler, setFormData] = useForm(
 		{
 			email: {
@@ -34,6 +89,9 @@ const Auth = () => {
 					{
 						email: formState.inputs.email,
 						password: formState.inputs.password,
+						telefono: undefined,
+						nombre: undefined,
+						apellido: undefined,
 						date: undefined,
 						estudios: undefined,
 					},
@@ -44,6 +102,9 @@ const Auth = () => {
 					{
 						email: formState.inputs.email,
 						password: formState.inputs.password,
+						telefono: undefined,
+						nombre: undefined,
+						apellido: undefined,
 						titulo: undefined,
 						experiencia: undefined,
 					},
@@ -64,6 +125,18 @@ const Auth = () => {
 							value: "",
 							isValid: false,
 						},
+						nombre: {
+							value: "",
+							isValid: false,
+						},
+						apellido: {
+							value: "",
+							isValid: false,
+						},
+						telefono: {
+							value: "",
+							isValid: false,
+						},
 					},
 					false
 				);
@@ -80,6 +153,18 @@ const Auth = () => {
 							value: "",
 							isValid: false,
 						},
+						nombre: {
+							value: "",
+							isValid: false,
+						},
+						apellido: {
+							value: "",
+							isValid: false,
+						},
+						telefono: {
+							value: "",
+							isValid: false,
+						},
 					},
 					false
 				);
@@ -87,19 +172,69 @@ const Auth = () => {
 		}
 		setIsLoginMode((prevMode) => !prevMode);
 	};
+
 	const authSubmitHandler = (event) => {
 		event.preventDefault();
-		console.log(formState.inputs);
-		auth.login(tipoUsuario);
+
+		let encontrado = false;
+		let validacion = false;
+
+		if (isLoginMode) {
+			if (tipoUsuario === "estudiante") {
+				for (let i = 0; i < dummy_users.length && encontrado === false; i++) {
+					if (dummy_users[i].mail === formState.inputs.email.value) {
+						encontrado = true;
+						if (dummy_users[i].password === formState.inputs.password.value) {
+							validacion = true;
+						} else {
+							validacion = false;
+						}
+					}
+				}
+
+				if (validacion === false && encontrado === true) {
+					setLoginError("Contraseña Incorrecta");
+				} else if (encontrado === false) {
+					setLoginError("No existe un usuario asociado a ese email");
+				} else if (validacion === true) {
+					console.log(tipoUsuario, idUsuario);
+					auth.login(tipoUsuario, formState.inputs.email.value);
+				}
+			} else {
+				//misma validacion pero para profesores. Asi va a ocurrir en el backend
+				for (let i = 0; i < dummy_profesores.length && encontrado === false; i++) {
+					if (dummy_profesores[i].mail === formState.inputs.email.value) {
+						encontrado = true;
+						if (dummy_profesores[i].password === formState.inputs.password.value) {
+							validacion = true;
+						} else {
+							validacion = false;
+						}
+					}
+				}
+
+				if (validacion === false && encontrado === true) {
+					setLoginError("Contraseña Incorrecta");
+				} else if (encontrado === false) {
+					setLoginError("No existe un usuario asociado a ese email");
+				} else if (validacion === true) {
+					//por el momento manejo el id como el mail ya que no estoy con token
+					auth.login(tipoUsuario, formState.inputs.email.value);
+				}
+			}
+		}
 	};
 
-	const handleChange = (event, newAlignment) => {
-		setTipoUsuario(newAlignment);
+	const handleChange = (event, value) => {
+		setTipoUsuario(value);
 		if (tipoUsuario === "estudiante") {
 			setFormData(
 				{
 					email: formState.inputs.email,
 					password: formState.inputs.password,
+					nombre: undefined,
+					apellido: undefined,
+					telefono: undefined,
 					date: undefined,
 					estudios: undefined,
 				},
@@ -110,6 +245,9 @@ const Auth = () => {
 			{
 				email: formState.inputs.email,
 				password: formState.inputs.password,
+				nombre: undefined,
+				apellido: undefined,
+				telefono: undefined,
 				titulo: undefined,
 				experiencia: undefined,
 			},
@@ -119,24 +257,23 @@ const Auth = () => {
 
 	return (
 		<React.Fragment>
+			{auth.isLoggedIn && <Redirect to="/" />}
 			<Card className="authentication">
 				<h2>Inicio de Sesion Requerido</h2>
 				<hr />
 				<form onSubmit={authSubmitHandler}>
-					{!isLoginMode && (
-						<ToggleButtonGroup
-							color="primary"
-							value={tipoUsuario}
-							exclusive
-							onChange={handleChange}
-							aria-label="Platform"
-							style={{ marginTop: "4%" }}
-						>
-							<ToggleButton value="estudiante">Estudiante</ToggleButton>
-							<ToggleButton value="profesor">Profesor</ToggleButton>
-						</ToggleButtonGroup>
-					)}
-					{!isLoginMode && tipoUsuario == "estudiante" && (
+					<ToggleButtonGroup
+						color="primary"
+						value={tipoUsuario}
+						exclusive
+						onChange={handleChange}
+						aria-label="Platform"
+						style={{ marginTop: "4%" }}
+					>
+						<ToggleButton value="estudiante">Estudiante</ToggleButton>
+						<ToggleButton value="profesor">Profesor</ToggleButton>
+					</ToggleButtonGroup>
+					{!isLoginMode && tipoUsuario === "estudiante" && (
 						<>
 							<Input
 								element="input"
@@ -157,9 +294,39 @@ const Auth = () => {
 								errorText="Porfavor ingresar estudios cursados y en curso"
 								onInput={inputHandler}
 							/>
+							<Input
+								element="input"
+								id="nombre"
+								type="text"
+								label="Nombre"
+								placeholder="Ingrese su primer nombre"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar nombre"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="apellido"
+								type="text"
+								label="Apellido"
+								placeholder="Ingrese su apellido"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar apellido"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="telefono"
+								type="text"
+								label="Telefono"
+								placeholder="+54 00 0000-0000"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar telefono"
+								onInput={inputHandler}
+							/>
 						</>
 					)}
-					{!isLoginMode && tipoUsuario == "profesor" && (
+					{!isLoginMode && tipoUsuario === "profesor" && (
 						<>
 							<Input
 								element="input"
@@ -179,6 +346,36 @@ const Auth = () => {
 								placeholder="Semisenior Fullstack Engineer"
 								validators={[VALIDATOR_REQUIRE()]}
 								errorText="Porfavor ingresar experiencia"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="nombre"
+								type="text"
+								label="Nombre"
+								placeholder="Ingrese su primer nombre"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar nombre"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="apellido"
+								type="text"
+								label="Apellido"
+								placeholder="Ingrese su apellido"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar apellido"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="telefono"
+								type="text"
+								label="Telefono"
+								placeholder="+54 00 0000-0000"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Porfavor ingresar telefono"
 								onInput={inputHandler}
 							/>
 						</>

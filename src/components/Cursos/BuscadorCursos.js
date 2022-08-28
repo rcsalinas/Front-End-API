@@ -11,10 +11,6 @@ const BuscadorCursos = () => {
 		setCursos(cursosResultado);
 	};
 
-	useEffect(() => {
-		console.log(cursos);
-	}, [cursos]);
-
 	return (
 		<>
 			<SearchCursosForm handleBuscar={handleBuscar} />
