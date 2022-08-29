@@ -11,6 +11,8 @@
 		"@fortawesome/react-fontawesome": "^0.2.0",
 		"@mui/icons-material": "^5.8.4",
 		"@mui/material": "^5.10.1",
+		"bootstrap": "^5.2.0",
+		"mdb-react-ui-kit": "^4.2.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^5.1.2",
