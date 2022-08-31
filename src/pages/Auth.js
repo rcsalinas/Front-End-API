@@ -14,6 +14,7 @@ import { Redirect } from "react-router-dom";
 const dummy_users = [
 	{
 		id: "alu1",
+		tipo: "estudiante",
 		nombre: "Roberto",
 		apellido: "Salinas",
 		password: "12345678",
@@ -25,6 +26,7 @@ const dummy_users = [
 	},
 	{
 		id: "alu2",
+		tipo: "estudiante",
 		nombre: "Roberto",
 		apellido: "Salinas",
 		password: "12345678",
@@ -34,11 +36,9 @@ const dummy_users = [
 		estudiosCursados: "primaria, secundaria",
 		cursos: ["curso1", "curso2", "curso4"],
 	},
-];
-
-const dummy_profesores = [
 	{
 		id: "profesor1",
+		tipo: "profesor",
 		nombre: "Maria",
 		apellido: "Maria",
 		password: "12345678",
@@ -50,6 +50,7 @@ const dummy_profesores = [
 	},
 	{
 		id: "profesor2",
+		tipo: "profesor",
 		nombre: "Jose",
 		apellido: "Aguilar",
 		password: "12345678",
@@ -174,43 +175,25 @@ const Auth = () => {
 
 		let encontrado = false;
 		let validacion = false;
+		let usuarioEncontrado;
 
 		if (isLoginMode) {
-			if (tipoUsuario === "estudiante") {
-				for (let i = 0; i < dummy_users.length && encontrado === false; i++) {
-					if (dummy_users[i].mail === formState.inputs.email.value) {
-						encontrado = true;
-						if (dummy_users[i].password === formState.inputs.password.value) {
-							validacion = true;
-						} else {
-							validacion = false;
-						}
+			for (let i = 0; i < dummy_users.length && encontrado === false; i++) {
+				if (dummy_users[i].mail === formState.inputs.email.value) {
+					encontrado = true;
+					usuarioEncontrado = dummy_users[i];
+					if (dummy_users[i].password === formState.inputs.password.value) {
+						validacion = true;
+					} else {
+						validacion = false;
 					}
 				}
+			}
 
-				if (validacion === true) {
-					auth.login(tipoUsuario, formState.inputs.email.value);
-				} else {
-					alert("ocurrio un error");
-				}
+			if (validacion === true) {
+				auth.login(usuarioEncontrado, formState.inputs.email.value);
 			} else {
-				//misma validacion pero para profesores. Asi va a ocurrir en el backend
-				for (let i = 0; i < dummy_profesores.length && encontrado === false; i++) {
-					if (dummy_profesores[i].mail === formState.inputs.email.value) {
-						encontrado = true;
-						if (dummy_profesores[i].password === formState.inputs.password.value) {
-							validacion = true;
-						} else {
-							validacion = false;
-						}
-					}
-				}
-				if (validacion === true) {
-					//por el momento manejo el id como el mail ya que no estoy con token
-					auth.login(tipoUsuario, formState.inputs.email.value);
-				} else {
-					alert("ocurrio un error");
-				}
+				alert("ocurrio un error");
 			}
 		} else {
 			//es signup y le doy submit
@@ -218,6 +201,7 @@ const Auth = () => {
 				let existe = false;
 				let user = {
 					id: `alu${dummy_users.length + 1}`,
+					tipo: "estudiante",
 					nombre: formState.inputs.nombre.value,
 					apellido: formState.inputs.apellido.value,
 					password: formState.inputs.password.value,
@@ -242,7 +226,8 @@ const Auth = () => {
 			} else {
 				let existe = false;
 				let user = {
-					id: `profesor${dummy_profesores.length + 1}`,
+					id: `profesor${dummy_users.length + 1}`,
+					tipo: "profesor",
 					nombre: formState.inputs.nombre.value,
 					apellido: formState.inputs.apellido.value,
 					password: formState.inputs.password.value,
@@ -252,19 +237,19 @@ const Auth = () => {
 					experiencia: formState.inputs.experiencia.value,
 					cursos: [],
 				};
-				dummy_profesores.forEach((user) => {
+				dummy_users.forEach((user) => {
 					if (user.mail === formState.inputs.email.value) {
 						existe = true;
 					}
 				});
 				if (!existe) {
-					dummy_profesores.push(user);
+					dummy_users.push(user);
 					auth.login(tipoUsuario, formState.inputs.email.value);
 				} else {
 					alert("Ya existe un usuario asociado a ese mail");
 				}
 
-				console.log(dummy_profesores);
+				console.log(dummy_users);
 			}
 		}
 	};
@@ -306,17 +291,19 @@ const Auth = () => {
 				<h2>Inicio de Sesion Requerido</h2>
 				<hr />
 				<form onSubmit={authSubmitHandler}>
-					<ToggleButtonGroup
-						color="primary"
-						value={tipoUsuario}
-						exclusive
-						onChange={handleChange}
-						aria-label="Platform"
-						style={{ marginTop: "4%" }}
-					>
-						<ToggleButton value="estudiante">Estudiante</ToggleButton>
-						<ToggleButton value="profesor">Profesor</ToggleButton>
-					</ToggleButtonGroup>
+					{!isLoginMode && (
+						<ToggleButtonGroup
+							color="primary"
+							value={tipoUsuario}
+							exclusive
+							onChange={handleChange}
+							aria-label="Platform"
+							style={{ marginTop: "4%" }}
+						>
+							<ToggleButton value="estudiante">Estudiante</ToggleButton>
+							<ToggleButton value="profesor">Profesor</ToggleButton>
+						</ToggleButtonGroup>
+					)}
 					{!isLoginMode && tipoUsuario === "estudiante" && (
 						<>
 							<Input

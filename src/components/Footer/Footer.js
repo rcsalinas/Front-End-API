@@ -10,7 +10,7 @@ const Footer = () => {
 			<div className="footer-container">
 				<div className="item2">
 					<span style={{ paddingRight: 5 }}>Copyright </span>
-					<FontAwesomeIcon icon={faCopyright} />{" "}
+					<FontAwesomeIcon icon={faCopyright} />
 					<span style={{ paddingLeft: 5 }}>
 						{new Date().getFullYear()} Desarrollado por Roberto Salinas, Iara Orosco,
 						Diego Mosquera
