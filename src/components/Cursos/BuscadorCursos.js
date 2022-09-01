@@ -79,17 +79,12 @@ const BuscadorCursos = () => {
 	const [rating, setRating] = React.useState(null);
 	const [searchVal, setSearchVal] = React.useState("");
 	const [tipoClase, setTipoClase] = React.useState("");
-	const [searchParam, setSearchParam] = useState({
-		search: null,
-		tipo: null,
-		frecuencia: null,
-		calificacion: null,
-	});
+	const [filters, setFilters] = useState({}); //searchVal,tipo,frecuencia,calficacion
 
 	const handleFrecuenciaChange = (event) => {
 		setFrecuencia(event.target.value);
-		setSearchParam({
-			search: searchVal,
+		setFilters({
+			nombreCurso: searchVal,
 			tipo: tipoClase,
 			frecuencia: event.target.value,
 			calificacion: rating,
@@ -97,17 +92,17 @@ const BuscadorCursos = () => {
 	};
 	const handleRatingChange = (event, newRating) => {
 		setRating(parseInt(event.target.value));
-		setSearchParam({
-			search: searchVal,
+		setFilters({
+			nombreCurso: searchVal,
 			tipo: tipoClase,
 			frecuencia: frecuencia,
-			calificacion: event.target.value,
+			calificacion: parseInt(event.target.value),
 		});
 	};
 	const handleSearchChange = (event) => {
 		setSearchVal(event.target.value);
-		setSearchParam({
-			search: event.target.value,
+		setFilters({
+			nombreCurso: event.target.value,
 			tipo: tipoClase,
 			frecuencia: frecuencia,
 			calificacion: rating,
@@ -115,32 +110,65 @@ const BuscadorCursos = () => {
 	};
 	const handleRadioChange = (event) => {
 		setTipoClase(event.target.value);
-		setSearchParam({
-			search: searchVal,
+		setFilters({
+			nombreCurso: searchVal,
 			tipo: event.target.value,
 			frecuencia: frecuencia,
 			calificacion: rating,
 		});
 	};
-	useEffect(() => {
-		setCursos(cursos_dummy);
-	}, []);
+	function myFilter(filterData) {
+		return cursos_dummy.filter((item) => {
+			const filter = {
+				bySearchVal: true,
+				byTipo: true,
+				byFrecuencia: true,
+				byRating: true,
+			};
+			if (filterData.nombreCurso)
+				filter.bySearchVal = item.nombreCurso.includes(filterData.nombreCurso);
+			// Even if one ward_no.ward matches the value it's true
+			if (filterData.tipo) filter.byTipo = item.tipo === filterData.tipo;
+			if (filterData.frecuencia)
+				filter.byFrecuencia = item.frecuencia === filterData.frecuencia;
+			if (filterData.calificacion)
+				filter.byRating = item.calificacion === filterData.calificacion;
 
-	useEffect(() => {
-		console.log(searchParam);
-	}, [searchParam]);
-
-	function search(items) {
-		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
-			return cursos;
-		}
-		return items.filter((item) => {
-			//tengo que de alguna manera revisar si estan set los params, por el momento solo el search normal funciona
-			if (searchVal != "") {
-				return item.nombreCurso.toLowerCase().includes(searchVal);
-			}
+			return filter.bySearchVal && filter.byTipo && filter.byFrecuencia && filter.byRating;
 		});
 	}
+
+	useEffect(() => {
+		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase == "") {
+			setCursos(cursos_dummy);
+		} else {
+			if (filters.frecuencia === "") {
+				let aux = filters;
+				delete aux.frecuencia;
+				setFilters(aux);
+			}
+			if (filters.calificacion === null) {
+				let aux = filters;
+				delete aux.calificacion;
+				setFilters(aux);
+			}
+			if (filters.tipoClase === "") {
+				let aux = filters;
+				delete aux.tipoClase;
+				setFilters(aux);
+			}
+			if (filters.searchVal === "") {
+				let aux = filters;
+				delete aux.searchVal;
+				setFilters(aux);
+			}
+			console.log(filters);
+			let encontrados = myFilter(filters);
+			console.log(encontrados);
+			setCursos(encontrados);
+		}
+	}, [tipoClase, searchVal, rating, frecuencia]);
+
 	return (
 		<>
 			<div className="curso-form">
@@ -214,7 +242,7 @@ const BuscadorCursos = () => {
 				</div>
 			</div>
 
-			<Cursos cursos={cursos} search={search} />
+			<Cursos cursos={cursos} myFilter={myFilter} />
 			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
 		</>
 	);

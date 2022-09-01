@@ -4,10 +4,10 @@ import CursoCard from "../CursoCard/CursoCard";
 import "./Cursos.css";
 
 const Cursos = (props) => {
-	const { cursos, search } = props;
+	const { cursos } = props;
 	return (
 		<div className="cursos-buscados">
-			{search(cursos).map((curso) => (
+			{cursos.map((curso) => (
 				<CursoCard
 					key={curso.idCurso}
 					id={curso.idCurso}
