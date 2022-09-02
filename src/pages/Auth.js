@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 
 import { useForm } from "../hooks/form-hook";
@@ -10,57 +10,9 @@ import "./Auth.css";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Redirect } from "react-router-dom";
+import { database_Dummy } from "../util/sharedData";
 
-const dummy_users = [
-	{
-		id: "alu1",
-		tipo: "estudiante",
-		nombre: "Roberto",
-		apellido: "Salinas",
-		password: "12345678",
-		mail: "testalu1@test.com",
-		celular: "1234",
-		fechaNacimiento: "2015-03-25",
-		estudiosCursados: "primaria, secundaria",
-		cursos: ["curso1", "curso3"],
-	},
-	{
-		id: "alu2",
-		tipo: "estudiante",
-		nombre: "Roberto",
-		apellido: "Salinas",
-		password: "12345678",
-		mail: "testalu2@test.com",
-		celular: "1234",
-		fechaNacimiento: "2015-03-25",
-		estudiosCursados: "primaria, secundaria",
-		cursos: ["curso1", "curso2", "curso4"],
-	},
-	{
-		id: "profesor1",
-		tipo: "profesor",
-		nombre: "Maria",
-		apellido: "Maria",
-		password: "12345678",
-		mail: "testprof1@test.com",
-		celular: "1234",
-		titulo: "licenciado en nada",
-		experiencia: "trabaje en microsoft",
-		cursos: ["curso1", "curso3", "curso4"],
-	},
-	{
-		id: "profesor2",
-		tipo: "profesor",
-		nombre: "Jose",
-		apellido: "Aguilar",
-		password: "12345678",
-		mail: "testprof2@test.com",
-		celular: "1234",
-		titulo: "Ingeniero en nada",
-		experiencia: "trabaje en Uber",
-		cursos: ["curso2"],
-	},
-];
+const dummy_users = database_Dummy.dummy_users;
 
 const Auth = () => {
 	const auth = useContext(AuthContext);
@@ -191,7 +143,7 @@ const Auth = () => {
 			}
 
 			if (validacion === true) {
-				auth.login(usuarioEncontrado, formState.inputs.email.value);
+				auth.login(usuarioEncontrado.tipo, formState.inputs.email.value);
 			} else {
 				alert("ocurrio un error");
 			}
@@ -248,8 +200,6 @@ const Auth = () => {
 				} else {
 					alert("Ya existe un usuario asociado a ese mail");
 				}
-
-				console.log(dummy_users);
 			}
 		}
 	};

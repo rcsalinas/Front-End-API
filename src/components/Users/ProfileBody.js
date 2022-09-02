@@ -14,8 +14,17 @@ import { AuthContext } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 
 const ProfileBody = (props) => {
-	const { usuario } = props;
 	const auth = useContext(AuthContext);
+	const {
+		nombre,
+		apellido,
+		mail,
+		celular,
+		fechaNacimiento,
+		estudiosCursados,
+		titulo,
+		experiencia,
+	} = props;
 	return (
 		<section style={{ backgroundColor: "#eee" }}>
 			<MDBContainer className="py-5">
@@ -30,8 +39,8 @@ const ProfileBody = (props) => {
 									style={{ width: "150px" }}
 									fluid
 								/>
-								<p className="text-muted mb-1">{usuario.estudiosCursados}</p>
-								<p className="text-muted mb-4">{usuario.celular}</p>
+								<p className="text-muted mb-1">{nombre}</p>
+								<p className="text-muted mb-4">{auth.userType}</p>
 								<div className="d-flex justify-content-center mb-2">
 									<NavLink
 										to="/updateUser"
@@ -52,9 +61,7 @@ const ProfileBody = (props) => {
 										<MDBCardText>Nombre</MDBCardText>
 									</MDBCol>
 									<MDBCol sm="9">
-										<MDBCardText className="text-muted">
-											{usuario.nombre}
-										</MDBCardText>
+										<MDBCardText className="text-muted">{nombre}</MDBCardText>
 									</MDBCol>
 								</MDBRow>
 								<hr />
@@ -63,9 +70,7 @@ const ProfileBody = (props) => {
 										<MDBCardText>Apellido</MDBCardText>
 									</MDBCol>
 									<MDBCol sm="9">
-										<MDBCardText className="text-muted">
-											{usuario.apellido}
-										</MDBCardText>
+										<MDBCardText className="text-muted">{apellido}</MDBCardText>
 									</MDBCol>
 								</MDBRow>
 								<hr />
@@ -74,9 +79,7 @@ const ProfileBody = (props) => {
 										<MDBCardText>Telefono</MDBCardText>
 									</MDBCol>
 									<MDBCol sm="9">
-										<MDBCardText className="text-muted">
-											{usuario.celular}
-										</MDBCardText>
+										<MDBCardText className="text-muted">{celular}</MDBCardText>
 									</MDBCol>
 								</MDBRow>
 								<hr />
@@ -85,9 +88,7 @@ const ProfileBody = (props) => {
 										<MDBCardText>Mail</MDBCardText>
 									</MDBCol>
 									<MDBCol sm="9">
-										<MDBCardText className="text-muted">
-											{usuario.mail}
-										</MDBCardText>
+										<MDBCardText className="text-muted">{mail}</MDBCardText>
 									</MDBCol>
 								</MDBRow>
 								<hr />
@@ -110,7 +111,7 @@ const ProfileBody = (props) => {
 											</MDBCol>
 											<MDBCol sm="9">
 												<MDBCardText className="text-muted">
-													{usuario.fechaNacimiento}
+													{fechaNacimiento}
 												</MDBCardText>
 											</MDBCol>
 										</MDBRow>
@@ -121,7 +122,7 @@ const ProfileBody = (props) => {
 											</MDBCol>
 											<MDBCol sm="9">
 												<MDBCardText className="text-muted">
-													{usuario.estudiosCursados}
+													{estudiosCursados}
 												</MDBCardText>
 											</MDBCol>
 										</MDBRow>
@@ -136,7 +137,7 @@ const ProfileBody = (props) => {
 											</MDBCol>
 											<MDBCol sm="9">
 												<MDBCardText className="text-muted">
-													{usuario.titulo}
+													{titulo}
 												</MDBCardText>
 											</MDBCol>
 										</MDBRow>
@@ -147,7 +148,7 @@ const ProfileBody = (props) => {
 											</MDBCol>
 											<MDBCol sm="9">
 												<MDBCardText className="text-muted">
-													{usuario.experiencia}
+													{experiencia}
 												</MDBCardText>
 											</MDBCol>
 										</MDBRow>

@@ -16,62 +16,9 @@ import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import "./SearchForm.css";
-import { ListItemSecondaryAction } from "@mui/material";
+import { database_Dummy } from "../../util/sharedData";
 
-const cursos_dummy = [
-	{
-		idCurso: "curso1",
-		nombreCurso: "Mate101",
-		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor1",
-		desc: "matematicas",
-		alumnos: ["alu1", "alu2"],
-		duracion: "1 mes",
-		frecuencia: "mensual",
-		tipo: "grupal",
-		costo: 12.99,
-		calificacion: 5,
-	},
-	{
-		idCurso: "curso2",
-		nombreCurso: "Biology101",
-		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor2",
-		desc: "biologia",
-		alumnos: ["alu2"],
-		duracion: "2 meses",
-		frecuencia: "mensual",
-		tipo: "individual",
-		costo: 14.99,
-		calificacion: 2,
-	},
-	{
-		idCurso: "curso3",
-		nombreCurso: "API101",
-		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor1",
-		desc: "Aplicaciones Interactivas",
-		alumnos: ["alu1"],
-		duracion: "5 dias",
-		frecuencia: "semanal",
-		tipo: "individual",
-		costo: 2.99,
-		calificacion: 1,
-	},
-	{
-		idCurso: "curso4",
-		nombreCurso: "Statistics101",
-		image: "https://www.apwa.net/images/PWM101.jpg",
-		profesor: "profesor1",
-		desc: "Estadistica",
-		alumnos: ["alu2"],
-		duracion: "3 meses",
-		frecuencia: "semanal",
-		tipo: "individual",
-		costo: 12.99,
-		calificacion: 5,
-	},
-];
+const cursos_dummy = database_Dummy.cursos_dummy;
 
 const BuscadorCursos = () => {
 	const [cursos, setCursos] = useState([]);
@@ -126,7 +73,9 @@ const BuscadorCursos = () => {
 				byRating: true,
 			};
 			if (filterData.nombreCurso)
-				filter.bySearchVal = item.nombreCurso.includes(filterData.nombreCurso);
+				filter.bySearchVal = item.nombreCurso
+					.toLowerCase()
+					.includes(filterData.nombreCurso.toLowerCase());
 			// Even if one ward_no.ward matches the value it's true
 			if (filterData.tipo) filter.byTipo = item.tipo === filterData.tipo;
 			if (filterData.frecuencia)
@@ -139,7 +88,7 @@ const BuscadorCursos = () => {
 	}
 
 	useEffect(() => {
-		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase == "") {
+		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
 			setCursos(cursos_dummy);
 		} else {
 			if (filters.frecuencia === "") {

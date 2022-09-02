@@ -6,9 +6,10 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
+import { Rating } from "@mui/material";
 
 const CursoCard = (props) => {
-	const { id, title, image, description, price, teacher } = props;
+	const { id, title, image, description, price, teacher, rating } = props;
 
 	return (
 		<Card sx={{ maxWidth: 345 }}>
@@ -22,6 +23,9 @@ const CursoCard = (props) => {
 				</Typography>
 				<Typography variant="body4" color="text.secondary">
 					{description}
+				</Typography>
+				<Typography variant="h6" color="text.secondary">
+					<Rating name="read-only" value={rating} readOnly />
 				</Typography>
 			</CardContent>
 			<CardActions>

@@ -9,6 +9,7 @@ import { AuthContext } from "./context/auth-context";
 import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
+import Notificaciones from "./pages/Noficaciones";
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
@@ -49,7 +50,7 @@ function App() {
 							<div>Cursos del ususario</div>
 						</Route>
 						<Route path="/:userId/notificaciones" exact>
-							<div>Notificaciones</div>
+							<Notificaciones />
 						</Route>
 						<Route path="/comoFunciona" exact>
 							<ComoFunciona />

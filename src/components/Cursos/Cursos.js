@@ -1,6 +1,6 @@
 import React from "react";
 
-import CursoCard from "../CursoCard/CursoCard";
+import CursoCard from "./CursoCard/CursoCard";
 import "./Cursos.css";
 
 const Cursos = (props) => {
@@ -16,6 +16,7 @@ const Cursos = (props) => {
 					description={curso.desc}
 					price={curso.costo}
 					teacher={curso.profesor}
+					rating={curso.calificacion}
 				/>
 			))}
 		</div>
