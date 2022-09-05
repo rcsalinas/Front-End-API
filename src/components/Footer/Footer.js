@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faYoutube, faGithub, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+
 const Footer = () => {
 	return (
 		<footer className="footer">

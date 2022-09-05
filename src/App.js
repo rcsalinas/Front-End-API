@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
 import Notificaciones from "./pages/Noficaciones";
+import MisCursos from "./pages/MisCursos";
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
@@ -47,7 +48,7 @@ function App() {
 							<Profile />
 						</Route>
 						<Route path="/:userId/cursos" exact>
-							<div>Cursos del ususario</div>
+							<MisCursos />
 						</Route>
 						<Route path="/:userId/notificaciones" exact>
 							<Notificaciones />

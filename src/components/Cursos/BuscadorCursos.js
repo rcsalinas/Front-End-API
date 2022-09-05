@@ -26,7 +26,7 @@ const BuscadorCursos = () => {
 	const [rating, setRating] = React.useState(null);
 	const [searchVal, setSearchVal] = React.useState("");
 	const [tipoClase, setTipoClase] = React.useState("");
-	const [filters, setFilters] = useState({}); //searchVal,tipo,frecuencia,calficacion
+	const [filters, setFilters] = useState({});
 
 	const handleFrecuenciaChange = (event) => {
 		setFrecuencia(event.target.value);
@@ -111,9 +111,7 @@ const BuscadorCursos = () => {
 				delete aux.searchVal;
 				setFilters(aux);
 			}
-			console.log(filters);
 			let encontrados = myFilter(filters);
-			console.log(encontrados);
 			setCursos(encontrados);
 		}
 	}, [tipoClase, searchVal, rating, frecuencia]);
@@ -191,7 +189,7 @@ const BuscadorCursos = () => {
 				</div>
 			</div>
 
-			<Cursos cursos={cursos} myFilter={myFilter} />
+			<Cursos cursos={cursos} />
 			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
 		</>
 	);

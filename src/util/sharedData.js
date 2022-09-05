@@ -10,7 +10,10 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: "primaria, secundaria",
-			cursos: ["curso1", "curso3"],
+			cursos: [
+				{ cursoId: "curso1", estado: false }, //el estado indica true si el curso fue solicitado y aceptado
+				{ cursoId: "curso1", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
+			],
 		},
 		{
 			id: "alu2",
@@ -22,7 +25,11 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: "primaria, secundaria",
-			cursos: ["curso1", "curso2", "curso4"],
+			cursos: [
+				{ cursoId: "curso1", estado: false }, //el estado indica true si el curso fue aceptado por el profesor
+				{ cursoId: "curso2", estado: true },
+				{ cursoId: "curso4", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
+			],
 		},
 		{
 			id: "profesor1",
@@ -52,6 +59,7 @@ export const database_Dummy = {
 	cursos_dummy: [
 		{
 			idCurso: "curso1",
+			estado: true, //indica si esta en estado publicado (true) o si esta despublicado (false)
 			nombreCurso: "Mate101",
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
@@ -65,6 +73,7 @@ export const database_Dummy = {
 		},
 		{
 			idCurso: "curso2",
+			estado: true,
 			nombreCurso: "Biology101",
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor2",
@@ -78,6 +87,7 @@ export const database_Dummy = {
 		},
 		{
 			idCurso: "curso3",
+			estado: true,
 			nombreCurso: "API101",
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
@@ -91,6 +101,7 @@ export const database_Dummy = {
 		},
 		{
 			idCurso: "curso4",
+			estado: true,
 			nombreCurso: "Statistics101",
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
