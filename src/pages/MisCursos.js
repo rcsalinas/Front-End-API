@@ -25,9 +25,9 @@ const MisCursos = () => {
 
 	let aux = [];
 
-	usuarioEncontrado[0].cursos.map((curso) => {
+	usuarioEncontrado[0].cursos.forEach((curso) => {
 		let cursoId;
-		if (usuarioEncontrado.tipo === "estudiante") {
+		if (usuarioEncontrado[0].tipo === "estudiante") {
 			cursoId = curso.cursoId;
 		} else {
 			cursoId = curso;

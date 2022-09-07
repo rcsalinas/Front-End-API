@@ -43,7 +43,7 @@ const ProfileBody = (props) => {
 								<p className="text-muted mb-4">{auth.userType}</p>
 								<div className="d-flex justify-content-center mb-2">
 									<NavLink
-										to="/updateUser"
+										to={`/users/${auth.userId}`}
 										exact
 										style={{ textDecoration: "none" }}
 									>

@@ -11,6 +11,8 @@ import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
 import Notificaciones from "./pages/Noficaciones";
 import MisCursos from "./pages/MisCursos";
+import UpdateUser from "./pages/UpdateUser";
+
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
@@ -57,7 +59,7 @@ function App() {
 							<ComoFunciona />
 						</Route>
 						<Route path="/users/:userId">
-							<div>Update User</div>
+							<UpdateUser />
 						</Route>
 
 						<Route path="/auth" exact>

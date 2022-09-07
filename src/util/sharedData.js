@@ -12,7 +12,7 @@ export const database_Dummy = {
 			estudiosCursados: "primaria, secundaria",
 			cursos: [
 				{ cursoId: "curso1", estado: false }, //el estado indica true si el curso fue solicitado y aceptado
-				{ cursoId: "curso1", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
+				{ cursoId: "curso2", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
 			],
 		},
 		{
