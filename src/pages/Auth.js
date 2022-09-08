@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 
 import { useForm } from "../hooks/form-hook";
-import Button from "../components/FormElements/Button";
+import { MDBBtn } from "mdb-react-ui-kit";
 import Input from "../components/FormElements/Input";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../util/validators";
 import Card from "../components/UIElements/Card";
@@ -381,13 +381,13 @@ const Auth = () => {
 						errorText="Porfavor ingresar contraseña valida, minimo 6 caracteres"
 						onInput={inputHandler}
 					/>
-					<Button type="submit" disabled={!formState.isValid}>
+					<MDBBtn type="submit" disabled={!formState.isValid}>
 						{isLoginMode ? "LOGIN" : "SIGNUP"}
-					</Button>
+					</MDBBtn>
 				</form>
-				<Button inverse onClick={switchModeHandler}>
+				<MDBBtn className="mx-2" toggle active onClick={switchModeHandler}>
 					SWITCH TO {isLoginMode ? "SIGNUP" : "LOGIN"}
-				</Button>
+				</MDBBtn>
 			</Card>
 		</React.Fragment>
 	);
