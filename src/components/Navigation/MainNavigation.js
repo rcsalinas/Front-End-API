@@ -169,6 +169,13 @@ const MainNavigation = (props) => {
 									<Typography textAlign="center">Notificaciones</Typography>
 								</MenuItem>
 							</NavLink>
+							{auth.isLoggedIn && auth.userType === "profesor" && (
+								<NavLink to="/" style={{ textDecoration: "none" }}>
+									<MenuItem onClick={handleCloseUserMenu}>
+										<Typography textAlign="center">Contrataciones</Typography>
+									</MenuItem>
+								</NavLink>
+							)}
 							{auth.isLoggedIn && (
 								<MenuItem onClick={handleCloseUserMenu}>
 									<Button onClick={auth.logout}>Logout</Button>

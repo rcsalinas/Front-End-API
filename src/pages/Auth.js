@@ -143,7 +143,7 @@ const Auth = () => {
 			}
 
 			if (validacion === true) {
-				auth.login(usuarioEncontrado.tipo, formState.inputs.email.value);
+				auth.login(usuarioEncontrado.tipo, usuarioEncontrado.id);
 			} else {
 				alert("ocurrio un error");
 			}
@@ -170,7 +170,7 @@ const Auth = () => {
 				});
 				if (!existe) {
 					dummy_users.push(user);
-					auth.login(tipoUsuario, formState.inputs.email.value);
+					auth.login(tipoUsuario, user.id);
 				} else {
 					alert("Ya existe un usuario asociado a ese mail");
 				}

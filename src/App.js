@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import Notificaciones from "./pages/Noficaciones";
 import MisCursos from "./pages/MisCursos";
 import UpdateUser from "./pages/UpdateUser";
+import CursoPage from "./pages/CursoPage";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,6 +61,9 @@ function App() {
 						</Route>
 						<Route path="/users/:userId">
 							<UpdateUser />
+						</Route>
+						<Route path="/cursos/:cursoId">
+							<CursoPage />
 						</Route>
 
 						<Route path="/auth" exact>

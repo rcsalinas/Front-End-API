@@ -189,7 +189,7 @@ const BuscadorCursos = () => {
 				</div>
 			</div>
 
-			<Cursos cursos={cursos} />
+			<Cursos cursos={cursos} misCursos={false} />
 			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
 		</>
 	);

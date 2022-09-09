@@ -33,7 +33,7 @@ const UpdateUser = () => {
 	const [titulo, setTitulo] = useState("");
 
 	let identifiedUser;
-	identifiedUser = dummy_users.find((u) => u.mail === auth.userId);
+	identifiedUser = dummy_users.find((u) => u.id === auth.userId);
 
 	useEffect(() => {
 		setNombre(identifiedUser.nombre);

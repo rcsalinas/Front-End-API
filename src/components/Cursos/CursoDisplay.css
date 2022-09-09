@@ -1,0 +1,15 @@
+.contenedor {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: left;
+	gap: 10px 20px;
+	margin-top: 2%;
+	align-content: flex-start;
+}
+
+.detallesCurso {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}

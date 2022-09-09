@@ -20,7 +20,7 @@ const MisCursos = () => {
 	}
 
 	let usuarioEncontrado = usuarios.filter((user) => {
-		return user.mail === userId;
+		return user.id === userId;
 	});
 
 	let aux = [];
@@ -41,7 +41,7 @@ const MisCursos = () => {
 	return (
 		<>
 			<h1 style={{ marginTop: "2%", marginBottom: "2%" }}>Cursos del usuario:</h1>
-			<Cursos cursos={aux} />
+			<Cursos cursos={aux} misCursos={true} />
 		</>
 	);
 };

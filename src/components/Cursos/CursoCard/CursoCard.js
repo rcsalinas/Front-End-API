@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { Rating } from "@mui/material";
 
 const CursoCard = (props) => {
-	const { id, title, image, description, price, teacher, rating } = props;
+	const { id, title, image, price, teacher, rating } = props;
 
 	return (
 		<Card sx={{ maxWidth: 345 }}>
@@ -20,9 +20,6 @@ const CursoCard = (props) => {
 				</Typography>
 				<Typography variant="h6" color="text">
 					{teacher}
-				</Typography>
-				<Typography variant="body4" color="text.secondary">
-					{description}
 				</Typography>
 				<Typography variant="h6" color="text.secondary">
 					<Rating name="read-only" value={rating} readOnly />

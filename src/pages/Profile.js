@@ -19,7 +19,7 @@ const Profile = () => {
 	}
 
 	let identifiedUser;
-	identifiedUser = dummy_users.find((u) => u.mail === userId);
+	identifiedUser = dummy_users.find((u) => u.id === userId);
 	let nombre = identifiedUser.nombre;
 	let apellido = identifiedUser.apellido;
 	let mail = identifiedUser.mail;
