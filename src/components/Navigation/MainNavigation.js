@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -18,7 +18,6 @@ import { AuthContext } from "../../context/auth-context";
 
 const MainNavigation = (props) => {
 	const auth = useContext(AuthContext);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);

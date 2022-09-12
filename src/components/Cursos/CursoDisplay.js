@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 
+import { Card } from "@mui/material";
+
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
 	const { cursoEncontrado, comentariosEncontrados, handleEliminar } = props;
@@ -21,7 +23,7 @@ const CursoDisplay = (props) => {
 		console.log("finalizar");
 	};
 	const handleSolicitar = () => {
-		//genera una contratacion en espera de aceptacion por parte del profesor
+		//me tiene que llevar al formulario de contratacion
 		console.log("solicitar");
 	};
 
@@ -34,9 +36,21 @@ const CursoDisplay = (props) => {
 		navigate.push("/");
 	};
 
+	const handleModificar = (accion) => {
+		navigate.push(`update/${cursoEncontrado.idCurso}`); //me lleva a la pagina modificar
+	};
+
 	return (
 		<>
-			<div className="contenedor">
+			<Card
+				style={{ marginTop: "2%", marginLeft: "1%", marginRight: "1%" }}
+				className="tarjeta"
+			>
+				<img
+					className="imagen img-fluid rounded img-thumbnail"
+					src={cursoEncontrado.image}
+					alt=""
+				/>
 				<div className="detallesCurso">
 					<h1 className="fw-bold">{cursoEncontrado.nombreCurso}</h1>
 					<h2>Profesor: {cursoEncontrado.profesor}</h2>
@@ -48,7 +62,8 @@ const CursoDisplay = (props) => {
 					<Typography component="legend">Calificacion Promedio:</Typography>
 					<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
 				</div>
-			</div>
+			</Card>
+
 			<div className="comentarios">
 				<h2 className="fw-bold">Comentarios: </h2>
 				{comentariosEncontrados.length !== 0 &&
@@ -58,46 +73,49 @@ const CursoDisplay = (props) => {
 				{comentariosEncontrados.length === 0 && <h3>No hay comentarios para este curso</h3>}
 			</div>
 
-			{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && (
-				<Button variant="contained" color="error" onClick={handleFinalizar}>
-					Finalizar Curso
-				</Button>
-			)}
-			{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
-				<Button variant="contained" color="success" onClick={handleSolicitar}>
-					Solicitar Curso
-				</Button>
-			)}
-			{!auth.isLoggedIn && (
-				<Button
-					variant="contained"
-					onClick={() => {
-						navigate.push("/auth");
-					}}
-				>
-					Autenticar Para solicitar
-				</Button>
-			)}
-			{auth.isLoggedIn && auth.userType === "profesor" && (
-				<Stack direction="row" spacing={2}>
-					<Button variant="contained" color="error" onClick={handleEliminar}>
-						Eliminar
+			<div className="botones">
+				{" "}
+				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && (
+					<Button variant="contained" color="error" onClick={handleFinalizar}>
+						Finalizar Curso
 					</Button>
-					{cursoEncontrado.estado && (
-						<Button variant="outlined" onClick={handleDespublicar}>
-							Despublicar
-						</Button>
-					)}
-					{!cursoEncontrado.estado && (
-						<Button variant="outlined" onClick={handlePublicar}>
-							Publicar
-						</Button>
-					)}
-					<Button variant="outlined" color="secondary">
-						Modificar
+				)}
+				{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
+					<Button variant="contained" color="success" onClick={handleSolicitar}>
+						Solicitar Curso
 					</Button>
-				</Stack>
-			)}
+				)}
+				{!auth.isLoggedIn && (
+					<Button
+						variant="contained"
+						onClick={() => {
+							navigate.push("/auth");
+						}}
+					>
+						Autenticar Para solicitar
+					</Button>
+				)}
+				{auth.isLoggedIn && auth.userType === "profesor" && (
+					<Stack direction="row" spacing={2}>
+						<Button variant="contained" color="error" onClick={handleEliminar}>
+							Eliminar
+						</Button>
+						{cursoEncontrado.estado && (
+							<Button variant="outlined" onClick={handleDespublicar}>
+								Despublicar
+							</Button>
+						)}
+						{!cursoEncontrado.estado && (
+							<Button variant="outlined" onClick={handlePublicar}>
+								Publicar
+							</Button>
+						)}
+						<Button variant="outlined" color="secondary" onClick={handleModificar}>
+							Modificar
+						</Button>
+					</Stack>
+				)}
+			</div>
 		</>
 	);
 };

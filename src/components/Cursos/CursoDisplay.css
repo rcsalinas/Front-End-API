@@ -1,15 +1,29 @@
-.contenedor {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: left;
-	gap: 10px 20px;
-	margin-top: 2%;
-	align-content: flex-start;
-}
-
 .detallesCurso {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-evenly;
+	flex-wrap: wrap;
+	justify-content: left;
+}
+
+.tarjeta {
+	display: flex;
+	flex-direction: row;
+}
+
+.imagen {
+	width: 30%;
+	height: 30%;
+}
+
+.botones {
+	margin-bottom: 10%;
+	margin-top: 5%;
+	display: flex;
+	justify-content: flex-start;
+	margin-left: 1%;
+}
+
+.comentarios {
+	margin-top: 3%;
+	margin-left: 1%;
 }

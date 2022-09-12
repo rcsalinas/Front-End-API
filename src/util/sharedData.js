@@ -105,7 +105,7 @@ export const database_Dummy = {
 			nombreCurso: "Statistics101",
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
-			desc: "Estadistica",
+			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
 			alumnos: ["alu2"],
 			duracion: "3 meses",
 			frecuencia: "semanal",

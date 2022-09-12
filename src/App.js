@@ -13,6 +13,7 @@ import Notificaciones from "./pages/Noficaciones";
 import MisCursos from "./pages/MisCursos";
 import UpdateUser from "./pages/UpdateUser";
 import CursoPage from "./pages/CursoPage";
+import UpdateCurso from "./pages/UpdateCurso";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,6 +62,9 @@ function App() {
 						</Route>
 						<Route path="/users/:userId">
 							<UpdateUser />
+						</Route>
+						<Route path="/cursos/update/:cursoId">
+							<UpdateCurso />
 						</Route>
 						<Route path="/cursos/:cursoId">
 							<CursoPage />
