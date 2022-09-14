@@ -10,10 +10,7 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: "primaria, secundaria",
-			cursos: [
-				{ cursoId: "curso1", estado: false }, //el estado indica true si el curso fue solicitado y aceptado
-				{ cursoId: "curso2", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
-			],
+			cursos: ["curso1", "curso2"],
 		},
 		{
 			id: "alu2",
@@ -25,11 +22,7 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: "primaria, secundaria",
-			cursos: [
-				{ cursoId: "curso1", estado: false }, //el estado indica true si el curso fue aceptado por el profesor
-				{ cursoId: "curso2", estado: true },
-				{ cursoId: "curso4", estado: true }, //el estado indica false si el alumno lo solicito pero aun no ha sido aceptado
-			],
+			cursos: ["curso1", "curso2", "curso4"], // que el curso esta aqui significa que fue aceptado por el profesor
 		},
 		{
 			id: "profesor1",
@@ -64,7 +57,7 @@ export const database_Dummy = {
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
 			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			alumnos: ["alu1", "alu2"],
+			alumnos: ["alu1", "alu2"], //tener a los alumnos aqui me sirve
 			duracion: "1 mes",
 			frecuencia: "mensual",
 			tipo: "grupal",

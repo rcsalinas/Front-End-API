@@ -16,7 +16,7 @@ const CursoDisplay = (props) => {
 	const { cursoEncontrado, comentariosEncontrados, handleEliminar } = props;
 	const auth = useContext(AuthContext);
 
-	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId);
+	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId); //me sirve para saber si esta en curso?
 
 	const handleFinalizar = () => {
 		//cambia el estado de la contratacion correspondiente a finalizado

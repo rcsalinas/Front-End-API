@@ -27,11 +27,8 @@ const MisCursos = () => {
 
 	usuarioEncontrado[0].cursos.forEach((curso) => {
 		let cursoId;
-		if (usuarioEncontrado[0].tipo === "estudiante") {
-			cursoId = curso.cursoId;
-		} else {
-			cursoId = curso;
-		}
+		cursoId = curso;
+
 		aux.push(
 			...cursos.filter((curso) => {
 				return curso.idCurso === cursoId;
