@@ -13,32 +13,19 @@ import { Card } from "@mui/material";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
-	const { cursoEncontrado, comentariosEncontrados, handleEliminar } = props;
+	const {
+		cursoEncontrado,
+		comentariosEncontrados,
+		handleEliminar,
+		handleFinalizar,
+		handleSolicitar,
+		handleDespublicar,
+		handlePublicar,
+		handleModificar,
+	} = props;
 	const auth = useContext(AuthContext);
 
 	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId); //me sirve para saber si esta en curso?
-
-	const handleFinalizar = () => {
-		//cambia el estado de la contratacion correspondiente a finalizado
-		console.log("finalizar");
-	};
-	const handleSolicitar = () => {
-		//me tiene que llevar al formulario de contratacion
-		console.log("solicitar");
-	};
-
-	const handleDespublicar = (accion) => {
-		cursoEncontrado.estado = false;
-		navigate.push("/");
-	};
-	const handlePublicar = (accion) => {
-		cursoEncontrado.estado = true;
-		navigate.push("/");
-	};
-
-	const handleModificar = (accion) => {
-		navigate.push(`update/${cursoEncontrado.idCurso}`); //me lleva a la pagina modificar
-	};
 
 	return (
 		<>

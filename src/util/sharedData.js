@@ -10,7 +10,7 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: "primaria, secundaria",
-			cursos: ["curso1", "curso2"],
+			cursos: ["curso1", "curso2"], //que el curso este aqui significa que fue aceptado por el profesor
 		},
 		{
 			id: "alu2",
