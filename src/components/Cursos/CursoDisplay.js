@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { useContext } from "react";
 import "./CursoDisplay.css";
@@ -11,9 +11,13 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 
 import { Card } from "@mui/material";
+import { MDBTextArea } from "mdb-react-ui-kit";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
+	const [palabras, setPalabras] = useState("");
+
 	const {
 		cursoEncontrado,
 		handleEliminar,
@@ -25,10 +29,16 @@ const CursoDisplay = (props) => {
 		handleRatingChange,
 		value,
 		encontradoRating,
+		comentarios,
+		handleComentar,
 	} = props;
 	const auth = useContext(AuthContext);
 
 	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId);
+
+	const handleCommentChange = (event) => {
+		setPalabras(event.target.value);
+	};
 
 	return (
 		<>
@@ -56,13 +66,11 @@ const CursoDisplay = (props) => {
 
 			<div className="comentarios">
 				<h2 className="fw-bold">Comentarios: </h2>
-				{cursoEncontrado.comentarios.length !== 0 &&
-					cursoEncontrado.comentarios.map((comentario, i) => {
+				{comentarios.length !== 0 &&
+					comentarios.map((comentario, i) => {
 						return <p key={i}>{comentario.contenido}</p>;
 					})}
-				{cursoEncontrado.comentarios.length === 0 && (
-					<h3>No hay comentarios para este curso</h3>
-				)}
+				{comentarios.length === 0 && <h3>No hay comentarios para este curso</h3>}
 			</div>
 			{estaEnCurso && auth.isLoggedIn && auth.userType === "estudiante" && (
 				<Box
@@ -76,6 +84,22 @@ const CursoDisplay = (props) => {
 					</Typography>
 					<Rating name="simple-controlled" value={value} onChange={handleRatingChange} />
 				</Box>
+			)}
+
+			{auth.userType === "estudiante" && estaEnCurso && (
+				<div className="inputComentario">
+					<MDBTextArea
+						label="Comentario"
+						id="textAreaExample"
+						rows={4}
+						columns={2}
+						onChange={handleCommentChange}
+						value={palabras}
+					/>
+					<MDBBtn rounded onClick={() => handleComentar(palabras)}>
+						Comentar
+					</MDBBtn>
+				</div>
 			)}
 
 			<div className="botones">

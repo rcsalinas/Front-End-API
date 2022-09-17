@@ -4,12 +4,13 @@ import { useParams } from "react-router-dom";
 import { database_Dummy } from "../util/sharedData";
 import CursoDisplay from "../components/Cursos/CursoDisplay";
 import { useHistory } from "react-router-dom";
-import { Redirect } from "react-router-dom";
+
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
-const cursos = database_Dummy.cursos_dummy;
 
+const cursos = database_Dummy.cursos_dummy;
 const ratings = database_Dummy.calificaciones_dummy;
+const comentarios = database_Dummy.comentarios_dummy;
 
 const CursoPage = () => {
 	let navigate = useHistory();
@@ -23,6 +24,10 @@ const CursoPage = () => {
 		return rating.alumno === auth.userId && cursoId === rating.curso;
 	});
 
+	let commentsEncontrados = comentarios.filter((comentario) => {
+		return comentario.curso === cursoId && comentario.estado === true;
+	});
+
 	useEffect(() => {
 		if (encontrado !== undefined) {
 			//se encontro un rating del alumno para ese curso
@@ -32,10 +37,6 @@ const CursoPage = () => {
 		}
 	}, [encontrado]);
 
-	if (!auth.isLoggedIn) {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
-	}
 	let cursoEncontrado = cursos.find((curso) => {
 		return curso.idCurso === cursoId;
 	}); //aqui voy a buscar en la db el curso
@@ -84,6 +85,23 @@ const CursoPage = () => {
 			});
 		}
 	};
+	const handleComentar = (texto) => {
+		let existe = comentarios.find((comentario) => {
+			// si ya existe el comentario
+			return comentario.alumno === auth.userId && comentario.curso === cursoId;
+		});
+		if (existe) {
+			alert("Solo puede comentar una vez");
+		} else {
+			comentarios.push({
+				id: `${comentarios.length + 5}`,
+				alumno: `${auth.userId}`,
+				curso: `${cursoId}`,
+				contenido: `${texto}`,
+				estado: false, // primero lo tiene que aceptar el profesor para que se publique
+			});
+		}
+	};
 	return (
 		<CursoDisplay
 			cursoEncontrado={cursoEncontrado}
@@ -96,6 +114,8 @@ const CursoPage = () => {
 			handleRatingChange={handleRatingChange}
 			value={value}
 			encontradoRating={encontrado}
+			comentarios={commentsEncontrados}
+			handleComentar={handleComentar}
 		/>
 	);
 };

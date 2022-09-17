@@ -10,7 +10,11 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: ["primario", "secundario", "universidad"],
-			cursos: ["curso1", "curso2", "curso4"], //que el curso este aqui significa que fue aceptado por el profesor
+			cursos: [
+				{ curso: "curso1", estado: "aceptado" },
+				{ curso: "curso2", estado: "aceptado" },
+				{ curso: "curso4", estado: "finalizado" },
+			],
 		},
 
 		{
@@ -52,13 +56,6 @@ export const database_Dummy = {
 			tipo: "grupal",
 			costo: 12.99,
 			calificacion: 1, //cada vez que un usuario califique se armara un request que venga y recalcule este valor
-			comentarios: [
-				{
-					alumno: "alu1",
-					contenido: "Curso promedio y aburrido",
-					estado: true,
-				},
-			],
 		},
 		{
 			idCurso: "curso2",
@@ -73,13 +70,6 @@ export const database_Dummy = {
 			tipo: "individual",
 			costo: 14.99,
 			calificacion: 2,
-			comentarios: [
-				{
-					alumno: "alu1",
-					contenido: "Curso muy bueno",
-					estado: true, //indica que el profesor acepto el comentario
-				},
-			],
 		},
 		{
 			idCurso: "curso3",
@@ -94,7 +84,6 @@ export const database_Dummy = {
 			tipo: "individual",
 			costo: 2.99,
 			calificacion: 4,
-			comentarios: [],
 		},
 		{
 			idCurso: "curso4",
@@ -109,13 +98,6 @@ export const database_Dummy = {
 			tipo: "individual",
 			costo: 12.99,
 			calificacion: 5,
-			comentarios: [
-				{
-					alumno: "alu1",
-					contenido: "Curso muy malo",
-					estado: true,
-				},
-			],
 		},
 	],
 	calificaciones_dummy: [
@@ -130,6 +112,38 @@ export const database_Dummy = {
 			alumno: "alu1",
 			curso: "curso4",
 			valor: 4,
+		},
+	],
+	comentarios_dummy: [
+		{
+			id: "comentario1",
+			alumno: "alu1",
+			curso: "curso1",
+			contenido: "Curso muy malo",
+			estado: false,
+		},
+		{
+			id: "comentario2",
+			alumno: "alu1",
+			curso: "curso2",
+			contenido: "Curso muy bueno",
+			estado: true,
+		},
+		{
+			id: "comentario3",
+			alumno: "alu1",
+			curso: "curso4",
+			contenido: "Curso promedio y aburrido",
+			estado: false,
+		},
+	],
+	notificaciones_dummy: [
+		{
+			id: `notificacion1`,
+			mensaje: "Borrado por mensaje ofensivo",
+			alumno: `alu1`,
+			curso: `curso1`,
+			contenidoComentario: `El curso no sirve para nada`,
 		},
 	],
 };

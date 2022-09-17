@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { database_Dummy } from "../util/sharedData";
 import { useParams } from "react-router-dom";
@@ -25,17 +25,38 @@ const MisCursos = () => {
 		return user.id === userId;
 	});
 
+	let aceptados = [];
+	let finalizados = [];
 	let aux = [];
 
 	usuarioEncontrado[0].cursos.forEach((curso) => {
 		let cursoId;
-		cursoId = curso; //agarro el id del curso
-
-		aux.push(
-			...cursos.filter((curso) => {
-				return curso.idCurso === cursoId;
-			})
-		);
+		if (auth.userType === "estudiante") {
+			cursoId = curso.curso;
+		} else {
+			cursoId = curso;
+		}
+		if (auth.userType === "profesor") {
+			aux.push(
+				...cursos.filter((curso) => {
+					return curso.idCurso === cursoId;
+				})
+			);
+		} else {
+			if (curso.estado === "aceptado") {
+				aceptados.push(
+					...cursos.filter((curso) => {
+						return curso.idCurso === cursoId;
+					})
+				);
+			} else {
+				finalizados.push(
+					...cursos.filter((curso) => {
+						return curso.idCurso === cursoId;
+					})
+				);
+			}
+		}
 	});
 
 	return (
@@ -43,7 +64,7 @@ const MisCursos = () => {
 			<h1 style={{ marginTop: "2%", marginBottom: "2%" }}>
 				Cursos del {auth.userType === "profesor" ? "Profesor" : "Estudiante"}:
 			</h1>
-			<Cursos cursos={aux} misCursos={true} />
+			<Cursos cursos={aux} aceptados={aceptados} finalizados={finalizados} misCursos={true} />
 			{auth.isLoggedIn && auth.userType === "profesor" && (
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
 					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "3%" }}>

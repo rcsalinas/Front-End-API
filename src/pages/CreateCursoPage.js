@@ -22,7 +22,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import { database_Dummy } from "../util/sharedData";
-import { useEffect } from "react";
 
 const cursos = database_Dummy.cursos_dummy;
 const usuarios = database_Dummy.dummy_users;

@@ -9,7 +9,7 @@ import { AuthContext } from "./context/auth-context";
 import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
-import Notificaciones from "./pages/Noficaciones";
+import NotificacionesProfesor from "./pages/NoficacionesProfesor";
 import MisCursos from "./pages/MisCursos";
 import UpdateUser from "./pages/UpdateUser";
 import CursoPage from "./pages/CursoPage";
@@ -59,7 +59,7 @@ function App() {
 							<CreateCursoPage />
 						</Route>
 						<Route path="/:userId/notificaciones" exact>
-							<Notificaciones />
+							<NotificacionesProfesor />
 						</Route>
 						<Route path="/comoFunciona" exact>
 							<ComoFunciona />
