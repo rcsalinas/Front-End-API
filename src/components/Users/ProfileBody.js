@@ -122,7 +122,9 @@ const ProfileBody = (props) => {
 											</MDBCol>
 											<MDBCol sm="9">
 												<MDBCardText className="text-muted">
-													{estudiosCursados}
+													{estudiosCursados.map((item) => {
+														return item + " ";
+													})}
 												</MDBCardText>
 											</MDBCol>
 										</MDBRow>

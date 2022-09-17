@@ -6,6 +6,8 @@ import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import Cursos from "../components/Cursos/Cursos";
+import { MDBBtn } from "mdb-react-ui-kit";
+import { NavLink } from "react-router-dom";
 
 const cursos = database_Dummy.cursos_dummy;
 const usuarios = database_Dummy.dummy_users;
@@ -37,8 +39,17 @@ const MisCursos = () => {
 	});
 	return (
 		<>
-			<h1 style={{ marginTop: "2%", marginBottom: "2%" }}>Cursos del usuario:</h1>
+			<h1 style={{ marginTop: "2%", marginBottom: "2%" }}>
+				Cursos del {auth.userType === "profesor" ? "Profesor" : "Estudiante"}:
+			</h1>
 			<Cursos cursos={aux} misCursos={true} />
+			{auth.isLoggedIn && auth.userType === "profesor" && (
+				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
+					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "3%" }}>
+						<MDBBtn>Crear Curso</MDBBtn>
+					</div>
+				</NavLink>
+			)}
 		</>
 	);
 };

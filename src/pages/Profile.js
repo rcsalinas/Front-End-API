@@ -20,6 +20,7 @@ const Profile = () => {
 
 	let identifiedUser;
 	identifiedUser = dummy_users.find((u) => u.id === userId);
+	//aqui voy a traer el usuario segun el id y le paso los datos a el componente
 	let nombre = identifiedUser.nombre;
 	let apellido = identifiedUser.apellido;
 	let mail = identifiedUser.mail;

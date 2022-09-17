@@ -61,7 +61,6 @@ const CursoDisplay = (props) => {
 			</div>
 
 			<div className="botones">
-				{" "}
 				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && (
 					<Button variant="contained" color="error" onClick={handleFinalizar}>
 						Finalizar Curso

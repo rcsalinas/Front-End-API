@@ -89,7 +89,7 @@ const BuscadorCursos = () => {
 
 	useEffect(() => {
 		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
-			setCursos(cursos_dummy);
+			setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
 		} else {
 			if (filters.frecuencia === "") {
 				let aux = filters;

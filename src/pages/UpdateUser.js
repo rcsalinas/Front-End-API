@@ -18,19 +18,32 @@ import {
 import { useState } from "react";
 import { useEffect } from "react";
 
+import FormLabel from "@mui/material/FormLabel";
+
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
 const dummy_users = database_Dummy.dummy_users;
 
 const UpdateUser = () => {
 	let navigate = useHistory();
 	const auth = useContext(AuthContext);
+
 	const [nombre, setNombre] = useState("");
 	const [apellido, setApellido] = useState("");
 	const [mail, setMail] = useState("");
 	const [telefono, setTelefono] = useState("");
 	const [fechaNacimiento, setFechaNacimiento] = useState("");
-	const [estudiosCursados, setEstudiosCursados] = useState("");
+	const [datosEstudios, setDatosEstudios] = useState([]);
 	const [experiencia, setExperiencia] = useState("");
 	const [titulo, setTitulo] = useState("");
+	const [estudios, setEstudiosCursados] = React.useState({
+		primario: false,
+		secundario: false,
+		universidad: false,
+	});
+	const { primario, secundario, universidad } = estudios;
 
 	let identifiedUser;
 	identifiedUser = dummy_users.find((u) => u.id === auth.userId);
@@ -47,17 +60,7 @@ const UpdateUser = () => {
 			setExperiencia(identifiedUser.experiencia);
 			setTitulo(identifiedUser.titulo);
 		}
-	}, [
-		auth.userType,
-		identifiedUser.experiencia,
-		identifiedUser.apellido,
-		identifiedUser.nombre,
-		identifiedUser.celular,
-		identifiedUser.mail,
-		identifiedUser.estudiosCursados,
-		identifiedUser.fechaNacimiento,
-		identifiedUser.titulo,
-	]);
+	}, []);
 
 	if (!auth.isLoggedIn) {
 		//sino esta logueado no puede ver perfil
@@ -79,14 +82,30 @@ const UpdateUser = () => {
 	const handleFechaChange = (event) => {
 		setFechaNacimiento(event.target.value);
 	};
-	const handleEstudiosChange = (event) => {
-		setEstudiosCursados(event.target.value);
-	};
+
 	const handleExperienciaChange = (event) => {
 		setExperiencia(event.target.value);
 	};
 	const handleTituloChange = (event) => {
 		setTitulo(event.target.value);
+	};
+	const handleChangeCheckbox = (event) => {
+		let previos = [...datosEstudios];
+		setEstudiosCursados({
+			...estudios,
+			[event.target.name]: event.target.checked,
+		});
+		if (event.target.checked) {
+			if (!previos.includes(event.target.name)) {
+				previos.push(event.target.name);
+				setDatosEstudios(previos);
+			}
+		} else {
+			previos = previos.filter((item) => {
+				return item !== event.target.name;
+			});
+			setDatosEstudios(previos);
+		}
 	};
 
 	const placeUpdateSubmitHandler = (event) => {
@@ -97,7 +116,7 @@ const UpdateUser = () => {
 		identifiedUser.celular = telefono;
 		if (auth.userType === "estudiante") {
 			identifiedUser.fechaNacimiento = fechaNacimiento;
-			identifiedUser.estudiosCursados = estudiosCursados;
+			identifiedUser.estudiosCursados = datosEstudios;
 		} else {
 			identifiedUser.titulo = titulo;
 			identifiedUser.experiencia = experiencia;
@@ -126,6 +145,7 @@ const UpdateUser = () => {
 											type="text"
 											onChange={handleNameChange}
 											value={nombre}
+											required
 										/>
 									</MDBCol>
 
@@ -138,6 +158,7 @@ const UpdateUser = () => {
 											type="text"
 											value={apellido}
 											onChange={handleApellidoChange}
+											required
 										/>
 									</MDBCol>
 								</MDBRow>
@@ -152,6 +173,7 @@ const UpdateUser = () => {
 											type="email"
 											value={mail}
 											onChange={handleMailChange}
+											required
 										/>
 									</MDBCol>
 
@@ -164,19 +186,48 @@ const UpdateUser = () => {
 											type="text"
 											value={telefono}
 											onChange={handleTelefonoChange}
+											required
 										/>
 									</MDBCol>
 								</MDBRow>
 								{auth.userType === "estudiante" && (
 									<MDBRow>
 										<MDBCol md="6">
-											<MDBTextArea
-												label="Estudios Cursados"
-												id="textAreaExample"
-												rows={3}
-												value={estudiosCursados}
-												onChange={handleEstudiosChange}
-											/>
+											<FormLabel component="legend">
+												Estudios Completados
+											</FormLabel>
+											<FormGroup required>
+												<FormControlLabel
+													control={
+														<Checkbox
+															checked={primario}
+															onChange={handleChangeCheckbox}
+															name="primario"
+														/>
+													}
+													label="Primario"
+												/>
+												<FormControlLabel
+													control={
+														<Checkbox
+															checked={secundario}
+															onChange={handleChangeCheckbox}
+															name="secundario"
+														/>
+													}
+													label="Secundario"
+												/>
+												<FormControlLabel
+													control={
+														<Checkbox
+															checked={universidad}
+															onChange={handleChangeCheckbox}
+															name="universidad"
+														/>
+													}
+													label="Universidad"
+												/>
+											</FormGroup>
 										</MDBCol>
 
 										<MDBCol md="6">
@@ -188,6 +239,7 @@ const UpdateUser = () => {
 												type="date"
 												value={fechaNacimiento}
 												onChange={handleFechaChange}
+												required
 											/>
 										</MDBCol>
 									</MDBRow>
@@ -204,6 +256,7 @@ const UpdateUser = () => {
 												type="text"
 												value={titulo}
 												onChange={handleTituloChange}
+												required
 											/>
 										</MDBCol>
 
@@ -214,12 +267,13 @@ const UpdateUser = () => {
 												rows={3}
 												value={experiencia}
 												onChange={handleExperienciaChange}
+												required
 											/>
 										</MDBCol>
 									</MDBRow>
 								)}
 
-								<MDBBtn className="mb-4" size="lg">
+								<MDBBtn type="submit" className="mb-4" size="lg">
 									Submit
 								</MDBBtn>
 							</MDBCardBody>

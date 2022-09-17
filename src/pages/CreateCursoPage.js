@@ -1,11 +1,9 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 import {
 	MDBBtn,
@@ -26,29 +24,18 @@ import Select from "@mui/material/Select";
 import { database_Dummy } from "../util/sharedData";
 
 const cursos = database_Dummy.cursos_dummy;
-const UpdateCurso = () => {
+
+const CreateCursoPage = () => {
 	let navigate = useHistory();
-	const cursoId = useParams().cursoId;
+
 	const auth = useContext(AuthContext);
+
 	const [nombre, setNombre] = useState("");
 	const [descripcion, setDescripcion] = useState("");
 	const [frecuencia, setFrecuencia] = React.useState("");
 	const [tipo, setTipo] = React.useState("");
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
-
-	let cursoEncontrado = cursos.find((curso) => {
-		return curso.idCurso === cursoId;
-	});
-
-	useEffect(() => {
-		setNombre(cursoEncontrado.nombreCurso);
-		setDescripcion(cursoEncontrado.desc);
-		setFrecuencia(cursoEncontrado.frecuencia);
-		setTipo(cursoEncontrado.tipo);
-		setDuracion(cursoEncontrado.duracion);
-		setCosto(cursoEncontrado.costo);
-	}, []);
 
 	if (!auth.isLoggedIn || auth.userType === "estudiante") {
 		//sino esta logueado no puede ver perfil
@@ -73,12 +60,21 @@ const UpdateCurso = () => {
 		setCosto(event.target.value);
 	};
 	const handleCrearCurso = () => {
-		cursoEncontrado.nombreCurso = nombre;
-		cursoEncontrado.costo = costo;
-		cursoEncontrado.tipo = tipo;
-		cursoEncontrado.frecuencia = frecuencia;
-		cursoEncontrado.desc = descripcion;
-		navigate.push(`/${auth.userId}/cursos`);
+		cursos.push({
+			idCurso: `curso${cursos.length}`,
+			estado: true,
+			nombreCurso: nombre,
+			image: "https://www.apwa.net/images/PWM101.jpg",
+			profesor: `${auth.userId}`,
+			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+			alumnos: [],
+			duracion: duracion,
+			frecuencia: frecuencia,
+			tipo: tipo,
+			costo: costo,
+			calificacion: 5,
+		});
+		navigate.push("/");
 	};
 	return (
 		<MDBContainer fluid>
@@ -193,7 +189,7 @@ const UpdateCurso = () => {
 						</MDBRow>
 
 						<MDBBtn type="submit" className="w-100 mb-4" size="md">
-							Modificar
+							Crear
 						</MDBBtn>
 					</form>
 				</MDBCardBody>
@@ -201,5 +197,6 @@ const UpdateCurso = () => {
 		</MDBContainer>
 	);
 };
+//necesito darle un nombre, frecuencia, si es individual o grupal, descripcion, y la duracion
 
-export default UpdateCurso;
+export default CreateCursoPage;

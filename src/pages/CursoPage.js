@@ -69,3 +69,4 @@ const CursoPage = () => {
 };
 //Producto y comentarios
 export default CursoPage;
+//aaaaaa

@@ -9,7 +9,7 @@ export const database_Dummy = {
 			mail: "testalu1@test.com",
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
-			estudiosCursados: "primaria, secundaria",
+			estudiosCursados: ["primario", "secundario", "universidad"],
 			cursos: ["curso1", "curso2"], //que el curso este aqui significa que fue aceptado por el profesor
 		},
 		{
@@ -21,7 +21,7 @@ export const database_Dummy = {
 			mail: "testalu2@test.com",
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
-			estudiosCursados: "primaria, secundaria",
+			estudiosCursados: ["primario, secundario"],
 			cursos: ["curso1", "curso2", "curso4"], // que el curso esta aqui significa que fue aceptado por el profesor
 		},
 		{
@@ -62,7 +62,7 @@ export const database_Dummy = {
 			frecuencia: "mensual",
 			tipo: "grupal",
 			costo: 12.99,
-			calificacion: 5, // la calificacion va a estar aca. Cuando haga un request por un curso tengo que hacer el calculo y devolverlo en el request
+			calificacion: 1, //cada vez que un usuario califique se armara un request que venga y recalcule este valor
 		},
 		{
 			idCurso: "curso2",
@@ -90,7 +90,7 @@ export const database_Dummy = {
 			frecuencia: "semanal",
 			tipo: "individual",
 			costo: 2.99,
-			calificacion: 1,
+			calificacion: 4,
 		},
 		{
 			idCurso: "curso4",
