@@ -45,10 +45,6 @@ const Auth = () => {
 	});
 	const { primario, secundario, universidad } = estudios;
 
-	useEffect(() => {
-		console.log(datosEstudios);
-	}, [datosEstudios]);
-
 	const handleChangeCheckbox = (event) => {
 		let previos = [...datosEstudios];
 		setEstudiosCursados({

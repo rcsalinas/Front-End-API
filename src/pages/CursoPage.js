@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { database_Dummy } from "../util/sharedData";
@@ -8,12 +8,30 @@ import { Redirect } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 const cursos = database_Dummy.cursos_dummy;
-const comentarios = database_Dummy.comentarios_dummy;
+
+const ratings = database_Dummy.calificaciones_dummy;
 
 const CursoPage = () => {
 	let navigate = useHistory();
 	const auth = useContext(AuthContext);
 	const cursoId = useParams().cursoId;
+
+	const [value, setValue] = React.useState(0);
+
+	let encontrado = ratings.find((rating) => {
+		// busco si ya comento una vez
+		return rating.alumno === auth.userId && cursoId === rating.curso;
+	});
+
+	useEffect(() => {
+		if (encontrado !== undefined) {
+			//se encontro un rating del alumno para ese curso
+			setValue(encontrado.valor);
+		} else {
+			setValue(0);
+		}
+	}, [encontrado]);
+
 	if (!auth.isLoggedIn) {
 		//sino esta logueado no puede ver perfil
 		return <Redirect to="/auth" />;
@@ -22,16 +40,12 @@ const CursoPage = () => {
 		return curso.idCurso === cursoId;
 	}); //aqui voy a buscar en la db el curso
 
-	let comentariosEncontrados = comentarios.filter((comment) => {
-		return comment.curso === cursoId;
-	}); //en el mismo response van a venir los comentarios
-
 	const handleEliminar = () => {
 		let indice = cursos.findIndex((curso) => {
 			return curso.idCurso === cursoId;
 		});
 		cursos.splice(indice, 1);
-		console.log(cursos);
+
 		navigate.push(`/${auth.userId}/cursos`);
 	}; //este va a ser un post con request a eleminar el curso
 	const handleFinalizar = () => {
@@ -54,16 +68,34 @@ const CursoPage = () => {
 	const handleModificar = (accion) => {
 		navigate.push(`update/${cursoEncontrado.idCurso}`); //me lleva a la pagina modificar
 	};
+	const handleRatingChange = (event, newValue) => {
+		setValue(newValue);
+
+		console.log(encontrado);
+		if (encontrado !== undefined) {
+			//si ya habia calificado modifico la calificacion
+			encontrado.valor = newValue;
+		} else {
+			ratings.push({
+				id: `rating${ratings.length + 1}`,
+				alumno: `${auth.userId}`,
+				curso: `${cursoId}`,
+				valor: newValue,
+			});
+		}
+	};
 	return (
 		<CursoDisplay
 			cursoEncontrado={cursoEncontrado}
-			comentariosEncontrados={comentariosEncontrados}
 			handleEliminar={handleEliminar}
 			handleFinalizar={handleFinalizar}
 			handleSolicitar={handleSolicitar}
 			handleDespublicar={handleDespublicar}
 			handlePublicar={handlePublicar}
 			handleModificar={handleModificar}
+			handleRatingChange={handleRatingChange}
+			value={value}
+			encontradoRating={encontrado}
 		/>
 	);
 };

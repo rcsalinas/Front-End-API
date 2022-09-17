@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { database_Dummy } from "../util/sharedData";
 import { useParams } from "react-router-dom";
@@ -29,7 +29,7 @@ const MisCursos = () => {
 
 	usuarioEncontrado[0].cursos.forEach((curso) => {
 		let cursoId;
-		cursoId = curso;
+		cursoId = curso; //agarro el id del curso
 
 		aux.push(
 			...cursos.filter((curso) => {
@@ -37,6 +37,7 @@ const MisCursos = () => {
 			})
 		);
 	});
+
 	return (
 		<>
 			<h1 style={{ marginTop: "2%", marginBottom: "2%" }}>

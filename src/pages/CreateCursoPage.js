@@ -22,14 +22,18 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import { database_Dummy } from "../util/sharedData";
+import { useEffect } from "react";
 
 const cursos = database_Dummy.cursos_dummy;
+const usuarios = database_Dummy.dummy_users;
 
 const CreateCursoPage = () => {
 	let navigate = useHistory();
 
 	const auth = useContext(AuthContext);
-
+	let found = usuarios.find((usuarios) => {
+		return usuarios.id === auth.userId;
+	});
 	const [nombre, setNombre] = useState("");
 	const [descripcion, setDescripcion] = useState("");
 	const [frecuencia, setFrecuencia] = React.useState("");
@@ -59,14 +63,16 @@ const CreateCursoPage = () => {
 	const handleCostoChange = (event) => {
 		setCosto(event.target.value);
 	};
-	const handleCrearCurso = () => {
+
+	const handleCrearCurso = (event) => {
+		event.preventDefault();
 		cursos.push({
-			idCurso: `curso${cursos.length}`,
+			idCurso: `curso${cursos.length + 10}`,
 			estado: true,
 			nombreCurso: nombre,
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: `${auth.userId}`,
-			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+			desc: descripcion,
 			alumnos: [],
 			duracion: duracion,
 			frecuencia: frecuencia,
@@ -74,6 +80,9 @@ const CreateCursoPage = () => {
 			costo: costo,
 			calificacion: 5,
 		});
+
+		found.cursos = [...found.cursos, `curso${cursos.length + 10}`];
+
 		navigate.push("/");
 	};
 	return (

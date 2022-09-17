@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router-dom";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 import { Card } from "@mui/material";
 
@@ -15,17 +16,19 @@ const CursoDisplay = (props) => {
 	let navigate = useHistory();
 	const {
 		cursoEncontrado,
-		comentariosEncontrados,
 		handleEliminar,
 		handleFinalizar,
 		handleSolicitar,
 		handleDespublicar,
 		handlePublicar,
 		handleModificar,
+		handleRatingChange,
+		value,
+		encontradoRating,
 	} = props;
 	const auth = useContext(AuthContext);
 
-	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId); //me sirve para saber si esta en curso?
+	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId);
 
 	return (
 		<>
@@ -53,12 +56,27 @@ const CursoDisplay = (props) => {
 
 			<div className="comentarios">
 				<h2 className="fw-bold">Comentarios: </h2>
-				{comentariosEncontrados.length !== 0 &&
-					comentariosEncontrados.map((comentario) => {
-						return <p key={comentario.id}>{comentario.contenido}</p>;
+				{cursoEncontrado.comentarios.length !== 0 &&
+					cursoEncontrado.comentarios.map((comentario, i) => {
+						return <p key={i}>{comentario.contenido}</p>;
 					})}
-				{comentariosEncontrados.length === 0 && <h3>No hay comentarios para este curso</h3>}
+				{cursoEncontrado.comentarios.length === 0 && (
+					<h3>No hay comentarios para este curso</h3>
+				)}
 			</div>
+			{estaEnCurso && auth.isLoggedIn && auth.userType === "estudiante" && (
+				<Box
+					sx={{
+						"& > legend": { mt: 2 },
+					}}
+					style={{ marginLeft: "1%" }}
+				>
+					<Typography component="legend">
+						{encontradoRating ? "Modificar Rating" : "Calificar Curso"}
+					</Typography>
+					<Rating name="simple-controlled" value={value} onChange={handleRatingChange} />
+				</Box>
+			)}
 
 			<div className="botones">
 				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && (
@@ -81,26 +99,29 @@ const CursoDisplay = (props) => {
 						Autenticar Para solicitar
 					</Button>
 				)}
-				{auth.isLoggedIn && auth.userType === "profesor" && (
-					<Stack direction="row" spacing={2}>
-						<Button variant="contained" color="error" onClick={handleEliminar}>
-							Eliminar
-						</Button>
-						{cursoEncontrado.estado && (
-							<Button variant="outlined" onClick={handleDespublicar}>
-								Despublicar
+
+				{auth.isLoggedIn &&
+					auth.userType === "profesor" &&
+					cursoEncontrado.profesor === auth.userId && (
+						<Stack direction="row" spacing={2}>
+							<Button variant="contained" color="error" onClick={handleEliminar}>
+								Eliminar
 							</Button>
-						)}
-						{!cursoEncontrado.estado && (
-							<Button variant="outlined" onClick={handlePublicar}>
-								Publicar
+							{cursoEncontrado.estado && (
+								<Button variant="outlined" onClick={handleDespublicar}>
+									Despublicar
+								</Button>
+							)}
+							{!cursoEncontrado.estado && (
+								<Button variant="outlined" onClick={handlePublicar}>
+									Publicar
+								</Button>
+							)}
+							<Button variant="outlined" color="secondary" onClick={handleModificar}>
+								Modificar
 							</Button>
-						)}
-						<Button variant="outlined" color="secondary" onClick={handleModificar}>
-							Modificar
-						</Button>
-					</Stack>
-				)}
+						</Stack>
+					)}
 			</div>
 		</>
 	);

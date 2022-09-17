@@ -10,20 +10,9 @@ export const database_Dummy = {
 			celular: "1234",
 			fechaNacimiento: "2015-03-25",
 			estudiosCursados: ["primario", "secundario", "universidad"],
-			cursos: ["curso1", "curso2"], //que el curso este aqui significa que fue aceptado por el profesor
+			cursos: ["curso1", "curso2", "curso4"], //que el curso este aqui significa que fue aceptado por el profesor
 		},
-		{
-			id: "alu2",
-			tipo: "estudiante",
-			nombre: "Roberto",
-			apellido: "Salinas",
-			password: "12345678",
-			mail: "testalu2@test.com",
-			celular: "1234",
-			fechaNacimiento: "2015-03-25",
-			estudiosCursados: ["primario, secundario"],
-			cursos: ["curso1", "curso2", "curso4"], // que el curso esta aqui significa que fue aceptado por el profesor
-		},
+
 		{
 			id: "profesor1",
 			tipo: "profesor",
@@ -32,7 +21,7 @@ export const database_Dummy = {
 			password: "12345678",
 			mail: "testprof1@test.com",
 			celular: "1234",
-			titulo: "licenciado en nada",
+			titulo: "licenciado",
 			experiencia: "trabaje en microsoft",
 			cursos: ["curso1", "curso3", "curso4"],
 		},
@@ -44,7 +33,7 @@ export const database_Dummy = {
 			password: "12345678",
 			mail: "testprof2@test.com",
 			celular: "1234",
-			titulo: "Ingeniero en nada",
+			titulo: "Ingeniero",
 			experiencia: "trabaje en Uber",
 			cursos: ["curso2"],
 		},
@@ -57,12 +46,19 @@ export const database_Dummy = {
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
 			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			alumnos: ["alu1", "alu2"], //tener a los alumnos aqui me sirve
+			alumnos: ["alu1"], //tener a los alumnos aqui me sirve
 			duracion: "1 mes",
 			frecuencia: "mensual",
 			tipo: "grupal",
 			costo: 12.99,
 			calificacion: 1, //cada vez que un usuario califique se armara un request que venga y recalcule este valor
+			comentarios: [
+				{
+					alumno: "alu1",
+					contenido: "Curso promedio y aburrido",
+					estado: true,
+				},
+			],
 		},
 		{
 			idCurso: "curso2",
@@ -71,12 +67,19 @@ export const database_Dummy = {
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor2",
 			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			alumnos: ["alu1", "alu2"],
+			alumnos: ["alu1"],
 			duracion: "2 meses",
 			frecuencia: "mensual",
 			tipo: "individual",
 			costo: 14.99,
 			calificacion: 2,
+			comentarios: [
+				{
+					alumno: "alu1",
+					contenido: "Curso muy bueno",
+					estado: true, //indica que el profesor acepto el comentario
+				},
+			],
 		},
 		{
 			idCurso: "curso3",
@@ -91,6 +94,7 @@ export const database_Dummy = {
 			tipo: "individual",
 			costo: 2.99,
 			calificacion: 4,
+			comentarios: [],
 		},
 		{
 			idCurso: "curso4",
@@ -99,41 +103,32 @@ export const database_Dummy = {
 			image: "https://www.apwa.net/images/PWM101.jpg",
 			profesor: "profesor1",
 			desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			alumnos: ["alu2"],
+			alumnos: ["alu1"],
 			duracion: "3 meses",
 			frecuencia: "semanal",
 			tipo: "individual",
 			costo: 12.99,
 			calificacion: 5,
-		},
-	],
-	comentarios_dummy: [
-		{
-			id: "comentario1",
-			alumno: "alu1",
-			curso: "curso2",
-			contenido: "Curso muy bueno",
-			estado: true, //indica que el profesor acepto el comentario
-		},
-		{
-			id: "comentario2",
-			alumno: "alu2",
-			curso: "curso2",
-			contenido: "Curso muy malo",
-			estado: true,
+			comentarios: [
+				{
+					alumno: "alu1",
+					contenido: "Curso muy malo",
+					estado: true,
+				},
+			],
 		},
 	],
 	calificaciones_dummy: [
 		{
-			id: "comentario1",
+			id: "rating1",
 			alumno: "alu1",
 			curso: "curso2",
 			valor: 5,
 		},
 		{
-			id: "comentario2",
-			alumno: "alu2",
-			curso: "curso2",
+			id: "rating2",
+			alumno: "alu1",
+			curso: "curso4",
 			valor: 4,
 		},
 	],
