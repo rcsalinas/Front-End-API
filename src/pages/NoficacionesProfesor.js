@@ -165,7 +165,7 @@ const NotificacionesProfesor = () => {
 	} else {
 		return (
 			<div className="cuerpo">
-				<h1 className="fw-bold">Comentarios Pendientes de Aprobacion</h1>
+				<h1 className="fw-bold">Comentarios No Aprobados</h1>
 				{notificaciones.map((n) => {
 					return (
 						<div className="comentario">
