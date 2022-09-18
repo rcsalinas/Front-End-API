@@ -16,6 +16,7 @@ import CursoPage from "./pages/CursoPage";
 import UpdateCurso from "./pages/UpdateCurso";
 import CreateCursoPage from "./pages/CreateCursoPage";
 import ContratacionPage from "./pages/ContratacionPage";
+import ContratacionesProfesor from "./pages/ContratacionesProfesor";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,6 +68,9 @@ function App() {
 						</Route>
 						<Route path="/comoFunciona" exact>
 							<ComoFunciona />
+						</Route>
+						<Route path="/:userId/contrataciones" exact>
+							<ContratacionesProfesor />
 						</Route>
 						<Route path="/users/:userId" exact>
 							<UpdateUser />

@@ -65,8 +65,6 @@ const NotificacionesProfesor = () => {
 		notificaciones = notificaciones.filter((c) => {
 			return c.id !== not.id;
 		});
-
-		console.log(not);
 	};
 
 	const handleBorrar = () => {

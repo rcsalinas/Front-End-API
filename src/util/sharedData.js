@@ -149,12 +149,12 @@ export const database_Dummy = {
 	contrataciones_dummy: [
 		{
 			id: `contratacion1`,
-			motivacion: "",
+			motivacion: "Me gusta la programacion",
 			alumno: `alu1`,
-			curso: ``,
-			mail: "",
-			telefono: "",
-			horario: "",
+			curso: `curso3`,
+			mail: "testalu1@email.com",
+			telefono: "541166784884",
+			horario: "10AM-10PM Lunes",
 		},
 	],
 };

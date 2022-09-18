@@ -1,7 +1,15 @@
 .cuerpo {
 	display: flex;
 	flex-direction: column;
-	row-gap: 10px;
+
 	margin-left: 20%;
 	margin-right: 20%;
+	min-height: 700px;
+}
+
+.comentario {
+	margin-bottom: 1%;
+}
+.botones {
+	margin-bottom: 0%;
 }

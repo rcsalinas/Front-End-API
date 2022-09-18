@@ -36,25 +36,23 @@ const ContratacionPage = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-        let found = contrataciones.find((c)=>{ 
-            return c.alumno === auth.userId && c.curso === cursoId;
-        })
-        if(!found){
-            contrataciones.push({
-                id: `${contrataciones.length + 1}`,
-                motivacion: `${motivacion}`,
-                alumno: `${auth.userId}`,
-                curso: `${cursoId}`,
-                mail: `${mail}`,
-                telefono: `${telefono}`,
-                horario: `${horario}`,
-            });
-        }else{
-            alert("Ya hizo uno solicitud para este curso. Espere una respuesta!")
-        }
+		let found = contrataciones.find((c) => {
+			return c.alumno === auth.userId && c.curso === cursoId;
+		});
+		if (!found) {
+			contrataciones.push({
+				id: `${contrataciones.length + 1}`,
+				motivacion: `${motivacion}`,
+				alumno: `${auth.userId}`,
+				curso: `${cursoId}`,
+				mail: `${mail}`,
+				telefono: `${telefono}`,
+				horario: `${horario}`,
+			});
+		} else {
+			alert("Ya hizo uno solicitud para este curso. Espere una respuesta!");
+		}
 
-		
-		console.log(contrataciones);
 		navigate.push("/");
 	};
 

@@ -169,7 +169,10 @@ const MainNavigation = (props) => {
 								</MenuItem>
 							</NavLink>
 							{auth.isLoggedIn && auth.userType === "profesor" && (
-								<NavLink to={`/`} style={{ textDecoration: "none" }}>
+								<NavLink
+									to={`/${auth.userId}/contrataciones`}
+									style={{ textDecoration: "none" }}
+								>
 									<MenuItem onClick={handleCloseUserMenu}>
 										<Typography textAlign="center">Contrataciones</Typography>
 									</MenuItem>

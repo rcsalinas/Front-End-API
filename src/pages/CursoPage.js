@@ -11,6 +11,7 @@ import { useContext } from "react";
 const cursos = database_Dummy.cursos_dummy;
 const ratings = database_Dummy.calificaciones_dummy;
 const comentarios = database_Dummy.comentarios_dummy;
+const usuarios = database_Dummy.dummy_users;
 
 const CursoPage = () => {
 	let navigate = useHistory();
@@ -18,6 +19,19 @@ const CursoPage = () => {
 	const cursoId = useParams().cursoId;
 
 	const [value, setValue] = React.useState(0);
+	const [estadoCurso, setEstadoCurso] = React.useState(true);
+	let user;
+	let c;
+
+	if (auth.userType === "estudiante") {
+		user = usuarios.find((u) => {
+			return u.id === auth.userId;
+		});
+
+		c = user.cursos.find((curso) => {
+			return curso.curso === cursoId;
+		});
+	}
 
 	let encontrado = ratings.find((rating) => {
 		// busco si ya comento una vez
@@ -35,6 +49,9 @@ const CursoPage = () => {
 		} else {
 			setValue(0);
 		}
+		if (auth.userType === "estudiante") {
+			setEstadoCurso(c.estado);
+		}
 	}, [encontrado]);
 
 	let cursoEncontrado = cursos.find((curso) => {
@@ -51,12 +68,13 @@ const CursoPage = () => {
 	}; //este va a ser un post con request a eleminar el curso
 	const handleFinalizar = () => {
 		//cambia el estado de la contratacion correspondiente a finalizado
-		console.log("finalizar");
+
+		c.estado = false;
+		setEstadoCurso(false);
+
+		navigate.push(`/${auth.userId}/cursos`);
 	};
-	const handleSolicitar = () => {
-		//me tiene que llevar al formulario de contratacion
-		console.log("solicitar");
-	};
+
 	const handleDespublicar = (accion) => {
 		cursoEncontrado.estado = false;
 		navigate.push("/");
@@ -72,7 +90,6 @@ const CursoPage = () => {
 	const handleRatingChange = (event, newValue) => {
 		setValue(newValue);
 
-		console.log(encontrado);
 		if (encontrado !== undefined) {
 			//si ya habia calificado modifico la calificacion
 			encontrado.valor = newValue;
@@ -107,7 +124,6 @@ const CursoPage = () => {
 			cursoEncontrado={cursoEncontrado}
 			handleEliminar={handleEliminar}
 			handleFinalizar={handleFinalizar}
-			handleSolicitar={handleSolicitar}
 			handleDespublicar={handleDespublicar}
 			handlePublicar={handlePublicar}
 			handleModificar={handleModificar}
@@ -116,6 +132,7 @@ const CursoPage = () => {
 			encontradoRating={encontrado}
 			comentarios={commentsEncontrados}
 			handleComentar={handleComentar}
+			estadoCurso={estadoCurso}
 		/>
 	);
 };

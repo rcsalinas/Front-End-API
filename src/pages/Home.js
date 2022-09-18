@@ -16,10 +16,7 @@ const Home = () => {
 	return (
 		<>
 			<ComoFuncionaBanner post={mainFeaturedPost} />
-			<h2>
-				Cursos: {auth.userId}...
-				{auth.userType}
-			</h2>
+			<h2>Cursos:</h2>
 			<BuscadorCursos />
 		</>
 	);

@@ -67,10 +67,7 @@ const MisCursos = () => {
 			<Cursos cursos={aux} aceptados={aceptados} finalizados={finalizados} misCursos={true} />
 			{auth.isLoggedIn && auth.userType === "profesor" && (
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
-					<div
-						className="d-grid gap-2 col-6 mx-auto"
-						style={{ marginBottom: "10%", marginTop: "1%" }}
-					>
+					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "10%" }}>
 						<MDBBtn>Crear Curso</MDBBtn>
 					</div>
 				</NavLink>

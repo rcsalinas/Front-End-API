@@ -22,7 +22,6 @@ const CursoDisplay = (props) => {
 		cursoEncontrado,
 		handleEliminar,
 		handleFinalizar,
-		handleSolicitar,
 		handleDespublicar,
 		handlePublicar,
 		handleModificar,
@@ -31,6 +30,7 @@ const CursoDisplay = (props) => {
 		encontradoRating,
 		comentarios,
 		handleComentar,
+		estadoCurso,
 	} = props;
 	const auth = useContext(AuthContext);
 
@@ -103,7 +103,7 @@ const CursoDisplay = (props) => {
 			)}
 
 			<div className="botones">
-				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && (
+				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && estadoCurso && (
 					<Button variant="contained" color="error" onClick={handleFinalizar}>
 						Finalizar Curso
 					</Button>
@@ -113,7 +113,7 @@ const CursoDisplay = (props) => {
 						to={`/cursos/${cursoEncontrado.idCurso}/ContratacionPage`}
 						style={{ textDecoration: "none" }}
 					>
-						<Button variant="contained" color="success" onClick={handleSolicitar}>
+						<Button variant="contained" color="success">
 							Solicitar Curso
 						</Button>
 					</NavLink>
