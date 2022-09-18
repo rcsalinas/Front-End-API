@@ -6,7 +6,7 @@ import "./CursoDisplay.css";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 
@@ -109,9 +109,14 @@ const CursoDisplay = (props) => {
 					</Button>
 				)}
 				{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
-					<Button variant="contained" color="success" onClick={handleSolicitar}>
-						Solicitar Curso
-					</Button>
+					<NavLink
+						to={`/cursos/${cursoEncontrado.idCurso}/ContratacionPage`}
+						style={{ textDecoration: "none" }}
+					>
+						<Button variant="contained" color="success" onClick={handleSolicitar}>
+							Solicitar Curso
+						</Button>
+					</NavLink>
 				)}
 				{!auth.isLoggedIn && (
 					<Button

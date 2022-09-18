@@ -15,6 +15,7 @@ import UpdateUser from "./pages/UpdateUser";
 import CursoPage from "./pages/CursoPage";
 import UpdateCurso from "./pages/UpdateCurso";
 import CreateCursoPage from "./pages/CreateCursoPage";
+import ContratacionPage from "./pages/ContratacionPage";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,6 +58,9 @@ function App() {
 						</Route>
 						<Route path="/cursos/nuevo" exact>
 							<CreateCursoPage />
+						</Route>
+						<Route path="/cursos/:cursoId/ContratacionPage" exact>
+							<ContratacionPage />
 						</Route>
 						<Route path="/:userId/notificaciones" exact>
 							<NotificacionesProfesor />

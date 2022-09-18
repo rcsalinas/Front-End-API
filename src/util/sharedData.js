@@ -146,4 +146,15 @@ export const database_Dummy = {
 			contenidoComentario: `El curso no sirve para nada`,
 		},
 	],
+	contrataciones_dummy: [
+		{
+			id: `contratacion1`,
+			motivacion: "",
+			alumno: `alu1`,
+			curso: ``,
+			mail: "",
+			telefono: "",
+			horario: "",
+		},
+	],
 };

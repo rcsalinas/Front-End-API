@@ -24,18 +24,10 @@ const Footer = () => {
 				>
 					<FontAwesomeIcon icon={faGithub} />
 				</Link>
-				<Link
-					to={{ pathname: "https://github.com/rcs532/Front-End-API" }}
-					target="_blank"
-					className="item4"
-				>
+				<Link to={{ pathname: "https://facebook.com" }} target="_blank" className="item4">
 					<FontAwesomeIcon icon={faFacebook} />
 				</Link>
-				<Link
-					to={{ pathname: "https://github.com/rcs532/Front-End-API" }}
-					target="_blank"
-					className="item5"
-				>
+				<Link to={{ pathname: "https://youtube.com" }} target="_blank" className="item5">
 					<FontAwesomeIcon icon={faYoutube} />
 				</Link>
 			</div>
