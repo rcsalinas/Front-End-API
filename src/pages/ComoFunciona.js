@@ -1,15 +1,138 @@
 import React from "react";
+import "./ComoFunciona.css";
+import { AuthContext } from "../context/auth-context";
+import { useContext } from "react";
 
 const ComoFunciona = () => {
+	const auth = useContext(AuthContext);
 	return (
 		<>
-			<h1>Un titulo</h1>
+			<h1>Como Funciona</h1>
 			<p>
 				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit unde, voluptas,
 				praesentium quidem, porro veniam nam asperiores in necessitatibus recusandae eaque?
 				Beatae fugiat voluptate laudantium iste laboriosam doloribus ad neque!
 			</p>
-			<h2>Otro Titulo</h2>
+			<section>
+				<h2>Preguntas Frecuentes</h2>
+				{!auth.isLoggedIn && (
+					<>
+						<details>
+							<summary>QUE ES TEACHERS MARKET</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO INICIAR SESION</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO RECUPERAR CONSTRASEÑA</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>AUN TENGO MAS DUDAS</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+					</>
+				)}
+				{auth.isLoggedIn && auth.userType === "estudiante" && (
+					<>
+						<details>
+							<summary>COMO INSCRIBIRME A UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO FINALIZAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO CALIFICAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO BUSCAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+					</>
+				)}
+				{auth.isLoggedIn && auth.userType === "profesor" && (
+					<>
+						<details>
+							<summary>COMO PUBLICAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO DESPUBLICAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO ELIMINAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO MODIFICAR UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+						<details>
+							<summary>COMO VER LA CALIFICACION DE UN CURSO</summary>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
+								aspernatur. Quisquam, quae
+							</p>
+						</details>
+					</>
+				)}
+			</section>
+
 			<p>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ab ratione
 				praesentium voluptatibus voluptatem veniam eum. Iusto, culpa similique. Laboriosam,

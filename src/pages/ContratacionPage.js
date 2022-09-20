@@ -39,9 +39,10 @@ const ContratacionPage = () => {
 		let found = contrataciones.find((c) => {
 			return c.alumno === auth.userId && c.curso === cursoId;
 		});
+
 		if (!found) {
 			contrataciones.push({
-				id: `${contrataciones.length + 1}`,
+				id: `contratacion${contrataciones.length + 1}`,
 				motivacion: `${motivacion}`,
 				alumno: `${auth.userId}`,
 				curso: `${cursoId}`,
@@ -49,6 +50,7 @@ const ContratacionPage = () => {
 				telefono: `${telefono}`,
 				horario: `${horario}`,
 			});
+			console.log(contrataciones);
 		} else {
 			alert("Ya hizo uno solicitud para este curso. Espere una respuesta!");
 		}

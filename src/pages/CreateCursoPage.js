@@ -30,9 +30,7 @@ const CreateCursoPage = () => {
 	let navigate = useHistory();
 
 	const auth = useContext(AuthContext);
-	let found = usuarios.find((usuarios) => {
-		return usuarios.id === auth.userId;
-	});
+
 	const [nombre, setNombre] = useState("");
 	const [descripcion, setDescripcion] = useState("");
 	const [frecuencia, setFrecuencia] = React.useState("");
@@ -65,7 +63,7 @@ const CreateCursoPage = () => {
 
 	const handleCrearCurso = (event) => {
 		event.preventDefault();
-		cursos.push({
+		database_Dummy.cursos_dummy.push({
 			idCurso: `curso${cursos.length + 10}`,
 			estado: true,
 			nombreCurso: nombre,
@@ -79,8 +77,11 @@ const CreateCursoPage = () => {
 			costo: costo,
 			calificacion: 5,
 		});
-
-		found.cursos = [...found.cursos, `curso${cursos.length + 10}`];
+		database_Dummy.dummy_users
+			.find((usuarios) => {
+				return usuarios.id === auth.userId;
+			})
+			.cursos.push(`curso${cursos.length + 1}`);
 
 		navigate.push("/");
 	};

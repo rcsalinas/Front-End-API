@@ -16,6 +16,7 @@ import {
 	MDBModalBody,
 	MDBModalFooter,
 } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardHeader, MDBCardBody, MDBCardTitle, MDBCardText } from "mdb-react-ui-kit";
 
 import "./NotificacionesProfesor.css";
 
@@ -126,16 +127,18 @@ const NotificacionesProfesor = () => {
 				{comentariosDisplay.map((comentario) => {
 					return (
 						comentario.estado === false && (
-							<div className="comentario">
-								<h2>Curso: {comentario.curso}</h2>
-								<h4>Estudiante: {comentario.alumno}</h4>
-								<MDBTextArea
-									value={comentario.contenido}
-									id="textAreaExample"
-									rows={4}
-									readOnly
-								/>
-								<div className="botones">
+							<MDBCard className="tarjeta">
+								<MDBCardHeader tag="h2">Curso: {comentario.curso}</MDBCardHeader>
+
+								<MDBCardBody>
+									<MDBCardTitle>Estudiante: {comentario.alumno}</MDBCardTitle>
+
+									<MDBTextArea
+										value={comentario.contenido}
+										id="textAreaExample"
+										rows={4}
+										readOnly
+									/>
 									<MDBBtn
 										outline
 										rounded
@@ -153,8 +156,8 @@ const NotificacionesProfesor = () => {
 									>
 										Borrar
 									</MDBBtn>
-								</div>
-							</div>
+								</MDBCardBody>
+							</MDBCard>
 						)
 					);
 				})}
@@ -163,21 +166,25 @@ const NotificacionesProfesor = () => {
 	} else {
 		return (
 			<div className="cuerpo">
-				<h1 className="fw-bold">Comentarios No Aprobados</h1>
+				<h1 className="fw-bold" style={{ textAlign: "center" }}>
+					Comentarios No Aprobados
+				</h1>
 				{notificaciones.map((n) => {
 					return (
-						<div className="comentario">
-							<h2>Curso: {n.curso}</h2>
-							<h4>Contenido Comentario</h4>
-							<MDBTextArea
-								value={n.contenidoComentario}
-								id="textAreaExample"
-								rows={4}
-								readOnly
-							/>
-							<h4>Mensaje De Profesor:</h4>
-							<MDBTextArea value={n.mensaje} id="textAreaExample" rows={4} readOnly />
-							<div className="botones">
+						<MDBCard className="tarjeta">
+							<MDBCardHeader tag="h2">Curso: {n.curso}</MDBCardHeader>
+
+							<MDBCardBody>
+								<MDBCardTitle>Contenido Comentario:</MDBCardTitle>
+
+								<MDBTextArea
+									value={n.contenidoComentario}
+									id="textAreaExample"
+									rows={4}
+									readOnly
+								/>
+								<MDBCardTitle>Mensaje del Profesor</MDBCardTitle>
+								<MDBCardText>{n.mensaje}</MDBCardText>
 								<MDBBtn
 									outline
 									rounded
@@ -187,8 +194,8 @@ const NotificacionesProfesor = () => {
 								>
 									Borrar
 								</MDBBtn>
-							</div>
-						</div>
+							</MDBCardBody>
+						</MDBCard>
 					);
 				})}
 			</div>

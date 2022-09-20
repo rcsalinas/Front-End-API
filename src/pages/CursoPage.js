@@ -49,7 +49,7 @@ const CursoPage = () => {
 		} else {
 			setValue(0);
 		}
-		if (auth.userType === "estudiante") {
+		if (auth.userType === "estudiante" && c) {
 			setEstadoCurso(c.estado);
 		}
 	}, [encontrado]);

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 
 import { useForm } from "../hooks/form-hook";
+
 import { MDBBtn } from "mdb-react-ui-kit";
 import Input from "../components/FormElements/Input";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../util/validators";
@@ -16,6 +17,10 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
+import { useHttpClient } from "../hooks/http-hook";
+import ErrorModal from "../components/UIElements/ErrorModal";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+
 import Checkbox from "@mui/material/Checkbox";
 
 const dummy_users = database_Dummy.dummy_users;
@@ -23,6 +28,7 @@ const dummy_users = database_Dummy.dummy_users;
 const Auth = () => {
 	const auth = useContext(AuthContext);
 	const [isLoginMode, setIsLoginMode] = useState(true);
+	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 	const [tipoUsuario, setTipoUsuario] = useState("estudiante");
 	const [datosEstudios, setDatosEstudios] = useState([]);
 	const [formState, inputHandler, setFormData] = useForm(
@@ -150,9 +156,75 @@ const Auth = () => {
 		setIsLoginMode((prevMode) => !prevMode);
 	};
 
-	const authSubmitHandler = (event) => {
+	const authSubmitHandler = async (event) => {
 		event.preventDefault();
 
+		if (isLoginMode) {
+			try {
+				const responseData = await sendRequest(
+					"http://localhost:8000/login",
+					"POST",
+					JSON.stringify({
+						email: formState.inputs.email.value,
+						password: formState.inputs.password.value,
+					}),
+					{
+						"Content-Type": "application/json",
+					}
+				);
+
+				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
+			} catch (err) {}
+		} else {
+			try {
+				console.log(formState.inputs, datosEstudios);
+				let responseData;
+				if (tipoUsuario === "estudiante") {
+					responseData = await sendRequest(
+						"http://localhost:8000/register",
+						"POST",
+						JSON.stringify({
+							email: formState.inputs.email.value,
+							password: formState.inputs.password.value,
+							nombre: formState.inputs.nombre.value,
+							apellido: formState.inputs.apellido.value,
+							celular: formState.inputs.telefono.value,
+							tipo: "estudiante",
+							fechaNacimiento: formState.inputs.date.value,
+							estudiosCursados: datosEstudios,
+							cursos: [],
+						}),
+						{
+							"Content-Type": "application/json",
+						}
+					);
+				} else {
+					responseData = await sendRequest(
+						"http://localhost:8000/register",
+						"POST",
+						JSON.stringify({
+							email: formState.inputs.email.value,
+							password: formState.inputs.password.value,
+							nombre: formState.inputs.nombre.value,
+							apellido: formState.inputs.apellido.value,
+
+							celular: formState.inputs.telefono.value,
+							tipo: "profesor",
+							titulo: formState.inputs.titulo.value,
+							experiencia: formState.inputs.experiencia.value,
+							cursos: [],
+						}),
+						{
+							"Content-Type": "application/json",
+						}
+					);
+				}
+
+				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
+			} catch (err) {}
+		}
+
+		/*
 		let encontrado = false;
 		let validacion = false;
 		let usuarioEncontrado;
@@ -229,6 +301,7 @@ const Auth = () => {
 				}
 			}
 		}
+		*/
 	};
 
 	const handleChange = (event, value) => {
@@ -264,7 +337,9 @@ const Auth = () => {
 	return (
 		<React.Fragment>
 			{auth.isLoggedIn && <Redirect to="/" />}
+			<ErrorModal error={error} onClear={clearError} />
 			<Card className="authentication">
+				{isLoading && <LoadingSpinner asOverlay />}
 				<h2>Inicio de Sesion Requerido</h2>
 				<hr />
 				<form onSubmit={authSubmitHandler}>

@@ -6,6 +6,7 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
 import { AuthContext } from "./context/auth-context";
+import { useAuth } from "./hooks/auth-hook";
 import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
@@ -19,11 +20,13 @@ import ContratacionPage from "./pages/ContratacionPage";
 import ContratacionesProfesor from "./pages/ContratacionesProfesor";
 
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
-	const [userId, setUserId] = useState(null);
+	//const [isLoggedIn, setIsLoggedIn] = useState(false);
+	//const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
+	//const [userId, setUserId] = useState(null);
 
-	const login = useCallback((tipo, usuario) => {
+	const { token, login, logout, userId, userType } = useAuth();
+
+	/*const login = useCallback((tipo, usuario) => {
 		setIsLoggedIn(true);
 		setUserType(tipo);
 		setUserId(usuario);
@@ -32,14 +35,15 @@ function App() {
 		setIsLoggedIn(false);
 		setUserType(null);
 		setUserId(null);
-	}, []);
+	}, []);*/
 	return (
 		<>
 			<AuthContext.Provider
 				value={{
-					isLoggedIn: isLoggedIn,
-					userId: userId,
 					userType: userType,
+					isLoggedIn: !!token,
+					token: token,
+					userId: userId,
 					login: login,
 					logout: logout,
 				}}

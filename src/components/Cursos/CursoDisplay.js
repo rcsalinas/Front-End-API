@@ -40,6 +40,10 @@ const CursoDisplay = (props) => {
 		setPalabras(event.target.value);
 	};
 
+	let yaComento = comentarios.find((c) => {
+		return c.alumno === auth.userId && c.curso === cursoEncontrado.idCurso;
+	});
+
 	return (
 		<>
 			<Card
@@ -68,7 +72,7 @@ const CursoDisplay = (props) => {
 				<h2 className="fw-bold">Comentarios: </h2>
 				{comentarios.length !== 0 &&
 					comentarios.map((comentario, i) => {
-						return <p key={i}>{comentario.contenido}</p>;
+						return <p key={i}>{comentario.alumno + ": " + comentario.contenido}</p>;
 					})}
 				{comentarios.length === 0 && <h3>No hay comentarios para este curso</h3>}
 			</div>
@@ -80,13 +84,13 @@ const CursoDisplay = (props) => {
 					style={{ marginLeft: "1%" }}
 				>
 					<Typography component="legend">
-						{encontradoRating ? "Modificar Rating" : "Calificar Curso"}
+						{encontradoRating ? "Modificar Rating: " : "Calificar Curso: "}
 					</Typography>
 					<Rating name="simple-controlled" value={value} onChange={handleRatingChange} />
 				</Box>
 			)}
 
-			{auth.userType === "estudiante" && estaEnCurso && (
+			{auth.userType === "estudiante" && estaEnCurso && !yaComento && (
 				<div className="inputComentario">
 					<MDBTextArea
 						label="Comentario"
