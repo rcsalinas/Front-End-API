@@ -1,70 +1,61 @@
 import React from "react";
 
-import { database_Dummy } from "../util/sharedData";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
-import { useContext } from "react";
-import { Redirect } from "react-router-dom";
+import { useContext, useState, useEffect, useRef } from "react";
 import Cursos from "../components/Cursos/Cursos";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "react-query";
+import Auxiliar from "../components/Auxiliar";
 
-const cursos = database_Dummy.cursos_dummy;
-const usuarios = database_Dummy.dummy_users;
+import "../components/Cursos/Cursos.css";
+
+//const cursos = database_Dummy.cursos_dummy;
+//const usuarios = database_Dummy.dummy_users;
 
 const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
 
-	if (!auth.isLoggedIn) {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
+	const [loadedUser, setLoadedUser] = useState({});
+
+	const { data, error, isError, isLoading } = useQuery(["users", userId], fetchUser);
+
+	async function fetchUser() {
+		const { data } = await axios.get(`http://localhost:8000/users/${userId}`);
+		return data;
 	}
 
-	let usuarioEncontrado = usuarios.filter((user) => {
-		return user.id === userId;
-	});
-
-	let aceptados = [];
-	let finalizados = [];
-	let aux = [];
-
-	usuarioEncontrado[0].cursos.forEach((curso) => {
-		let cursoId;
-		if (auth.userType === "estudiante") {
-			cursoId = curso.curso;
-		} else {
-			cursoId = curso;
-		}
-		if (auth.userType === "profesor") {
-			aux.push(
-				...cursos.filter((curso) => {
-					return curso.idCurso === cursoId;
-				})
-			);
-		} else {
-			if (curso.estado === "aceptado") {
-				aceptados.push(
-					...cursos.filter((curso) => {
-						return curso.idCurso === cursoId;
-					})
-				);
-			} else {
-				finalizados.push(
-					...cursos.filter((curso) => {
-						return curso.idCurso === cursoId;
-					})
-				);
-			}
-		}
-	});
-
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+	if (isError) {
+		return <div>Error! {error.message}</div>;
+	}
 	return (
 		<>
 			<h1 style={{ marginTop: "2%" }}>
 				Cursos del {auth.userType === "profesor" ? "Profesor" : "Estudiante"}:
 			</h1>
-			<Cursos cursos={aux} aceptados={aceptados} finalizados={finalizados} misCursos={true} />
+			<div className="cursos-buscados">
+				{data.cursos.map((curso) => {
+					console.log(curso);
+					if (auth.userType === "estudiante") {
+						return (
+							<Auxiliar
+								key={curso.curso}
+								cursoId={curso.curso}
+								cursoEstado={curso.estado}
+							/>
+						);
+					} else {
+						return <Auxiliar key={curso} cursoId={curso} />;
+					}
+				})}
+			</div>
+
 			{auth.isLoggedIn && auth.userType === "profesor" && (
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
 					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "10%" }}>

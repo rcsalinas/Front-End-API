@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { Rating } from "@mui/material";
 
 const CursoCard = (props) => {
-	const { id, title, image, price, teacher, rating } = props;
+	const { id, title, image, price, teacher, rating, cursoEstado } = props;
 
 	return (
 		<Card sx={{ maxWidth: 345 }}>

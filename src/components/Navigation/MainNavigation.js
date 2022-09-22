@@ -88,16 +88,7 @@ const MainNavigation = (props) => {
 							sx={{
 								display: { xs: "block", md: "none" },
 							}}
-						>
-							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink
-									to={`/${auth.userId}/cursos`}
-									style={{ textDecoration: "none" }}
-								>
-									<Typography textAlign="center">Mis Cursos</Typography>
-								</NavLink>
-							</MenuItem>
-						</Menu>
+						></Menu>
 					</Box>
 
 					<NavLink to="/" exact style={{ textDecoration: "none" }}>
@@ -119,20 +110,11 @@ const MainNavigation = (props) => {
 							TeachersMarket
 						</Typography>
 					</NavLink>
-					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						<NavLink to={`/${auth.userId}/cursos`} style={{ textDecoration: "none" }}>
-							<Button
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}
-							>
-								Mis Cursos
-							</Button>
-						</NavLink>
-					</Box>
+					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
 
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} disableRipple>
 								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
 							</IconButton>
 						</Tooltip>
@@ -156,19 +138,20 @@ const MainNavigation = (props) => {
 								to={`/${auth.userId}/perfil`}
 								style={{ textDecoration: "none" }}
 							>
-								<MenuItem onClick={handleCloseUserMenu}>
+								<MenuItem onClick={handleCloseUserMenu} disableRipple>
 									<Typography textAlign="center">Perfil</Typography>
 								</MenuItem>
 							</NavLink>
+
 							<NavLink
 								to={`/${auth.userId}/notificaciones`}
 								style={{ textDecoration: "none" }}
 							>
-								<MenuItem onClick={handleCloseUserMenu}>
+								<MenuItem onClick={handleCloseUserMenu} disableRipple>
 									<Typography textAlign="center">Notificaciones</Typography>
 								</MenuItem>
 							</NavLink>
-							{auth.isLoggedIn && auth.userType === "profesor" && (
+							{auth.userType === "profesor" && (
 								<NavLink
 									to={`/${auth.userId}/contrataciones`}
 									style={{ textDecoration: "none" }}

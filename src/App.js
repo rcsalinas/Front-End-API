@@ -36,6 +36,62 @@ function App() {
 		setUserType(null);
 		setUserId(null);
 	}, []);*/
+	let routes;
+	if (token) {
+		routes = (
+			<Switch>
+				<Route path="/" exact>
+					<Home />
+				</Route>
+				<Route path="/:userId/cursos" exact>
+					<MisCursos />
+				</Route>
+				<Route path="/cursos/nuevo" exact>
+					<CreateCursoPage />
+				</Route>
+				<Route path="/cursos/:cursoId/ContratacionPage" exact>
+					<ContratacionPage />
+				</Route>
+				<Route path="/:userId/notificaciones" exact>
+					<NotificacionesProfesor />
+				</Route>
+
+				<Route path="/:userId/contrataciones" exact>
+					<ContratacionesProfesor />
+				</Route>
+				<Route path="/users/:userId" exact>
+					<UpdateUser />
+				</Route>
+				<Route path="/cursos/update/:cursoId" exact>
+					<UpdateCurso />
+				</Route>
+				<Route path="/cursos/:cursoId" exact>
+					<CursoPage />
+				</Route>
+				<Route path="/:userId/perfil" exact>
+					{/*Solo mando el user id, el condicional de que tipo es lo manejo adentro del componente*/}
+					<Profile />
+				</Route>
+				<Redirect to="/" />
+			</Switch>
+		);
+	} else {
+		routes = (
+			<Switch>
+				<Route path="/" exact>
+					<Home />
+				</Route>
+				<Route path="/comoFunciona" exact>
+					<ComoFunciona />
+				</Route>
+				<Route path="/auth" exact>
+					<Auth />
+				</Route>
+				<Redirect to="/auth" />
+			</Switch>
+		);
+	}
+
 	return (
 		<>
 			<AuthContext.Provider
@@ -50,47 +106,7 @@ function App() {
 			>
 				<Router>
 					<MainNavigation />
-					<Switch>
-						<Route path="/" exact>
-							<Home />
-						</Route>
-						<Route path="/:userId/perfil" exact>
-							{/*Solo mando el user id, el condicional de que tipo es lo manejo adentro del componente*/}
-							<Profile />
-						</Route>
-						<Route path="/:userId/cursos" exact>
-							<MisCursos />
-						</Route>
-						<Route path="/cursos/nuevo" exact>
-							<CreateCursoPage />
-						</Route>
-						<Route path="/cursos/:cursoId/ContratacionPage" exact>
-							<ContratacionPage />
-						</Route>
-						<Route path="/:userId/notificaciones" exact>
-							<NotificacionesProfesor />
-						</Route>
-						<Route path="/comoFunciona" exact>
-							<ComoFunciona />
-						</Route>
-						<Route path="/:userId/contrataciones" exact>
-							<ContratacionesProfesor />
-						</Route>
-						<Route path="/users/:userId" exact>
-							<UpdateUser />
-						</Route>
-						<Route path="/cursos/update/:cursoId" exact>
-							<UpdateCurso />
-						</Route>
-						<Route path="/cursos/:cursoId" exact>
-							<CursoPage />
-						</Route>
-
-						<Route path="/auth" exact>
-							<Auth />
-						</Route>
-						<Redirect to="/" />
-					</Switch>
+					<main>{routes}</main>
 					<Footer />
 				</Router>
 			</AuthContext.Provider>

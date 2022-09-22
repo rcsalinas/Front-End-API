@@ -48,11 +48,23 @@
 			"titulo": "Ingeniero",
 			"experiencia": "trabaje en Uber",
 			"cursos": ["curso2"]
+		},
+		{
+			"email": "testprof8@test.com",
+			"password": "$2a$10$6dzPuy4/LC4KDV8u7F39KOjdcynr.g8Ne3BP2ZjY58N7I8Op8Zsg6",
+			"tipo": "profesor",
+			"nombre": "Jose",
+			"apellido": "Aguilar",
+			"celular": "1234",
+			"titulo": "Ingeniero",
+			"experiencia": "trabaje en Lyft",
+			"cursos": [],
+			"id": "MJcueVm"
 		}
 	],
 	"cursos": [
 		{
-			"idCurso": "curso1",
+			"id": "curso1",
 			"estado": true,
 			"nombreCurso": "Mate101",
 			"image": "https://www.apwa.net/images/PWM101.jpg",
@@ -66,7 +78,7 @@
 			"calificacion": 1
 		},
 		{
-			"idCurso": "curso2",
+			"id": "curso2",
 			"estado": true,
 			"nombreCurso": "Biology101",
 			"image": "https://www.apwa.net/images/PWM101.jpg",
@@ -80,7 +92,7 @@
 			"calificacion": 2
 		},
 		{
-			"idCurso": "curso3",
+			"id": "curso3",
 			"estado": true,
 			"nombreCurso": "API101",
 			"image": "https://www.apwa.net/images/PWM101.jpg",
@@ -94,7 +106,7 @@
 			"calificacion": 4
 		},
 		{
-			"idCurso": "curso4",
+			"id": "curso4",
 			"estado": true,
 			"nombreCurso": "Statistics101",
 			"image": "https://www.apwa.net/images/PWM101.jpg",

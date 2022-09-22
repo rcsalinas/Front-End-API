@@ -3,6 +3,7 @@ import { AuthContext } from "../context/auth-context";
 
 import { useForm } from "../hooks/form-hook";
 
+
 import { MDBBtn } from "mdb-react-ui-kit";
 import Input from "../components/FormElements/Input";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../util/validators";
@@ -174,7 +175,9 @@ const Auth = () => {
 				);
 
 				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
-			} catch (err) {}
+			} catch (err) {
+				console.log(err);
+			}
 		} else {
 			try {
 				console.log(formState.inputs, datosEstudios);
@@ -221,7 +224,9 @@ const Auth = () => {
 				}
 
 				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
-			} catch (err) {}
+			} catch (err) {
+				console.log(err);
+			}
 		}
 
 		/*

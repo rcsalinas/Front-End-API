@@ -49,6 +49,12 @@ const ProfileBody = (props) => {
 									>
 										<MDBBtn>Editar Perfil</MDBBtn>
 									</NavLink>
+									<NavLink
+										to={`/${auth.userId}/cursos`}
+										style={{ textDecoration: "none", marginLeft: "1%" }}
+									>
+										<MDBBtn>Mis Cursos</MDBBtn>
+									</NavLink>
 								</div>
 							</MDBCardBody>
 						</MDBCard>

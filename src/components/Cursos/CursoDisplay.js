@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { useContext } from "react";
 import "./CursoDisplay.css";
-
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-
 import Cursos from "./Cursos";
 
 import Radio from "@mui/material/Radio";
@@ -17,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import "./SearchForm.css";
 import { database_Dummy } from "../../util/sharedData";
+import { useHttpClient } from "../../hooks/http-hook";
 
 const cursos_dummy = database_Dummy.cursos_dummy;
 
@@ -27,6 +27,7 @@ const BuscadorCursos = () => {
 	const [searchVal, setSearchVal] = React.useState("");
 	const [tipoClase, setTipoClase] = React.useState("");
 	const [filters, setFilters] = useState({});
+	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
 	const handleFrecuenciaChange = (event) => {
 		setFrecuencia(event.target.value);
@@ -89,7 +90,16 @@ const BuscadorCursos = () => {
 
 	useEffect(() => {
 		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
-			setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
+			const fetchCursos = async () => {
+				try {
+					const responseData = await sendRequest(`http://localhost:8000/cursos`);
+					setCursos(responseData);
+				} catch (err) {
+					console.log(err);
+				}
+			};
+			fetchCursos();
+			//setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
 		} else {
 			if (filters.frecuencia === "") {
 				let aux = filters;
@@ -189,7 +199,7 @@ const BuscadorCursos = () => {
 				</div>
 			</div>
 
-			<Cursos cursos={cursos} misCursos={false} />
+			<Cursos cursos={cursos} misCursos={false} isLoading={isLoading} />
 			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
 		</>
 	);
