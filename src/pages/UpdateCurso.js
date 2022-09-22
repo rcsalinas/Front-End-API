@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useQueryClient, useMutation, useQuery } from "react-query";
 
 import {
 	MDBBtn,
@@ -31,6 +31,7 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 const UpdateCurso = () => {
 	let navigate = useHistory();
+	const queryClient = useQueryClient();
 	const cursoId = useParams().cursoId;
 	const auth = useContext(AuthContext);
 	const [nombre, setNombre] = useState("");
@@ -40,7 +41,7 @@ const UpdateCurso = () => {
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
 
-	const { data, error, isError, isLoading } = useQuery(["cursos", cursoId], fetchCurso);
+	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], fetchCurso);
 
 	useEffect(() => {
 		if (!isLoading) {
@@ -53,7 +54,16 @@ const UpdateCurso = () => {
 		}
 	}, [data, isLoading]);
 
-	const { mutate } = useMutation(updateCurso);
+	const {
+		mutate,
+		isLoading: isLoadingUpdate,
+		isSuccess,
+	} = useMutation(updateCurso, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(["curso", cursoId], data);
+			queryClient.invalidateQueries(["curso", cursoId]);
+		},
+	});
 
 	async function fetchCurso() {
 		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
@@ -100,9 +110,10 @@ const UpdateCurso = () => {
 	const handleCostoChange = (event) => {
 		setCosto(event.target.value);
 	};
-	const handleUpdateCurso = () => {
+	const handleUpdateCurso = (event) => {
+		event.preventDefault();
 		mutate();
-		//navigate.push(`/${auth.userId}/cursos`);
+		navigate.push(`/${auth.userId}/cursos`);
 	};
 
 	return (

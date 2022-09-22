@@ -120,7 +120,7 @@
     {
       "id": "curso3",
       "estado": true,
-      "nombreCurso": "Api888",
+      "nombreCurso": "Api800",
       "image": "https://www.apwa.net/images/PWM101.jpg",
       "profesor": "profesor1",
       "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
@@ -134,7 +134,7 @@
     {
       "id": "curso4",
       "estado": true,
-      "nombreCurso": "Statistics8800",
+      "nombreCurso": "Statistics102",
       "image": "https://www.apwa.net/images/PWM101.jpg",
       "profesor": "profesor1",
       "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",

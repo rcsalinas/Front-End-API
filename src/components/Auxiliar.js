@@ -8,7 +8,7 @@ import CursoCard from "./Cursos/CursoCard/CursoCard";
 const Auxiliar = (props) => {
 	const { cursoId, cursoEstado } = props;
 
-	const { data, error, isError, isLoading } = useQuery(["cursoPorId", cursoId], fetchCursoPorId);
+	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], fetchCursoPorId);
 
 	async function fetchCursoPorId() {
 		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
