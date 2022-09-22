@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "react-query";
 import Auxiliar from "../components/Auxiliar";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 import "../components/Cursos/Cursos.css";
 
@@ -29,7 +30,7 @@ const MisCursos = () => {
 	}
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 	if (isError) {
 		return <div>Error! {error.message}</div>;

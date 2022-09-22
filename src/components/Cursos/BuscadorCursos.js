@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Cursos from "./Cursos";
-
+import axios from "axios";
+import { useQuery } from "react-query";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import "./SearchForm.css";
 import { database_Dummy } from "../../util/sharedData";
-import { useHttpClient } from "../../hooks/http-hook";
+import LoadingSpinner from "../UIElements/LoadingSpinner";
 
 const cursos_dummy = database_Dummy.cursos_dummy;
 
@@ -27,7 +28,12 @@ const BuscadorCursos = () => {
 	const [searchVal, setSearchVal] = React.useState("");
 	const [tipoClase, setTipoClase] = React.useState("");
 	const [filters, setFilters] = useState({});
-	const { isLoading, error, sendRequest, clearError } = useHttpClient();
+	const { data, error, isError, isLoading } = useQuery("buscadorCursos", fetchCursos);
+
+	async function fetchCursos() {
+		const { data } = await axios.get(`http://localhost:8000/cursos`);
+		return data;
+	}
 
 	const handleFrecuenciaChange = (event) => {
 		setFrecuencia(event.target.value);
@@ -89,16 +95,15 @@ const BuscadorCursos = () => {
 	}
 
 	useEffect(() => {
-		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
-			const fetchCursos = async () => {
-				try {
-					const responseData = await sendRequest(`http://localhost:8000/cursos`);
-					setCursos(responseData);
-				} catch (err) {
-					console.log(err);
-				}
-			};
-			fetchCursos();
+		if (
+			frecuencia === "" &&
+			rating === null &&
+			searchVal === "" &&
+			tipoClase === "" &&
+			!isLoading
+		) {
+			setCursos(data);
+
 			//setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
 		} else {
 			if (filters.frecuencia === "") {
@@ -125,6 +130,13 @@ const BuscadorCursos = () => {
 			setCursos(encontrados);
 		}
 	}, [tipoClase, searchVal, rating, frecuencia]);
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+	if (isError) {
+		return <div>Error! {error.message}</div>;
+	}
 
 	return (
 		<>

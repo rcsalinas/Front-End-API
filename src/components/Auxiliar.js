@@ -7,25 +7,29 @@ import CursoCard from "./Cursos/CursoCard/CursoCard";
 
 const Auxiliar = (props) => {
 	const { cursoId, cursoEstado } = props;
-	console.log(cursoId);
+
 	const { data, error, isError, isLoading } = useQuery(["cursoPorId", cursoId], fetchCursoPorId);
 
 	async function fetchCursoPorId() {
-		const { data } = await axios.get(`http://localhost:8000/cursos?id=${cursoId}`);
+		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
 		return data;
+	}
+
+	if (isError) {
+		return <div>Error! {error.message}</div>;
 	}
 
 	if (!isLoading) {
 		return (
 			<CursoCard
-				key={data[0].id}
-				id={data[0].id}
-				title={data[0].nombreCurso}
-				image={data[0].image}
-				description={data[0].desc}
-				price={data[0].costo}
-				teacher={data[0].profesor}
-				rating={data[0].calificacion}
+				key={data.id}
+				id={data.id}
+				title={data.nombreCurso}
+				image={data.image}
+				description={data.desc}
+				price={data.costo}
+				teacher={data.profesor}
+				rating={data.calificacion}
 				estado={cursoEstado}
 			/>
 		);
