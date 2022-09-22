@@ -23,7 +23,6 @@ const CursoDisplay = (props) => {
 		handleFinalizar,
 		handleDespublicar,
 		handlePublicar,
-		handleModificar,
 		handleRatingChange,
 		value,
 		encontradoRating,
@@ -149,9 +148,11 @@ const CursoDisplay = (props) => {
 									Publicar
 								</Button>
 							)}
-							<Button variant="outlined" color="secondary" onClick={handleModificar}>
-								Modificar
-							</Button>
+							<NavLink to={`/cursos/update/${cursoEncontrado.idCurso}`}>
+								<Button variant="outlined" color="secondary">
+									Modificar
+								</Button>
+							</NavLink>
 						</Stack>
 					)}
 			</div>

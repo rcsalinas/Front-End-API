@@ -1,180 +1,208 @@
 {
-	"users": [
-		{
-			"email": "testalu1@test.com",
-			"password": "$2a$10$R4DTpCBFw1AeZmFruijuxeGuKnXtOE34/JOj/N8nZZZYufJkId0si",
-			"id": "alu1",
-			"tipo": "estudiante",
-			"nombre": "Roberto",
-			"apellido": "Salinas",
-			"celular": "1234",
-			"fechaNacimiento": "2015-03-25",
-			"estudiosCursados": ["primario", "secundario", "universidad"],
-			"cursos": [
-				{
-					"curso": "curso1",
-					"estado": "aceptado"
-				},
-				{
-					"curso": "curso2",
-					"estado": "aceptado"
-				},
-				{
-					"curso": "curso4",
-					"estado": "finalizado"
-				}
-			]
-		},
-		{
-			"email": "testprof1@test.com",
-			"password": "$2a$10$x4nQ5j77kTbpla7YcYRhjeAxuu45v/tNNKNtkEu2jtLfmcJZjmhce",
-			"id": "profesor1",
-			"tipo": "profesor",
-			"nombre": "Maria",
-			"apellido": "Marcela",
-			"celular": "1234",
-			"titulo": "licenciado",
-			"experiencia": "trabaje en google",
-			"cursos": ["curso1", "curso3", "curso4"]
-		},
-		{
-			"email": "testprof2@test.com",
-			"password": "$2a$10$g4ZaCXgkD2cnPInup5NuJuVbivI.u0a.UGEQJiDVclUZ9VCuE9nb6",
-			"id": "profesor2",
-			"tipo": "profesor",
-			"nombre": "Jose",
-			"apellido": "Aguilar",
-			"celular": "1234",
-			"titulo": "Ingeniero",
-			"experiencia": "trabaje en Uber",
-			"cursos": ["curso2"]
-		},
-		{
-			"email": "testprof8@test.com",
-			"password": "$2a$10$6dzPuy4/LC4KDV8u7F39KOjdcynr.g8Ne3BP2ZjY58N7I8Op8Zsg6",
-			"tipo": "profesor",
-			"nombre": "Jose",
-			"apellido": "Aguilar",
-			"celular": "1234",
-			"titulo": "Ingeniero",
-			"experiencia": "trabaje en Lyft",
-			"cursos": [],
-			"id": "MJcueVm"
-		}
-	],
-	"cursos": [
-		{
-			"id": "curso1",
-			"estado": true,
-			"nombreCurso": "Mate101",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
-			"profesor": "profesor1",
-			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			"alumnos": ["alu1"],
-			"duracion": "1 mes",
-			"frecuencia": "mensual",
-			"tipo": "grupal",
-			"costo": 12.99,
-			"calificacion": 1
-		},
-		{
-			"id": "curso2",
-			"estado": true,
-			"nombreCurso": "Biology101",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
-			"profesor": "profesor2",
-			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			"alumnos": ["alu1"],
-			"duracion": "2 meses",
-			"frecuencia": "mensual",
-			"tipo": "individual",
-			"costo": 14.99,
-			"calificacion": 2
-		},
-		{
-			"id": "curso3",
-			"estado": true,
-			"nombreCurso": "API101",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
-			"profesor": "profesor1",
-			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			"alumnos": [],
-			"duracion": "5 dias",
-			"frecuencia": "semanal",
-			"tipo": "individual",
-			"costo": 2.99,
-			"calificacion": 4
-		},
-		{
-			"id": "curso4",
-			"estado": true,
-			"nombreCurso": "Statistics101",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
-			"profesor": "profesor1",
-			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
-			"alumnos": ["alu1"],
-			"duracion": "3 meses",
-			"frecuencia": "semanal",
-			"tipo": "individual",
-			"costo": 12.99,
-			"calificacion": 5
-		}
-	],
-	"calificaciones": [
-		{
-			"id": "rating1",
-			"alumno": "alu1",
-			"curso": "curso2",
-			"valor": 5
-		},
-		{
-			"id": "rating2",
-			"alumno": "alu1",
-			"curso": "curso4",
-			"valor": 4
-		}
-	],
-	"comentarios": [
-		{
-			"id": "comentario1",
-			"alumno": "alu1",
-			"curso": "curso1",
-			"contenido": "Curso muy malo",
-			"estado": false
-		},
-		{
-			"id": "comentario2",
-			"alumno": "alu1",
-			"curso": "curso2",
-			"contenido": "Curso muy bueno",
-			"estado": true
-		},
-		{
-			"id": "comentario3",
-			"alumno": "alu1",
-			"curso": "curso4",
-			"contenido": "Curso promedio y aburrido",
-			"estado": false
-		}
-	],
-	"notificaciones": [
-		{
-			"id": "notificacion1",
-			"mensaje": "Borrado por mensaje ofensivo",
-			"alumno": "alu1",
-			"curso": "curso1",
-			"contenidoComentario": "El curso no sirve para nada"
-		}
-	],
-	"contrataciones": [
-		{
-			"id": "contratacion1",
-			"motivacion": "Me gusta la programacion",
-			"alumno": "alu1",
-			"curso": "curso3",
-			"email": "testalu1@email.com",
-			"telefono": "541166784884",
-			"horario": "10AM-10PM Lunes"
-		}
-	]
+  "users": [
+    {
+      "email": "testalu1@test.com",
+      "password": "$2a$10$R4DTpCBFw1AeZmFruijuxeGuKnXtOE34/JOj/N8nZZZYufJkId0si",
+      "id": "alu1",
+      "tipo": "estudiante",
+      "nombre": "Roberto",
+      "apellido": "Salinas",
+      "celular": "1234",
+      "fechaNacimiento": "2015-03-25",
+      "estudiosCursados": [
+        "primario",
+        "secundario",
+        "universidad"
+      ],
+      "cursos": [
+        {
+          "curso": "curso1",
+          "estado": "aceptado"
+        },
+        {
+          "curso": "curso2",
+          "estado": "aceptado"
+        },
+        {
+          "curso": "curso4",
+          "estado": "finalizado"
+        }
+      ]
+    },
+    {
+      "email": "testprof1@test.com",
+      "password": "$2a$10$x4nQ5j77kTbpla7YcYRhjeAxuu45v/tNNKNtkEu2jtLfmcJZjmhce",
+      "id": "profesor1",
+      "tipo": "profesor",
+      "nombre": "Maria",
+      "apellido": "Marcela",
+      "celular": "1234",
+      "titulo": "licenciado",
+      "experiencia": "trabaje en google",
+      "cursos": [
+        "curso1",
+        "curso3",
+        "curso4"
+      ]
+    },
+    {
+      "email": "testprof2@test.com",
+      "password": "$2a$10$g4ZaCXgkD2cnPInup5NuJuVbivI.u0a.UGEQJiDVclUZ9VCuE9nb6",
+      "id": "profesor2",
+      "tipo": "profesor",
+      "nombre": "Jose",
+      "apellido": "Aguilar",
+      "celular": "1234",
+      "titulo": "Ingeniero",
+      "experiencia": "trabaje en Uber",
+      "cursos": [
+        "curso2"
+      ]
+    },
+    {
+      "email": "testprof8@test.com",
+      "password": "$2a$10$6dzPuy4/LC4KDV8u7F39KOjdcynr.g8Ne3BP2ZjY58N7I8Op8Zsg6",
+      "tipo": "profesor",
+      "nombre": "Jose",
+      "apellido": "Aguilar",
+      "celular": "1234",
+      "titulo": "Ingeniero",
+      "experiencia": "trabaje en Lyft",
+      "cursos": [],
+      "id": "MJcueVm"
+    },
+    {
+      "email": "ro-ca-sa@hotmail.com",
+      "password": "$2a$10$j3Iio5d21GrEy1zxWrwkWOz95lw3KX5zAasn4RU98rhEU.lVCuxOS",
+      "nombre": "Roberto",
+      "apellido": "Salinas",
+      "celular": "98232873",
+      "tipo": "profesor",
+      "titulo": "sadfsadfasdf",
+      "experiencia": "asdfasdfasdfasdf",
+      "cursos": [],
+      "id": "caefAZi"
+    }
+  ],
+  "cursos": [
+    {
+      "id": "curso1",
+      "estado": true,
+      "nombreCurso": "Mate1023",
+      "image": "https://www.apwa.net/images/PWM101.jpg",
+      "profesor": "profesor1",
+      "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+      "alumnos": [
+        "alu1"
+      ],
+      "duracion": "1 mes",
+      "frecuencia": "mensual",
+      "tipo": "grupal",
+      "costo": 12.99,
+      "calificacion": 1
+    },
+    {
+      "id": "curso2",
+      "estado": true,
+      "nombreCurso": "Biology101",
+      "image": "https://www.apwa.net/images/PWM101.jpg",
+      "profesor": "profesor2",
+      "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+      "alumnos": [
+        "alu1"
+      ],
+      "duracion": "2 meses",
+      "frecuencia": "mensual",
+      "tipo": "individual",
+      "costo": 14.99,
+      "calificacion": 2
+    },
+    {
+      "id": "curso3",
+      "estado": true,
+      "nombreCurso": "Api888",
+      "image": "https://www.apwa.net/images/PWM101.jpg",
+      "profesor": "profesor1",
+      "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+      "alumnos": [],
+      "duracion": "5 dias",
+      "frecuencia": "semanal",
+      "tipo": "individual",
+      "costo": 2.99,
+      "calificacion": 4
+    },
+    {
+      "id": "curso4",
+      "estado": true,
+      "nombreCurso": "Statistics8800",
+      "image": "https://www.apwa.net/images/PWM101.jpg",
+      "profesor": "profesor1",
+      "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+      "alumnos": [
+        "alu1"
+      ],
+      "duracion": "1 mes",
+      "frecuencia": "semanal",
+      "tipo": "individual",
+      "costo": 12.99,
+      "calificacion": 5
+    }
+  ],
+  "calificaciones": [
+    {
+      "id": "rating1",
+      "alumno": "alu1",
+      "curso": "curso2",
+      "valor": 5
+    },
+    {
+      "id": "rating2",
+      "alumno": "alu1",
+      "curso": "curso4",
+      "valor": 4
+    }
+  ],
+  "comentarios": [
+    {
+      "id": "comentario1",
+      "alumno": "alu1",
+      "curso": "curso1",
+      "contenido": "Curso muy malo",
+      "estado": false
+    },
+    {
+      "id": "comentario2",
+      "alumno": "alu1",
+      "curso": "curso2",
+      "contenido": "Curso muy bueno",
+      "estado": true
+    },
+    {
+      "id": "comentario3",
+      "alumno": "alu1",
+      "curso": "curso4",
+      "contenido": "Curso promedio y aburrido",
+      "estado": false
+    }
+  ],
+  "notificaciones": [
+    {
+      "id": "notificacion1",
+      "mensaje": "Borrado por mensaje ofensivo",
+      "alumno": "alu1",
+      "curso": "curso1",
+      "contenidoComentario": "El curso no sirve para nada"
+    }
+  ],
+  "contrataciones": [
+    {
+      "id": "contratacion1",
+      "motivacion": "Me gusta la programacion",
+      "alumno": "alu1",
+      "curso": "curso3",
+      "email": "testalu1@email.com",
+      "telefono": "541166784884",
+      "horario": "10AM-10PM Lunes"
+    }
+  ]
 }

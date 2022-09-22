@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
-import { useState, useCallback } from "react";
 
 import MainNavigation from "./components/Navigation/MainNavigation";
 import Footer from "./components/Footer/Footer";
@@ -38,43 +37,73 @@ function App() {
 	}, []);*/
 	let routes;
 	if (token) {
-		routes = (
-			<Switch>
-				<Route path="/" exact>
-					<Home />
-				</Route>
-				<Route path="/:userId/cursos" exact>
-					<MisCursos />
-				</Route>
-				<Route path="/cursos/nuevo" exact>
-					<CreateCursoPage />
-				</Route>
-				<Route path="/cursos/:cursoId/ContratacionPage" exact>
-					<ContratacionPage />
-				</Route>
-				<Route path="/:userId/notificaciones" exact>
-					<NotificacionesProfesor />
-				</Route>
+		if (userType === "estudiante") {
+			routes = (
+				<Switch>
+					<Route path="/" exact>
+						<Home />
+					</Route>
+					<Route path="/:userId/cursos" exact>
+						<MisCursos />
+					</Route>
+					<Route path="/cursos/:cursoId/ContratacionPage" exact>
+						<ContratacionPage />
+					</Route>
+					<Route path="/:userId/notificaciones" exact>
+						<NotificacionesProfesor />
+					</Route>
+					<Route path="/users/:userId" exact>
+						<UpdateUser />
+					</Route>
+					<Route path="/cursos/:cursoId" exact>
+						<CursoPage />
+					</Route>
+					<Route path="/:userId/perfil" exact>
+						<Profile />
+					</Route>
+					<Redirect to="/" />
+				</Switch>
+			);
+		} else {
+			routes = (
+				<Switch>
+					<Route path="/" exact>
+						<Home />
+					</Route>
+					<Route path="/cursos/update/:cursoId" exact>
+						<UpdateCurso />
+					</Route>
+					<Route path="/:userId/cursos" exact>
+						<MisCursos />
+					</Route>
 
-				<Route path="/:userId/contrataciones" exact>
-					<ContratacionesProfesor />
-				</Route>
-				<Route path="/users/:userId" exact>
-					<UpdateUser />
-				</Route>
-				<Route path="/cursos/update/:cursoId" exact>
-					<UpdateCurso />
-				</Route>
-				<Route path="/cursos/:cursoId" exact>
-					<CursoPage />
-				</Route>
-				<Route path="/:userId/perfil" exact>
-					{/*Solo mando el user id, el condicional de que tipo es lo manejo adentro del componente*/}
-					<Profile />
-				</Route>
-				<Redirect to="/" />
-			</Switch>
-		);
+					<Route path="/cursos/nuevo" exact>
+						<CreateCursoPage />
+					</Route>
+					<Route path="/cursos/:cursoId/ContratacionPage" exact>
+						<ContratacionPage />
+					</Route>
+					<Route path="/:userId/notificaciones" exact>
+						<NotificacionesProfesor />
+					</Route>
+
+					<Route path="/:userId/contrataciones" exact>
+						<ContratacionesProfesor />
+					</Route>
+					<Route path="/users/:userId" exact>
+						<UpdateUser />
+					</Route>
+
+					<Route path="/cursos/:cursoId" exact>
+						<CursoPage />
+					</Route>
+					<Route path="/:userId/perfil" exact>
+						<Profile />
+					</Route>
+					<Redirect to="/" />
+				</Switch>
+			);
+		}
 	} else {
 		routes = (
 			<Switch>
@@ -83,6 +112,9 @@ function App() {
 				</Route>
 				<Route path="/comoFunciona" exact>
 					<ComoFunciona />
+				</Route>
+				<Route path="/cursos/:cursoId" exact>
+					<CursoPage />
 				</Route>
 				<Route path="/auth" exact>
 					<Auth />

@@ -84,9 +84,7 @@ const CursoPage = () => {
 		cursoEncontrado.estado = true;
 		navigate.push("/");
 	};
-	const handleModificar = (accion) => {
-		navigate.push(`update/${cursoEncontrado.idCurso}`); //me lleva a la pagina modificar
-	};
+
 	const handleRatingChange = (event, newValue) => {
 		setValue(newValue);
 
@@ -126,7 +124,6 @@ const CursoPage = () => {
 			handleFinalizar={handleFinalizar}
 			handleDespublicar={handleDespublicar}
 			handlePublicar={handlePublicar}
-			handleModificar={handleModificar}
 			handleRatingChange={handleRatingChange}
 			value={value}
 			encontradoRating={encontrado}

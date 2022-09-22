@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Cursos from "./Cursos";
-import axios from "axios";
-import { useQuery } from "react-query";
+
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,24 +15,18 @@ import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import "./SearchForm.css";
-import { database_Dummy } from "../../util/sharedData";
-import LoadingSpinner from "../UIElements/LoadingSpinner";
 
-const cursos_dummy = database_Dummy.cursos_dummy;
+const BuscadorCursos = (props) => {
+	const { encontrados } = props;
 
-const BuscadorCursos = () => {
+	console.log(encontrados);
+
 	const [cursos, setCursos] = useState([]);
 	const [frecuencia, setFrecuencia] = React.useState("");
 	const [rating, setRating] = React.useState(null);
 	const [searchVal, setSearchVal] = React.useState("");
 	const [tipoClase, setTipoClase] = React.useState("");
 	const [filters, setFilters] = useState({});
-	const { data, error, isError, isLoading } = useQuery("buscadorCursos", fetchCursos);
-
-	async function fetchCursos() {
-		const { data } = await axios.get(`http://localhost:8000/cursos`);
-		return data;
-	}
 
 	const handleFrecuenciaChange = (event) => {
 		setFrecuencia(event.target.value);
@@ -72,7 +65,7 @@ const BuscadorCursos = () => {
 		});
 	};
 	function myFilter(filterData) {
-		return cursos_dummy.filter((item) => {
+		return encontrados.filter((item) => {
 			const filter = {
 				bySearchVal: true,
 				byTipo: true,
@@ -95,16 +88,10 @@ const BuscadorCursos = () => {
 	}
 
 	useEffect(() => {
-		if (
-			frecuencia === "" &&
-			rating === null &&
-			searchVal === "" &&
-			tipoClase === "" &&
-			!isLoading
-		) {
-			setCursos(data);
-
+		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
+			//setCursos(encontrados);
 			//setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
+			setCursos(encontrados);
 		} else {
 			if (filters.frecuencia === "") {
 				let aux = filters;
@@ -126,17 +113,10 @@ const BuscadorCursos = () => {
 				delete aux.searchVal;
 				setFilters(aux);
 			}
-			let encontrados = myFilter(filters);
-			setCursos(encontrados);
+			let encontrados2 = myFilter(filters);
+			setCursos(encontrados2);
 		}
-	}, [tipoClase, searchVal, rating, frecuencia]);
-
-	if (isLoading) {
-		return <LoadingSpinner />;
-	}
-	if (isError) {
-		return <div>Error! {error.message}</div>;
-	}
+	}, [tipoClase, searchVal, rating, frecuencia, filters]);
 
 	return (
 		<>
@@ -211,7 +191,7 @@ const BuscadorCursos = () => {
 				</div>
 			</div>
 
-			<Cursos cursos={cursos} misCursos={false} isLoading={isLoading} />
+			<Cursos cursos={cursos} misCursos={false} />
 			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
 		</>
 	);

@@ -2,8 +2,8 @@ import React from "react";
 
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
-import { useContext, useState, useEffect, useRef } from "react";
-import Cursos from "../components/Cursos/Cursos";
+import { useContext } from "react";
+
 import { MDBBtn } from "mdb-react-ui-kit";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
@@ -13,16 +13,14 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 import "../components/Cursos/Cursos.css";
 
-//const cursos = database_Dummy.cursos_dummy;
-//const usuarios = database_Dummy.dummy_users;
-
 const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
 
-	const [loadedUser, setLoadedUser] = useState({});
-
-	const { data, error, isError, isLoading } = useQuery(["users", userId], fetchUser);
+	const { data, error, isError, isLoading } = useQuery(["users", userId], fetchUser, {
+		refetchOnMount: true,
+		refetchOnWindowFocus: true,
+	});
 
 	async function fetchUser() {
 		const { data } = await axios.get(`http://localhost:8000/users/${userId}`);
@@ -42,7 +40,6 @@ const MisCursos = () => {
 			</h1>
 			<div className="cursos-buscados">
 				{data.cursos.map((curso) => {
-					console.log(curso);
 					if (auth.userType === "estudiante") {
 						return (
 							<Auxiliar

@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
-import { Redirect } from "react-router-dom";
+
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
+import axios from "axios";
+import { useMutation, useQuery } from "react-query";
 
 import {
 	MDBBtn,
@@ -22,10 +25,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
-import { database_Dummy } from "../util/sharedData";
+//const cursos = database_Dummy.cursos_dummy;
 
-const cursos = database_Dummy.cursos_dummy;
 const UpdateCurso = () => {
 	let navigate = useHistory();
 	const cursoId = useParams().cursoId;
@@ -37,23 +40,48 @@ const UpdateCurso = () => {
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
 
-	let cursoEncontrado = cursos.find((curso) => {
-		return curso.idCurso === cursoId;
-	});
+	const { data, error, isError, isLoading } = useQuery(["cursos", cursoId], fetchCurso);
 
 	useEffect(() => {
-		setNombre(cursoEncontrado.nombreCurso);
-		setDescripcion(cursoEncontrado.desc);
-		setFrecuencia(cursoEncontrado.frecuencia);
-		setTipo(cursoEncontrado.tipo);
-		setDuracion(cursoEncontrado.duracion);
-		setCosto(cursoEncontrado.costo);
-	}, []);
+		if (!isLoading) {
+			setNombre(data.nombreCurso);
+			setDescripcion(data.desc);
+			setFrecuencia(data.frecuencia);
+			setTipo(data.tipo);
+			setDuracion(data.duracion);
+			setCosto(data.costo);
+		}
+	}, [data, isLoading]);
 
-	if (!auth.isLoggedIn || auth.userType === "estudiante") {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
+	const { mutate } = useMutation(updateCurso);
+
+	async function fetchCurso() {
+		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
+		console.log(data);
+		return data;
 	}
+	async function updateCurso() {
+		const { data } = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
+			nombreCurso: nombre,
+			desc: descripcion,
+			frecuencia: frecuencia,
+			tipo: tipo,
+			duracion: duracion,
+		});
+		return data;
+	}
+
+	if (isError) {
+		return <div>Error! {error.message}</div>;
+	}
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+	/*let cursoEncontrado = cursos.find((curso) => {
+		return curso.idCurso === cursoId;
+	});*/
+
 	const handleNameChange = (event) => {
 		setNombre(event.target.value);
 	};
@@ -72,14 +100,11 @@ const UpdateCurso = () => {
 	const handleCostoChange = (event) => {
 		setCosto(event.target.value);
 	};
-	const handleCrearCurso = () => {
-		cursoEncontrado.nombreCurso = nombre;
-		cursoEncontrado.costo = costo;
-		cursoEncontrado.tipo = tipo;
-		cursoEncontrado.frecuencia = frecuencia;
-		cursoEncontrado.desc = descripcion;
-		navigate.push(`/${auth.userId}/cursos`);
+	const handleUpdateCurso = () => {
+		mutate();
+		//navigate.push(`/${auth.userId}/cursos`);
 	};
+
 	return (
 		<MDBContainer fluid>
 			<div
@@ -100,7 +125,7 @@ const UpdateCurso = () => {
 			>
 				<MDBCardBody className="p-5 text-center">
 					<h2 style={{ textAlign: "left" }}>Datos del Curso:</h2>
-					<form onSubmit={handleCrearCurso}>
+					<form onSubmit={handleUpdateCurso}>
 						<MDBRow>
 							<MDBCol md="6">
 								<MDBInput

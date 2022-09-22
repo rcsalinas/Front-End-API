@@ -3,7 +3,6 @@ import { AuthContext } from "../context/auth-context";
 
 import { useForm } from "../hooks/form-hook";
 
-
 import { MDBBtn } from "mdb-react-ui-kit";
 import Input from "../components/FormElements/Input";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../util/validators";
@@ -12,7 +11,7 @@ import "./Auth.css";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Redirect } from "react-router-dom";
-import { database_Dummy } from "../util/sharedData";
+
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
@@ -24,10 +23,9 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 import Checkbox from "@mui/material/Checkbox";
 
-const dummy_users = database_Dummy.dummy_users;
-
 const Auth = () => {
 	const auth = useContext(AuthContext);
+
 	const [isLoginMode, setIsLoginMode] = useState(true);
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 	const [tipoUsuario, setTipoUsuario] = useState("estudiante");
