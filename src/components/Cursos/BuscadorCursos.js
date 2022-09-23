@@ -19,8 +19,6 @@ import "./SearchForm.css";
 const BuscadorCursos = (props) => {
 	const { encontrados } = props;
 
-	console.log(encontrados);
-
 	const [cursos, setCursos] = useState([]);
 	const [frecuencia, setFrecuencia] = React.useState("");
 	const [rating, setRating] = React.useState(null);

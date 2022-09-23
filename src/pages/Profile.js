@@ -16,7 +16,7 @@ import { useQuery } from "react-query";
 
 const Profile = () => {
 	const auth = useContext(AuthContext);
-	const { data, error, isError, isLoading } = useQuery(["users", auth.userId], fetchUserPerfil);
+	const { data, error, isError, isLoading } = useQuery(["user", auth.userId], fetchUserPerfil);
 	//const userId = useParams().userId;
 
 	//let identifiedUser;

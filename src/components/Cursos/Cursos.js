@@ -1,14 +1,13 @@
 import React from "react";
-import { AuthContext } from "../../context/auth-context";
-import { useContext } from "react";
+
 import CursoCard from "./CursoCard/CursoCard";
 import "./Cursos.css";
 
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 
 const Cursos = (props) => {
-	const auth = useContext(AuthContext);
-	const { cursos, misCursos, aceptados, finalizados, isLoading } = props;
+	//const auth = useContext(AuthContext);
+	const { cursos, misCursos, isLoading } = props;
 
 	return (
 		<div className="cursos-buscados">
@@ -19,8 +18,8 @@ const Cursos = (props) => {
 					(curso) =>
 						curso.estado && (
 							<CursoCard
-								key={curso.idCurso}
-								id={curso.idCurso}
+								key={curso.id}
+								id={curso.id}
 								title={curso.nombreCurso}
 								image={curso.image}
 								description={curso.desc}

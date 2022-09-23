@@ -37,4 +37,7 @@
 .inputComentario {
 	margin-left: 1%;
 	margin-right: 40%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 2%;
 }

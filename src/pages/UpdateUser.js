@@ -23,13 +23,16 @@ import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
 
 const dummy_users = database_Dummy.dummy_users;
 
 const UpdateUser = () => {
 	let navigate = useHistory();
 	const auth = useContext(AuthContext);
-
+	const queryClient = useQueryClient();
 	const [nombre, setNombre] = useState("");
 	const [apellido, setApellido] = useState("");
 	const [mail, setMail] = useState("");
@@ -45,26 +48,53 @@ const UpdateUser = () => {
 	});
 	const { primario, secundario, universidad } = estudios;
 
-	let identifiedUser;
-	identifiedUser = dummy_users.find((u) => u.id === auth.userId);
+	//let identifiedUser;
+	//identifiedUser = dummy_users.find((u) => u.id === auth.userId);
+
+	const {
+		data: identifiedUser,
+		error,
+		isError,
+		isLoading,
+	} = useQuery(["user", auth.userId], fetchUsuario);
 
 	useEffect(() => {
-		setNombre(identifiedUser.nombre);
-		setApellido(identifiedUser.apellido);
-		setMail(identifiedUser.mail);
-		setTelefono(identifiedUser.celular);
-		if (auth.userType === "estudiante") {
-			setFechaNacimiento(identifiedUser.fechaNacimiento);
-			setEstudiosCursados(identifiedUser.estudiosCursados);
-		} else {
-			setExperiencia(identifiedUser.experiencia);
-			setTitulo(identifiedUser.titulo);
+		if (!isLoading) {
+			setNombre(identifiedUser.nombre);
+			setApellido(identifiedUser.apellido);
+			setMail(identifiedUser.email);
+			setTelefono(identifiedUser.celular);
+			if (auth.userType === "estudiante") {
+				setFechaNacimiento(identifiedUser.fechaNacimiento);
+				setEstudiosCursados(identifiedUser.estudiosCursados);
+			} else {
+				setExperiencia(identifiedUser.experiencia);
+				setTitulo(identifiedUser.titulo);
+			}
 		}
 	}, []);
 
-	if (!auth.isLoggedIn) {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
+	const {
+		mutate,
+		isLoading: isLoadingUpdate,
+		isSuccess,
+	} = useMutation(updateUser, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(["user", auth.userId], identifiedUser);
+			queryClient.invalidateQueries(["user", auth.userId]);
+			queryClient.invalidateQueries("cursos");
+		},
+	});
+
+	async function updateUser(payload) {
+		const { data } = await axios.patch(`http://localhost:8000/users/${auth.userId}`, payload);
+		return data;
+	}
+
+	async function fetchUsuario() {
+		const { data } = await axios.get(`http://localhost:8000/users/${auth.userId}`);
+		console.log(data);
+		return data;
 	}
 
 	const handleNameChange = (event) => {
@@ -110,19 +140,37 @@ const UpdateUser = () => {
 
 	const placeUpdateSubmitHandler = (event) => {
 		event.preventDefault();
-		identifiedUser.nombre = nombre;
-		identifiedUser.apellido = apellido;
-		identifiedUser.mail = mail;
-		identifiedUser.celular = telefono;
+
 		if (auth.userType === "estudiante") {
-			identifiedUser.fechaNacimiento = fechaNacimiento;
-			identifiedUser.estudiosCursados = datosEstudios;
+			mutate({
+				nombre: nombre,
+				apellido: apellido,
+				email: mail,
+				celular: telefono,
+				fechaNacimiento: fechaNacimiento,
+				estudiosCursados: datosEstudios,
+			});
 		} else {
-			identifiedUser.titulo = titulo;
-			identifiedUser.experiencia = experiencia;
+			mutate({
+				nombre: nombre,
+				apellido: apellido,
+				email: mail,
+				celular: telefono,
+				titulo: titulo,
+				experiencia: experiencia,
+			});
 		}
+
 		navigate.push(`/${auth.userId}/perfil`);
 	};
+
+	if (isError) {
+		return <div>Error! {error.message}</div>;
+	}
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
 
 	return (
 		<>

@@ -2,46 +2,67 @@ import React, { useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { useContext } from "react";
 import "./CursoDisplay.css";
-import Rating from "@mui/material/Rating";
+
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useHistory, NavLink } from "react-router-dom";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
 
-import { Card } from "@mui/material";
+import Rating from "@mui/material/Rating";
+
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
+import { Card } from "@mui/material";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
-	const [palabras, setPalabras] = useState("");
-
-	const {
-		cursoEncontrado,
-		handleEliminar,
-		handleFinalizar,
-		handleDespublicar,
-		handlePublicar,
-		handleRatingChange,
-		value,
-		encontradoRating,
-		comentarios,
-		handleComentar,
-		estadoCurso,
-	} = props;
+	const queryClient = useQueryClient();
 	const auth = useContext(AuthContext);
+	const [value, setValue] = React.useState(0);
+	const [display, setDisplay] = React.useState({});
+	const [palabras, setPalabras] = useState("");
+	const { cursoEncontrado, handleEliminar, handlePublicar, estadoCursoAlumno } = props;
+
+	const { mutate, isLoading: isLoadingPost } = useMutation(submitReview, {
+		onSuccess: (data) => {
+			//queryClient.setQueryData(["calificacion", auth.userId], identifiedUser);
+			//queryClient.invalidateQueries(["user", auth.userId]);
+			//queryClient.invalidateQueries("cursos");
+		},
+	});
+
+	async function submitReview(payload) {
+		const { data } = await axios.post(`http://localhost:8000/calificaciones`, payload);
+		return data;
+	}
+
+	async function updateEstadoCurso(payload) {
+		const { data } = await axios.patch(`http://localhost:8000/users`, payload);
+		return data;
+	}
 
 	let estaEnCurso = cursoEncontrado.alumnos.includes(auth.userId);
 
 	const handleCommentChange = (event) => {
 		setPalabras(event.target.value);
 	};
+	const handleReview = () => {
+		setDisplay({ display: "none" });
+		mutate({
+			alumno: `${auth.userId}`,
+			curso: `${cursoEncontrado.id}`,
+			comentario: palabras,
+			rating: value,
+		});
+	};
 
-	let yaComento = comentarios.find((c) => {
-		return c.alumno === auth.userId && c.curso === cursoEncontrado.idCurso;
-	});
-
+	const handleFinalizar = () => {
+		console.log("finalizar"); //requiere logica de mongoose
+		navigate.push(`/${auth.userId}/cursos`);
+	};
 	return (
 		<>
 			<Card
@@ -66,50 +87,48 @@ const CursoDisplay = (props) => {
 				</div>
 			</Card>
 
-			<div className="comentarios">
-				<h2 className="fw-bold">Comentarios: </h2>
-				{comentarios.length !== 0 &&
-					comentarios.map((comentario, i) => {
-						return <p key={i}>{comentario.alumno + ": " + comentario.contenido}</p>;
-					})}
-				{comentarios.length === 0 && <h3>No hay comentarios para este curso</h3>}
-			</div>
-			{estaEnCurso && auth.isLoggedIn && auth.userType === "estudiante" && (
-				<Box
-					sx={{
-						"& > legend": { mt: 2 },
-					}}
-					style={{ marginLeft: "1%" }}
-				>
-					<Typography component="legend">
-						{encontradoRating ? "Modificar Rating: " : "Calificar Curso: "}
-					</Typography>
-					<Rating name="simple-controlled" value={value} onChange={handleRatingChange} />
-				</Box>
-			)}
+			{estaEnCurso && (
+				<Card sx={display}>
+					<div className="inputComentario">
+						<MDBTextArea
+							label="Comentario"
+							id="textAreaExample"
+							rows={4}
+							columns={2}
+							onChange={handleCommentChange}
+							value={palabras}
+						/>
 
-			{auth.userType === "estudiante" && estaEnCurso && !yaComento && (
-				<div className="inputComentario">
-					<MDBTextArea
-						label="Comentario"
-						id="textAreaExample"
-						rows={4}
-						columns={2}
-						onChange={handleCommentChange}
-						value={palabras}
-					/>
-					<MDBBtn rounded onClick={() => handleComentar(palabras)}>
-						Comentar
-					</MDBBtn>
-				</div>
+						<Typography component="legend">Calificacion</Typography>
+						<Rating
+							name="simple-controlled"
+							value={value}
+							onChange={(event, newValue) => {
+								setValue(newValue);
+							}}
+						/>
+
+						<MDBBtn
+							rounded
+							style={{ width: "20%", marginBottom: "2%", marginTop: "2%" }}
+							onClick={handleReview}
+						>
+							Submit
+						</MDBBtn>
+					</div>
+				</Card>
 			)}
 
 			<div className="botones">
-				{auth.isLoggedIn && estaEnCurso && auth.userType === "estudiante" && estadoCurso && (
-					<Button variant="contained" color="error" onClick={handleFinalizar}>
-						Finalizar Curso
-					</Button>
-				)}
+				{auth.isLoggedIn &&
+					estaEnCurso &&
+					auth.userType === "estudiante" &&
+					estadoCursoAlumno === "aceptado" && (
+						<Button variant="contained" color="error" onClick={handleFinalizar}>
+							Finalizar Curso
+						</Button>
+					)}
+				{estadoCursoAlumno === "finalizado" && <h1>El curso finalizo!</h1>}
 				{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
 					<NavLink
 						to={`/cursos/${cursoEncontrado.idCurso}/ContratacionPage`}
@@ -139,8 +158,8 @@ const CursoDisplay = (props) => {
 								Eliminar
 							</Button>
 							{cursoEncontrado.estado && (
-								<Button variant="outlined" onClick={handleDespublicar}>
-									Despublicar
+								<Button variant="outlined" onClick={handleFinalizar}>
+									Finalizar
 								</Button>
 							)}
 							{!cursoEncontrado.estado && (

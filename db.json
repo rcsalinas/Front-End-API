@@ -34,7 +34,7 @@
       "password": "$2a$10$x4nQ5j77kTbpla7YcYRhjeAxuu45v/tNNKNtkEu2jtLfmcJZjmhce",
       "id": "profesor1",
       "tipo": "profesor",
-      "nombre": "Maria",
+      "nombre": "Gabriela",
       "apellido": "Marcela",
       "celular": "1234",
       "titulo": "licenciado",
@@ -98,8 +98,7 @@
       "duracion": "1 mes",
       "frecuencia": "mensual",
       "tipo": "grupal",
-      "costo": 12.99,
-      "calificacion": 1
+      "costo": 12.99
     },
     {
       "id": "curso2",
@@ -114,8 +113,7 @@
       "duracion": "2 meses",
       "frecuencia": "mensual",
       "tipo": "individual",
-      "costo": 14.99,
-      "calificacion": 2
+      "costo": 14.99
     },
     {
       "id": "curso3",
@@ -128,13 +126,12 @@
       "duracion": "5 dias",
       "frecuencia": "semanal",
       "tipo": "individual",
-      "costo": 2.99,
-      "calificacion": 4
+      "costo": 2.99
     },
     {
       "id": "curso4",
       "estado": true,
-      "nombreCurso": "Statistics102",
+      "nombreCurso": "Stats101",
       "image": "https://www.apwa.net/images/PWM101.jpg",
       "profesor": "profesor1",
       "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
@@ -144,56 +141,40 @@
       "duracion": "1 mes",
       "frecuencia": "semanal",
       "tipo": "individual",
-      "costo": 12.99,
-      "calificacion": 5
+      "costo": 12.99
     }
   ],
   "calificaciones": [
     {
-      "id": "rating1",
-      "alumno": "alu1",
-      "curso": "curso2",
-      "valor": 5
-    },
-    {
-      "id": "rating2",
-      "alumno": "alu1",
-      "curso": "curso4",
-      "valor": 4
-    }
-  ],
-  "comentarios": [
-    {
-      "id": "comentario1",
+      "id": "calificacion1",
       "alumno": "alu1",
       "curso": "curso1",
-      "contenido": "Curso muy malo",
-      "estado": false
+      "comentario": "me gusto mucho, gran profesor",
+      "rating": 4
     },
     {
-      "id": "comentario2",
       "alumno": "alu1",
       "curso": "curso2",
-      "contenido": "Curso muy bueno",
-      "estado": true
+      "comentario": "Curso my entretenido",
+      "rating": 3,
+      "id": "tAZ4zt6"
     },
     {
-      "id": "comentario3",
-      "alumno": "alu1",
-      "curso": "curso4",
-      "contenido": "Curso promedio y aburrido",
-      "estado": false
-    }
-  ],
-  "notificaciones": [
-    {
-      "id": "notificacion1",
-      "mensaje": "Borrado por mensaje ofensivo",
       "alumno": "alu1",
       "curso": "curso1",
-      "contenidoComentario": "El curso no sirve para nada"
+      "comentario": "Hola",
+      "rating": 4,
+      "id": "NXHzpNd"
+    },
+    {
+      "alumno": "alu1",
+      "curso": "curso1",
+      "comentario": "hsdfhashfas",
+      "rating": 3,
+      "id": "TcbS7dU"
     }
   ],
+  "notificaciones": [],
   "contrataciones": [
     {
       "id": "contratacion1",

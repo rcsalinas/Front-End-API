@@ -62,6 +62,7 @@ const UpdateCurso = () => {
 		onSuccess: (data) => {
 			queryClient.setQueryData(["curso", cursoId], data);
 			queryClient.invalidateQueries(["curso", cursoId]);
+			queryClient.invalidateQueries(["cursos", cursoId]);
 		},
 	});
 
@@ -85,7 +86,7 @@ const UpdateCurso = () => {
 		return <div>Error! {error.message}</div>;
 	}
 
-	if (isLoading) {
+	if (isLoading || isLoadingUpdate) {
 		return <LoadingSpinner />;
 	}
 	/*let cursoEncontrado = cursos.find((curso) => {
