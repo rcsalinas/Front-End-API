@@ -6,7 +6,7 @@ import LoadingSpinner from "./UIElements/LoadingSpinner";
 import CursoCard from "./Cursos/CursoCard/CursoCard";
 
 const Auxiliar = (props) => {
-	const { cursoId, cursoEstado } = props;
+	const { cursoId } = props;
 
 	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], fetchCursoPorId);
 
@@ -30,7 +30,6 @@ const Auxiliar = (props) => {
 				price={data.costo}
 				teacher={data.profesor}
 				rating={data.calificacion}
-				estado={cursoEstado}
 			/>
 		);
 	} else {

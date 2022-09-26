@@ -1,6 +1,5 @@
 import React from "react";
 
-import { database_Dummy } from "../util/sharedData";
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 
@@ -8,105 +7,127 @@ import "./NotificacionesProfesor.css";
 
 import { MDBBtn } from "mdb-react-ui-kit";
 import { MDBTextArea } from "mdb-react-ui-kit";
-import { Redirect } from "react-router-dom";
+
+import axios from "axios";
+import { useQueryClient, useQuery, useMutation } from "react-query";
 
 import { MDBCard, MDBCardHeader, MDBCardBody, MDBCardTitle, MDBCardText } from "mdb-react-ui-kit";
-import { useEffect } from "react";
-
-let contrataciones = database_Dummy.contrataciones_dummy;
-let cursos = database_Dummy.cursos_dummy;
-let usuarios = database_Dummy.dummy_users;
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 const ContratacionesProfesor = () => {
 	const auth = useContext(AuthContext);
-	const [contratacionesDisplay, setContratacionesDisplay] = React.useState([]);
+	const queryClient = useQueryClient();
+	const {
+		data: contrataciones,
+		error: errContrataciones,
+		isError: isErrContrataciones,
+		isLoading: isLoadingContrataciones,
+	} = useQuery(["contrataciones", auth.userId], fetchContrataciones, {});
 
-	useEffect(() => {
-		setContratacionesDisplay(contrataciones);
-	}, []);
+	const {
+		mutate: acceptContratacion,
+		isLoading: isLoadingCambiarContratacion,
+		isSuccess: isSuccessCambiarContratacion,
+	} = useMutation(aceptarContratacion, {
+		onSuccess: (data) => {
+			queryClient.invalidateQueries(["contrataciones", auth.userId]);
+		},
+	});
+	const {
+		mutate: rejectContratacion,
+		isLoading: isLoadingReject,
+		isSuccess: isSuccessReject,
+	} = useMutation(rechazarContratacion, {
+		onSuccess: (data) => {
+			queryClient.invalidateQueries(["contrataciones", auth.userId]);
+		},
+	});
 
-	if (!auth.isLoggedIn || auth.userType === "estudiante") {
-		return <Redirect to="/auth" />;
+	async function fetchContrataciones() {
+		const { data } = await axios.get(
+			`http://localhost:8000/contrataciones?profesor=${auth.userId}`
+		);
+		console.log(data);
+		return data;
 	}
 
-	const handleAceptar = (c) => {
-		let curso = cursos.find((cur) => {
-			return cur.idCurso === c.curso;
+	async function aceptarContratacion(id) {
+		const { data } = await axios.patch(`http://localhost:8000/contrataciones/${id}`, {
+			estadoContratacion: true,
 		});
-		curso.alumnos.push(c.alumno);
-		let alumno = usuarios.find((al) => {
-			return al.id === c.alumno;
+		return data;
+	}
+	async function rechazarContratacion(id) {
+		const { data } = await axios.delete(`http://localhost:8000/contrataciones/${id}`, {
+			estadoContratacion: true,
 		});
-		alumno.cursos.push({ curso: `${c.curso}`, estado: "aceptado" });
+		return data;
+	}
 
-		let prev = contrataciones.filter((cont) => {
-			return cont.id !== c.id;
-		});
-		setContratacionesDisplay(prev);
-		contrataciones = contrataciones.filter((cont) => {
-			return cont.id !== c.id;
-		});
+	const handleAceptar = (id) => {
+		acceptContratacion(id);
+	};
+	const handleCancelar = (id) => {
+		rejectContratacion(id);
+	};
 
-		console.log(alumno);
-	};
-	const handleCancelar = (c) => {
-		let prev = contrataciones.filter((cont) => {
-			return cont.id !== c.id;
-		});
-		setContratacionesDisplay(prev);
-		contrataciones = contrataciones.filter((cont) => {
-			return cont.id !== c.id;
-		});
-	};
+	if (isLoadingContrataciones || isLoadingCambiarContratacion || isLoadingReject) {
+		return <LoadingSpinner />;
+	}
+	if (isErrContrataciones) {
+		return <div>Error! {errContrataciones.message}</div>;
+	}
 
 	return (
 		<div className="cuerpo">
 			<h1 className="fw-bold">Contrataciones Pendientes de Aprobacion:</h1>
 
-			{contratacionesDisplay.map((c) => {
-				return (
-					<MDBCard>
-						<MDBCardHeader tag="h2">Curso: {c.curso}</MDBCardHeader>
+			{contrataciones.map((c) => {
+				if (!c.estadoContratacion) {
+					return (
+						<MDBCard>
+							<MDBCardHeader tag="h2">Curso: {c.curso}</MDBCardHeader>
 
-						<MDBCardBody>
-							<MDBCardTitle>Motivo de solicitud</MDBCardTitle>
-							<MDBCardText>{c.motivacion}</MDBCardText>
-							<MDBCardTitle>Datos del alumno:</MDBCardTitle>
-							<MDBTextArea
-								value={
-									"Email: " +
-									c.mail +
-									"\nTelefono: " +
-									c.telefono +
-									"\nHorario de Preferencia: " +
-									c.horario
-								}
-								id="textAreaExample"
-								rows={4}
-								readOnly
-							/>
+							<MDBCardBody>
+								<MDBCardTitle>Motivo de solicitud</MDBCardTitle>
+								<MDBCardText>{c.motivacion}</MDBCardText>
+								<MDBCardTitle>Datos del alumno:</MDBCardTitle>
+								<MDBTextArea
+									value={
+										"Email: " +
+										c.mail +
+										"\nTelefono: " +
+										c.telefono +
+										"\nHorario de Preferencia: " +
+										c.horario
+									}
+									id="textAreaExample"
+									rows={4}
+									readOnly
+								/>
 
-							<MDBBtn
-								outline
-								rounded
-								className="mx-2"
-								color="success"
-								onClick={() => handleAceptar(c)}
-							>
-								Aceptar
-							</MDBBtn>
-							<MDBBtn
-								outline
-								rounded
-								className="mx-2"
-								color="danger"
-								onClick={() => handleCancelar(c)}
-							>
-								Rechazar
-							</MDBBtn>
-						</MDBCardBody>
-					</MDBCard>
-				);
+								<MDBBtn
+									outline
+									rounded
+									className="mx-2"
+									color="success"
+									onClick={() => handleAceptar(c.id)}
+								>
+									Aceptar
+								</MDBBtn>
+								<MDBBtn
+									outline
+									rounded
+									className="mx-2"
+									color="danger"
+									onClick={() => handleCancelar(c.id)}
+								>
+									Rechazar
+								</MDBBtn>
+							</MDBCardBody>
+						</MDBCard>
+					);
+				}
 			})}
 		</div>
 	);

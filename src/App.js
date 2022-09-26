@@ -80,7 +80,7 @@ function App() {
 					<Route path="/cursos/nuevo" exact>
 						<CreateCursoPage />
 					</Route>
-					<Route path="/cursos/:cursoId/ContratacionPage" exact>
+					<Route path="/cursos/:userId/:cursoId/ContratacionPage" exact>
 						<ContratacionPage />
 					</Route>
 					<Route path="/:userId/notificaciones" exact>

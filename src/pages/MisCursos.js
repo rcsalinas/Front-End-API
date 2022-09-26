@@ -17,21 +17,46 @@ const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
 
-	const { data, error, isError, isLoading } = useQuery(["users", userId], fetchUser, {
-		refetchOnMount: true,
-		refetchOnWindowFocus: true,
+	const {
+		data: cursosProfe,
+		error: errorCursosProfe,
+		isError: isErrorCursosProfe,
+		isLoading: isLoadingCursosProfe,
+	} = useQuery(["cursos", auth.userId], fetchCursosProfesor, {
+		enabled: auth.userType === "profesor",
 	});
 
-	async function fetchUser() {
-		const { data } = await axios.get(`http://localhost:8000/users/${userId}`);
+	const {
+		data: cursosEstudiante,
+		error: errorCursosEstudiante,
+		isError: isErrorCursosEstudiante,
+		isLoading: isLoadingCursosEstudiante,
+	} = useQuery(["cursos", auth.userId], fetchCursosEstudiante, {
+		enabled: auth.userType === "estudiante",
+	});
+
+	async function fetchCursosProfesor() {
+		const { data } = await axios.get(`http://localhost:8000/cursos?profesor${userId}`);
+		return data;
+	}
+	async function fetchCursosEstudiante() {
+		const { data } = await axios.get(
+			`http://localhost:8000/contrataciones?estudiante${userId}`
+		);
 		return data;
 	}
 
-	if (isLoading) {
+	if (isLoadingCursosProfe) {
 		return <LoadingSpinner />;
 	}
-	if (isError) {
-		return <div>Error! {error.message}</div>;
+	if (isErrorCursosProfe) {
+		return <div>Error! {errorCursosProfe.message}</div>;
+	}
+	if (isLoadingCursosEstudiante) {
+		return <LoadingSpinner />;
+	}
+	if (isErrorCursosEstudiante) {
+		return <div>Error! {errorCursosEstudiante.message}</div>;
 	}
 	return (
 		<>
@@ -39,19 +64,16 @@ const MisCursos = () => {
 				Cursos del {auth.userType === "profesor" ? "Profesor" : "Estudiante"}:
 			</h1>
 			<div className="cursos-buscados">
-				{data.cursos.map((curso) => {
-					if (auth.userType === "estudiante") {
-						return (
-							<Auxiliar
-								key={curso.curso}
-								cursoId={curso.curso}
-								cursoEstado={curso.estado}
-							/>
-						);
-					} else {
-						return <Auxiliar key={curso} cursoId={curso} />;
-					}
-				})}
+				{auth.userType === "profesor" &&
+					cursosProfe.map((curso) => {
+						return <Auxiliar key={curso.id} cursoId={curso.id} />;
+					})}
+				{auth.userType === "estudiante" &&
+					cursosEstudiante.map((curso) => {
+						if (curso.estadoContratacion) {
+							return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
+						}
+					})}
 			</div>
 
 			{auth.isLoggedIn && auth.userType === "profesor" && (
@@ -66,3 +88,6 @@ const MisCursos = () => {
 };
 
 export default MisCursos;
+
+// si es profesor simplemente hago un fetch de cursos donde su profesor sea profesor
+// si es alumno hago un fetch de las contrataciones donde alumno sea alumno

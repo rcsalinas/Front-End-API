@@ -18,113 +18,73 @@ import {
 } from "mdb-react-ui-kit";
 import { MDBCard, MDBCardHeader, MDBCardBody, MDBCardTitle, MDBCardText } from "mdb-react-ui-kit";
 
-import "./NotificacionesProfesor.css";
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
-let comentarios = database_Dummy.comentarios_dummy;
-let notificaciones = database_Dummy.notificaciones_dummy;
+import "./NotificacionesProfesor.css";
 
 const NotificacionesProfesor = () => {
 	const auth = useContext(AuthContext);
-	const [comentariosDisplay, setComentariosDisplay] = React.useState([]);
-	const [basicModal, setBasicModal] = React.useState(false);
-	const [mensajeBorrado, setMensajeBorrado] = React.useState("");
-	const [comentario, setComentario] = React.useState("");
-	const [notis, setNotisDisplay] = React.useState("");
 
-	React.useEffect(() => {
-		setComentariosDisplay(comentarios);
-		setNotisDisplay(notificaciones);
-	}, []);
+	const {
+		data: notificaciones,
+		error: errNotis,
+		isError: isErrorNotis,
+		isLoading: isLoadingNotis,
+	} = useQuery(["contrataciones", auth.userId], fetchNotificaciones, {
+		enabled: auth.userType === "estudiante",
+	});
 
-	if (!auth.isLoggedIn) {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
+	const {
+		data: comentarios,
+		error: errComments,
+		isError: isErrorComments,
+		isLoading: isLoadingComments,
+	} = useQuery(["comentarios", auth.userId], fetchComentarios, {
+		enabled: auth.userType === "profesor",
+	});
+
+	async function fetchNotificaciones() {
+		const { data } = await axios.get(
+			`http://localhost:8000/notificaciones?alumno=${auth.userId}`
+		);
+		return data;
+	}
+
+	async function fetchComentarios() {
+		const { data } = await axios.get(
+			`http://localhost:8000/calificaciones?profesor=${auth.userId}`
+		);
+		return data;
 	}
 
 	const handleAprobar = (elemento) => {
 		elemento.estado = true;
-
-		let prev = comentariosDisplay.filter((comentario) => {
-			return comentario.id !== elemento.id;
-		});
-
-		setComentariosDisplay(prev);
-	};
-
-	const toggleShow = (c) => {
-		setBasicModal(!basicModal);
-		setComentario(c);
 	};
 
 	const handleBorrarNotificacion = (not) => {
-		let prev = notis.filter((n) => {
-			return n.id !== not.id;
-		});
-
-		setNotisDisplay(prev);
-
 		notificaciones = notificaciones.filter((c) => {
 			return c.id !== not.id;
 		});
 	};
 
-	const handleBorrar = () => {
-		notificaciones.push({
-			id: `${notificaciones.length + 1}`,
-			mensaje: mensajeBorrado,
-			alumno: `${comentario.alumno}`,
-			curso: `${comentario.curso}`,
-			contenidoComentario: `${comentario.contenido}`,
-		});
+	const handleBorrar = () => {};
 
-		let prev = comentariosDisplay.filter((c) => {
-			return c.id !== comentario.id;
-		});
+	const handleMensajeBorradoChange = (event) => {};
 
-		setComentariosDisplay(prev);
-
-		comentarios = comentarios.filter((c) => {
-			return c.id !== comentario.id;
-		});
-
-		setBasicModal(!basicModal);
-	};
-
-	const handleMensajeBorradoChange = (event) => {
-		setMensajeBorrado(event.target.value);
-	};
+	if (isLoadingComments || isLoadingNotis) {
+		return <LoadingSpinner />;
+	}
+	if (errNotis || errComments) {
+		return <div>Error! {errComments ? errComments.message : errNotis}</div>;
+	}
 
 	if (auth.userType === "profesor") {
 		return (
 			<div className="cuerpo">
-				<MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
-					<MDBModalDialog>
-						<MDBModalContent>
-							<MDBModalHeader>
-								<MDBModalTitle>Modal title</MDBModalTitle>
-							</MDBModalHeader>
-							<MDBModalBody>
-								<h6>Indique el motivo de borrado:</h6>
-								<MDBTextArea
-									label="Message"
-									value={mensajeBorrado}
-									onChange={handleMensajeBorradoChange}
-									id="textAreaExample"
-									rows={4}
-								/>
-							</MDBModalBody>
-
-							<MDBModalFooter>
-								<MDBBtn color="secondary" onClick={toggleShow}>
-									Close
-								</MDBBtn>
-								<MDBBtn onClick={handleBorrar}>Save changes</MDBBtn>
-							</MDBModalFooter>
-						</MDBModalContent>
-					</MDBModalDialog>
-				</MDBModal>
 				<h1 className="fw-bold">Comentarios Pendientes de Aprobacion</h1>
-				{comentariosDisplay.map((comentario) => {
+				{comentarios.map((comentario) => {
 					return (
 						comentario.estado === false && (
 							<MDBCard className="tarjeta">
@@ -134,7 +94,7 @@ const NotificacionesProfesor = () => {
 									<MDBCardTitle>Estudiante: {comentario.alumno}</MDBCardTitle>
 
 									<MDBTextArea
-										value={comentario.contenido}
+										value={comentario.comentario}
 										id="textAreaExample"
 										rows={4}
 										readOnly
@@ -147,13 +107,7 @@ const NotificacionesProfesor = () => {
 									>
 										Aprobar
 									</MDBBtn>
-									<MDBBtn
-										outline
-										rounded
-										className="mx-2"
-										color="danger"
-										onClick={() => toggleShow(comentario)}
-									>
+									<MDBBtn outline rounded className="mx-2" color="danger">
 										Borrar
 									</MDBBtn>
 								</MDBCardBody>

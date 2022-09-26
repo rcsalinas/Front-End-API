@@ -15,20 +15,18 @@ import {
 	MDBInput,
 	MDBTextArea,
 } from "mdb-react-ui-kit";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
-import { database_Dummy } from "../util/sharedData";
-
-const cursos = database_Dummy.cursos_dummy;
-const usuarios = database_Dummy.dummy_users;
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
 
 const CreateCursoPage = () => {
 	let navigate = useHistory();
-
+	const queryClient = useQueryClient();
 	const auth = useContext(AuthContext);
 
 	const [nombre, setNombre] = useState("");
@@ -38,10 +36,19 @@ const CreateCursoPage = () => {
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
 
-	if (!auth.isLoggedIn || auth.userType === "estudiante") {
-		//sino esta logueado no puede ver perfil
-		return <Redirect to="/auth" />;
+	const { mutate, isLoading, isError, error } = useMutation(crearCurso, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["user", auth.userId]);
+			queryClient.invalidateQueries(["cursos"]);
+			navigate.push("/");
+		},
+	});
+
+	async function crearCurso(payload) {
+		const { data } = await axios.post(`http://localhost:8000/cursos/`, payload);
+		return data;
 	}
+
 	const handleNameChange = (event) => {
 		setNombre(event.target.value);
 	};
@@ -63,8 +70,8 @@ const CreateCursoPage = () => {
 
 	const handleCrearCurso = (event) => {
 		event.preventDefault();
-		database_Dummy.cursos_dummy.push({
-			idCurso: `curso${cursos.length + 10}`,
+
+		mutate({
 			estado: true,
 			nombreCurso: nombre,
 			image: "https://www.apwa.net/images/PWM101.jpg",
@@ -73,18 +80,21 @@ const CreateCursoPage = () => {
 			alumnos: [],
 			duracion: duracion,
 			frecuencia: frecuencia,
+			calificaciones: [],
 			tipo: tipo,
 			costo: costo,
-			calificacion: 5,
+			rating: 5,
 		});
-		database_Dummy.dummy_users
-			.find((usuarios) => {
-				return usuarios.id === auth.userId;
-			})
-			.cursos.push(`curso${cursos.length + 1}`);
-
-		navigate.push("/");
 	};
+
+	if (isError) {
+		return <div>Error! {error.message}</div>;
+	}
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
 	return (
 		<MDBContainer fluid>
 			<div

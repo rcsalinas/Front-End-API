@@ -56,6 +56,8 @@ const CursoDisplay = (props) => {
 			curso: `${cursoEncontrado.id}`,
 			comentario: palabras,
 			rating: value,
+			profesorCurso: `${cursoEncontrado.profesor}`,
+			estado: false,
 		});
 	};
 
@@ -131,7 +133,7 @@ const CursoDisplay = (props) => {
 				{estadoCursoAlumno === "finalizado" && <h1>El curso finalizo!</h1>}
 				{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
 					<NavLink
-						to={`/cursos/${cursoEncontrado.idCurso}/ContratacionPage`}
+						to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.idCurso}/ContratacionPage`}
 						style={{ textDecoration: "none" }}
 					>
 						<Button variant="contained" color="success">

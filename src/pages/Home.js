@@ -16,7 +16,10 @@ const mainFeaturedPost = {
 
 const Home = () => {
 	const auth = useContext(AuthContext);
-	const { data, error, isError, isLoading, isSuccess } = useQuery("cursos", fetchCursos);
+	const { data, error, isError, isLoading, isSuccess } = useQuery(["cursos"], fetchCursos, {
+		refetchOnMount: true,
+		refetchOnWindowFocus: true,
+	});
 
 	async function fetchCursos() {
 		const { data } = await axios.get(`http://localhost:8000/cursos`);

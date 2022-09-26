@@ -223,7 +223,7 @@ const Auth = () => {
 
 				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
 			} catch (err) {
-				console.log(err);
+				console.log(err.message);
 			}
 		}
 

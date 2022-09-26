@@ -82,7 +82,7 @@ const UpdateUser = () => {
 		onSuccess: (data) => {
 			queryClient.setQueryData(["user", auth.userId], identifiedUser);
 			queryClient.invalidateQueries(["user", auth.userId]);
-			queryClient.invalidateQueries("cursos");
+			queryClient.invalidateQueries(["cursos"]);
 		},
 	});
 

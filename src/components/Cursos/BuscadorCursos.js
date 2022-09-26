@@ -114,7 +114,7 @@ const BuscadorCursos = (props) => {
 			let encontrados2 = myFilter(filters);
 			setCursos(encontrados2);
 		}
-	}, [tipoClase, searchVal, rating, frecuencia, filters]);
+	}, [tipoClase, searchVal, rating, frecuencia, filters, encontrados]);
 
 	return (
 		<>

@@ -15,22 +15,48 @@ import {
 	MDBIcon,
 } from "mdb-react-ui-kit";
 import { MDBTextArea } from "mdb-react-ui-kit";
-
-import { database_Dummy } from "../util/sharedData";
-
-let contrataciones = database_Dummy.contrataciones_dummy;
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 const ContratacionPage = () => {
 	let navigate = useHistory();
+	const queryClient = useQueryClient();
 	const [telefono, setTelefono] = React.useState("");
 	const [mail, setMail] = React.useState("");
 	const [motivacion, setMotivacion] = React.useState("");
 	const [horario, setHorario] = React.useState("");
 	const auth = useContext(AuthContext);
 	const cursoId = useParams().cursoId;
+	const profesorId = useParams().userId;
 
-	if (!auth.isLoggedIn || auth.userType === "profesor") {
-		return <Redirect to="/auth" />;
+	const {
+		data: contrataciones,
+		error: errorC,
+		isError: isErrorC,
+		isLoading: isLoadingC,
+		isSuccess,
+	} = useQuery(["contrataciones"], fetchContrataciones, {
+		refetchOnMount: true,
+		refetchOnWindowFocus: true,
+	});
+
+	async function fetchContrataciones() {
+		const { data } = await axios.get(`http://localhost:8000/contrataciones`);
+		return data;
+	}
+
+	const { mutate, isLoading, isError, error } = useMutation(crearContratacion, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["user", auth.userId]);
+			queryClient.invalidateQueries(["contrataciones"]);
+			navigate.push("/");
+		},
+	});
+
+	async function crearContratacion(payload) {
+		const { data } = await axios.post(`http://localhost:8000/contrataciones/`, payload);
+		return data;
 	}
 
 	const handleSubmit = (event) => {
@@ -41,23 +67,28 @@ const ContratacionPage = () => {
 		});
 
 		if (!found) {
-			contrataciones.push({
+			mutate({
 				id: `contratacion${contrataciones.length + 1}`,
+				estadoContratacion: false,
+				estadoCurso: true,
 				motivacion: `${motivacion}`,
 				alumno: `${auth.userId}`,
 				curso: `${cursoId}`,
+				profesor: `${profesorId}`,
 				mail: `${mail}`,
 				telefono: `${telefono}`,
 				horario: `${horario}`,
 			});
-			console.log(contrataciones);
 		} else {
 			alert("Ya hizo uno solicitud para este curso. Espere una respuesta!");
 		}
-
-		navigate.push("/");
 	};
-
+	if (isLoading || isLoadingC) {
+		return <LoadingSpinner />;
+	}
+	if (isError || isErrorC) {
+		return <div>Error! {error.message}</div>;
+	}
 	const handleTelefonoChange = (event) => {
 		setTelefono(event.target.value);
 	};
