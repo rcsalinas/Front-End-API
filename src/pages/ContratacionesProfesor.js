@@ -58,9 +58,7 @@ const ContratacionesProfesor = () => {
 		return data;
 	}
 	async function rechazarContratacion(id) {
-		const { data } = await axios.delete(`http://localhost:8000/contrataciones/${id}`, {
-			estadoContratacion: true,
-		});
+		const { data } = await axios.delete(`http://localhost:8000/contrataciones/${id}`);
 		return data;
 	}
 
