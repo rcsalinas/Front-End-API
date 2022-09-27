@@ -16,8 +16,6 @@ const CursoPage = () => {
 	const auth = useContext(AuthContext);
 	const cursoId = useParams().cursoId;
 
-	const [estadoCurso, setEstadoCurso] = React.useState("");
-
 	const {
 		data: cursoEncontrado,
 		error: errorFetchCurso,
@@ -26,19 +24,11 @@ const CursoPage = () => {
 	} = useQuery(["curso", cursoId], fetchCursoPorId); // me traigo el curso
 
 	const {
-		data: usuarioEncontrado,
-		error: errorFetchUsuario,
-		isErrorFetchUsuario,
-		isLoading: isLoadingUser,
-	} = useQuery(["user", auth.userId], fetchUser, {
-		enabled: auth.isLoggedIn && auth.userType === "estudiante",
-		onSuccess: (usuarioEncontrado) => {
-			let cursoUsuario = usuarioEncontrado.cursos.find((c) => {
-				return c.curso === cursoId;
-			});
-			setEstadoCurso(cursoUsuario.estado);
-		},
-	});
+		data: contratacion,
+		error: errorFetchContratacion,
+		isError: isErrorFetchContratacion,
+		isLoading: isLoadingContratacion,
+	} = useQuery(["contrataciones", auth.userId], fetchContratacion, { enabled: auth.isLoggedIn }); // me traigo la contratacion
 
 	/*const {
 		mutate:deleteCurso,
@@ -57,44 +47,38 @@ const CursoPage = () => {
 		return data;
 	}
 
-	async function fetchUser() {
-		const { data } = await axios.get(`http://localhost:8000/users/${auth.userId}`);
-
-		return data;
+	async function fetchContratacion() {
+		if (auth.userType === "estudiante") {
+			const { data } = await axios.get(
+				`http://localhost:8000/contrataciones?alumno=${auth.userId}&curso=${cursoId}`
+			);
+			return data;
+		} else {
+			const { data } = await axios.get(
+				`http://localhost:8000/contrataciones?profesor=${auth.userId}&curso=${cursoId}`
+			);
+			return data;
+		}
 	}
 
-	const handleEliminar = () => {
-		//requiere logica de mongoose porque al eliminaree deberia de eliminarse la referencia en el usuario tambien
-		navigate.push(`/${auth.userId}/cursos`);
-	}; //este va a ser un post con request a eleminar el curso
-
-	const handlePublicar = (accion) => {
-		//requiere logica de mongoose ya que es la accion inversa de finalizar es cambiarle el estado en alumno y curso
-		navigate.push("/");
-	};
-
-	if (isErrorFetchCurso || isErrorFetchUsuario) {
+	if (isErrorFetchCurso || isErrorFetchContratacion) {
 		return (
 			<div>
-				Error! {isErrorFetchUsuario ? errorFetchUsuario.message : errorFetchCurso.message}
+				Error!
+				{isErrorFetchContratacion
+					? errorFetchContratacion.message
+					: errorFetchCurso.message}
 			</div>
 		);
 	}
 
 	//aqui voy a traer el usuario segun el id y le paso los datos a el componente
 
-	if (isLoadingUser || isLoadingCurso) {
+	if (isLoadingCurso || isLoadingContratacion) {
 		return <LoadingSpinner />;
 	}
 
-	return (
-		<CursoDisplay
-			cursoEncontrado={cursoEncontrado}
-			handleEliminar={handleEliminar}
-			handlePublicar={handlePublicar}
-			estadoCursoAlumno={estadoCurso}
-		/>
-	);
+	return <CursoDisplay cursoEncontrado={cursoEncontrado} contratacion={contratacion} />;
 };
 //Producto y comentarios
 export default CursoPage;

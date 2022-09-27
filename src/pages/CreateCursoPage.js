@@ -83,7 +83,7 @@ const CreateCursoPage = () => {
 			calificaciones: [],
 			tipo: tipo,
 			costo: costo,
-			rating: 5,
+			calificacion: 5,
 		});
 	};
 

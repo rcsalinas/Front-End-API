@@ -36,7 +36,7 @@ const MisCursos = () => {
 	});
 
 	async function fetchCursosProfesor() {
-		const { data } = await axios.get(`http://localhost:8000/cursos?profesor${userId}`);
+		const { data } = await axios.get(`http://localhost:8000/cursos?profesor=${userId}`);
 		return data;
 	}
 	async function fetchCursosEstudiante() {
@@ -78,7 +78,7 @@ const MisCursos = () => {
 
 			{auth.isLoggedIn && auth.userType === "profesor" && (
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
-					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "10%" }}>
+					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "5%" }}>
 						<MDBBtn>Crear Curso</MDBBtn>
 					</div>
 				</NavLink>

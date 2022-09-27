@@ -174,7 +174,7 @@ const Auth = () => {
 
 				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
 			} catch (err) {
-				console.log(err);
+				alert(err);
 			}
 		} else {
 			try {
@@ -223,7 +223,7 @@ const Auth = () => {
 
 				auth.login(responseData.user.id, responseData.accessToken, responseData.user.tipo);
 			} catch (err) {
-				console.log(err.message);
+				alert(err);
 			}
 		}
 

@@ -68,7 +68,6 @@ const ContratacionPage = () => {
 
 		if (!found) {
 			mutate({
-				id: `contratacion${contrataciones.length + 1}`,
 				estadoContratacion: false,
 				estadoCurso: true,
 				motivacion: `${motivacion}`,

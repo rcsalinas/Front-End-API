@@ -89,9 +89,6 @@ const UpdateCurso = () => {
 	if (isLoading || isLoadingUpdate) {
 		return <LoadingSpinner />;
 	}
-	/*let cursoEncontrado = cursos.find((curso) => {
-		return curso.idCurso === cursoId;
-	});*/
 
 	const handleNameChange = (event) => {
 		setNombre(event.target.value);
