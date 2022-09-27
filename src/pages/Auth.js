@@ -178,7 +178,6 @@ const Auth = () => {
 			}
 		} else {
 			try {
-				console.log(formState.inputs, datosEstudios);
 				let responseData;
 				if (tipoUsuario === "estudiante") {
 					responseData = await sendRequest(

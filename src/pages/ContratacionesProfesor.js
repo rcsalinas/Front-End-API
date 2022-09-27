@@ -47,7 +47,7 @@ const ContratacionesProfesor = () => {
 		const { data } = await axios.get(
 			`http://localhost:8000/contrataciones?profesor=${auth.userId}`
 		);
-		console.log(data);
+
 		return data;
 	}
 

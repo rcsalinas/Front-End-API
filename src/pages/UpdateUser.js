@@ -93,7 +93,7 @@ const UpdateUser = () => {
 
 	async function fetchUsuario() {
 		const { data } = await axios.get(`http://localhost:8000/users/${auth.userId}`);
-		console.log(data);
+
 		return data;
 	}
 

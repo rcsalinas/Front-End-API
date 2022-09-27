@@ -58,36 +58,47 @@ const MisCursos = () => {
 	if (isErrorCursosEstudiante) {
 		return <div>Error! {errorCursosEstudiante.message}</div>;
 	}
-	return (
-		<>
-			<h1 style={{ marginTop: "2%" }}>
-				Cursos del {auth.userType === "profesor" ? "Profesor" : "Estudiante"}:
-			</h1>
-			<div className="cursos-buscados">
-				{auth.userType === "profesor" &&
-					cursosProfe.map((curso) => {
+
+	if (auth.userType === "profesor") {
+		return (
+			<>
+				<h1 style={{ marginTop: "2%" }}>Cursos del Profesor:</h1>
+				<div className="cursos-buscados">
+					{cursosProfe.map((curso) => {
 						return <Auxiliar key={curso.id} cursoId={curso.id} />;
 					})}
-				{auth.userType === "estudiante" &&
-					cursosEstudiante.map((curso) => {
-						if (curso.estadoContratacion) {
-							return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
-						}
-					})}
-			</div>
+				</div>
 
-			{auth.isLoggedIn && auth.userType === "profesor" && (
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
 					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "5%" }}>
 						<MDBBtn>Crear Curso</MDBBtn>
 					</div>
 				</NavLink>
-			)}
+			</>
+		);
+	}
+
+	return (
+		<>
+			<h1 style={{ marginTop: "2%" }}>Cursos del Estudiante:</h1>
+			<h3>En curso:</h3>
+			<div className="cursos-buscados">
+				{cursosEstudiante.map((curso) => {
+					if (curso.estadoContratacion && curso.estadoCurso) {
+						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
+					}
+				})}
+			</div>
+			<h3>Finalizados:</h3>
+			<div className="cursos-buscados">
+				{cursosEstudiante.map((curso) => {
+					if (curso.estadoContratacion && !curso.estadoCurso) {
+						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
+					}
+				})}
+			</div>
 		</>
 	);
 };
 
 export default MisCursos;
-
-// si es profesor simplemente hago un fetch de cursos donde su profesor sea profesor
-// si es alumno hago un fetch de las contrataciones donde alumno sea alumno

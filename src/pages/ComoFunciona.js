@@ -9,9 +9,8 @@ const ComoFunciona = () => {
 		<>
 			<h1>Como Funciona</h1>
 			<p>
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit unde, voluptas,
-				praesentium quidem, porro veniam nam asperiores in necessitatibus recusandae eaque?
-				Beatae fugiat voluptate laudantium iste laboriosam doloribus ad neque!
+				Primero debes registrarte. Despues puedes solicitar un curso y deberas esperar a que
+				el profesor te contacte.
 			</p>
 			<section>
 				<h2>Preguntas Frecuentes</h2>
@@ -19,19 +18,11 @@ const ComoFunciona = () => {
 					<>
 						<details>
 							<summary>QUE ES TEACHERS MARKET</summary>
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
-							</p>
+							<p>Es un sitio web para encontrar clases particulares.</p>
 						</details>
 						<details>
 							<summary>COMO INICIAR SESION</summary>
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
-							</p>
+							<p>Debes ir a la seccion superior derecha y autenticarte</p>
 						</details>
 						<details>
 							<summary>COMO RECUPERAR CONSTRASEÑA</summary>
@@ -43,11 +34,7 @@ const ComoFunciona = () => {
 						</details>
 						<details>
 							<summary>AUN TENGO MAS DUDAS</summary>
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
-							</p>
+							<p>Si tienes mas dudas puedes contactarte con nosotros por mail</p>
 						</details>
 					</>
 				)}
@@ -132,28 +119,6 @@ const ComoFunciona = () => {
 					</>
 				)}
 			</section>
-
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ab ratione
-				praesentium voluptatibus voluptatem veniam eum. Iusto, culpa similique. Laboriosam,
-				animi earum. Voluptas assumenda aliquam dolore iste eius impedit? Ducimus.
-			</p>
-			<h3>titulo 3</h3>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, animi accusamus
-				perspiciatis voluptates similique blanditiis ipsam commodi? Ab optio aliquam earum
-				incidunt. Rerum quia sit dolor sunt assumenda, dolore totam.
-			</p>
-			<p>
-				Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores nesciunt
-				consequatur qui ipsam sit nam numquam enim illum explicabo labore quas fugiat, vel
-				laboriosam soluta eos dolorem magni, nisi modi!
-			</p>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur quam, magni
-				excepturi nemo facilis, nisi nostrum voluptates incidunt libero ipsam assumenda
-				aperiam! Tempora omnis, tenetur officiis assumenda iusto numquam perferendis?
-			</p>
 		</>
 	);
 };

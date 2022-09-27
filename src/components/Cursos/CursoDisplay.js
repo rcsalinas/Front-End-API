@@ -16,6 +16,8 @@ import Rating from "@mui/material/Rating";
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { Card } from "@mui/material";
+import LoadingSpinner from "../UIElements/LoadingSpinner";
+import { useParams } from "react-router-dom";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
@@ -24,7 +26,20 @@ const CursoDisplay = (props) => {
 	const [value, setValue] = React.useState(0);
 	const [display, setDisplay] = React.useState({});
 	const [palabras, setPalabras] = useState("");
+	const cursoId = useParams().cursoId;
 	const { cursoEncontrado, contratacion } = props;
+
+	const {
+		data: comentarios,
+		error: errorComentarios,
+		isError: isErrorComentarios,
+		isLoading: isLoadingComentarios,
+	} = useQuery(["comentarios", cursoId], fetchComentarios);
+
+	async function fetchComentarios() {
+		const { data } = await axios.get(`http://localhost:8000/calificaciones?curso=${cursoId}`);
+		return data;
+	}
 
 	const { mutate: enviarComentario, isLoading: isLoadingReview } = useMutation(submitReview);
 
@@ -48,7 +63,7 @@ const CursoDisplay = (props) => {
 	});
 
 	async function deleteCurso(payload) {
-		const { data } = await axios.delete(`http://localhost:8000/cursos/${cursoEncontrado.id}`);
+		const { data } = await axios.delete(`http://localhost:8000/cursos/${cursoId}`);
 		return data;
 	}
 
@@ -66,23 +81,93 @@ const CursoDisplay = (props) => {
 		return data;
 	}
 
+	const { mutate: finalizarCurso, isLoading: isLoadingFinalizar } = useMutation(endCurso, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["contrataciones", auth.userId]);
+			queryClient.invalidateQueries(["curso", cursoId]);
+			queryClient.invalidateQueries(["cursos", cursoId]);
+		},
+	});
+
+	const { mutate: publicarCurso, isLoading: isLoadingPublicar } = useMutation(publishCurso, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["contrataciones", auth.userId]);
+			queryClient.invalidateQueries(["curso", cursoId]);
+			queryClient.invalidateQueries(["cursos", cursoId]);
+			//navigate.push(`/${auth.userId}/cursos`);
+		},
+	});
+
+	async function publishCurso() {
+		if (auth.userType === "estudiante") {
+			const response = await axios.patch(
+				`http://localhost:8000/contrataciones/${contratacion[0].id}`,
+				{ estadoCurso: true }
+			);
+			return response;
+		} else {
+			let response;
+			if (contratacion.length > 0) {
+				response = await axios.patch(
+					`http://localhost:8000/contrataciones/${contratacion[0].id}`,
+					{ estadoCurso: true }
+				);
+			}
+
+			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
+				estado: true,
+			});
+			return response, segundoAction;
+		}
+	}
+
+	async function endCurso() {
+		if (auth.userType === "estudiante") {
+			const response = await axios.patch(
+				`http://localhost:8000/contrataciones/${contratacion[0].id}`,
+				{ estadoCurso: false }
+			);
+			return response;
+		} else {
+			let response;
+			if (contratacion.length > 0) {
+				response = await axios.patch(
+					`http://localhost:8000/contrataciones/${contratacion[0].id}`,
+					{ estadoCurso: false }
+				);
+			}
+
+			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
+				estado: false,
+			});
+			return response, segundoAction;
+		}
+	}
+
 	const handleCommentChange = (event) => {
 		setPalabras(event.target.value);
 	};
 	const handleReview = () => {
 		setDisplay({ display: "none" });
-		enviarComentario({
-			alumno: `${auth.userId}`,
-			curso: `${cursoEncontrado.id}`,
-			comentario: palabras,
-			rating: value,
-			profesorCurso: `${cursoEncontrado.profesor}`,
-			estado: false,
+		let encontrado = comentarios.find((comment) => {
+			return comment.alumno === auth.userId && comment.curso === cursoId;
 		});
+		if (!encontrado) {
+			enviarComentario({
+				alumno: `${auth.userId}`,
+				curso: `${cursoEncontrado.id}`,
+				comentario: palabras,
+				rating: value,
+				profesorCurso: `${cursoEncontrado.profesor}`,
+				estado: false,
+			});
+		} else {
+			alert("Usted tiene un comentario en espera o ya comento");
+		}
 	};
 
 	const handleFinalizar = () => {
-		alert("no esta codeado aun");
+		finalizarCurso();
 	};
 
 	const handleEliminar = () => {
@@ -90,8 +175,17 @@ const CursoDisplay = (props) => {
 	};
 
 	const handlePublicar = () => {
-		alert("no lo he codeado aun");
+		publicarCurso();
 	};
+
+	if (
+		isLoadingEliminar ||
+		isLoadingEliminarContrataciones ||
+		isLoadingFinalizar ||
+		isLoadingReview
+	) {
+		return <LoadingSpinner />;
+	}
 
 	if (!auth.isLoggedIn) {
 		return (
@@ -117,6 +211,22 @@ const CursoDisplay = (props) => {
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
 					</div>
 				</Card>
+
+				<div className="comentarios">
+					<ul>
+						{comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<div>
+										<li>{comment.comentario}</li>
+										<Rating name="read-only" value={comment.rating} readOnly />
+									</div>
+								);
+							}
+						})}
+					</ul>
+				</div>
+
 				<div className="botones">
 					<Button
 						variant="contained"
@@ -154,6 +264,20 @@ const CursoDisplay = (props) => {
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
 					</div>
 				</Card>
+				<div className="comentarios">
+					<ul>
+						{comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<div>
+										<li>{comment.comentario}</li>
+										<Rating name="read-only" value={comment.rating} readOnly />
+									</div>
+								);
+							}
+						})}
+					</ul>
+				</div>
 
 				{estaEnCurso &&
 					contratacion[0].estadoContratacion &&
@@ -191,15 +315,14 @@ const CursoDisplay = (props) => {
 
 				<div className="botones">
 					{!contratacion[0].estadoContratacion && <h3>Espere respuesta del profesor</h3>}
-					{estaEnCurso &&
-						contratacion[0].estadoContratacion &&
-						auth.userType === "estudiante" &&
-						contratacion[0].estadoCurso && (
-							<Button variant="contained" color="error" onClick={handleFinalizar}>
-								Finalizar Curso
-							</Button>
-						)}
-					{!contratacion[0].estadoCurso && <h1>El curso finalizo!</h1>}
+					{estaEnCurso && contratacion[0].estadoCurso && auth.userType === "estudiante" && (
+						<Button variant="contained" color="error" onClick={handleFinalizar}>
+							Finalizar Curso
+						</Button>
+					)}
+					{!contratacion[0].estadoCurso && auth.userType === "estudiante" && (
+						<h1>El curso finalizo!</h1>
+					)}
 					{auth.isLoggedIn && !estaEnCurso && auth.userType === "estudiante" && (
 						<NavLink
 							to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.id}/ContratacionPage`}
@@ -260,6 +383,20 @@ const CursoDisplay = (props) => {
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
 					</div>
 				</Card>
+				<div className="comentarios">
+					<ul>
+						{comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<div>
+										<li>{comment.comentario}</li>
+										<Rating name="read-only" value={comment.rating} readOnly />
+									</div>
+								);
+							}
+						})}
+					</ul>
+				</div>
 				<div className="botones">
 					<NavLink
 						to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.id}/ContratacionPage`}
@@ -296,7 +433,20 @@ const CursoDisplay = (props) => {
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
 					</div>
 				</Card>
-
+				<div className="comentarios">
+					<ul>
+						{comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<div>
+										<li>{comment.comentario}</li>
+										<Rating name="read-only" value={comment.rating} readOnly />
+									</div>
+								);
+							}
+						})}
+					</ul>
+				</div>
 				<div className="botones">
 					{auth.userType === "profesor" && cursoEncontrado.profesor === auth.userId && (
 						<Stack direction="row" spacing={2}>

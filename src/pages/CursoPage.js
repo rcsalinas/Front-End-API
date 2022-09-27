@@ -72,8 +72,6 @@ const CursoPage = () => {
 		);
 	}
 
-	//aqui voy a traer el usuario segun el id y le paso los datos a el componente
-
 	if (isLoadingCurso || isLoadingContratacion) {
 		return <LoadingSpinner />;
 	}
