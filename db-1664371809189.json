@@ -49,18 +49,6 @@
       "cursos": [
         "curso2"
       ]
-    },
-    {
-      "email": "robertosalinasaguilar99@gmail.com",
-      "password": "$2a$10$1JKdpeSXoTTJVTAF.PYsEeacHnn3lI684nALsL0qQ9xkPouk2G8yO",
-      "nombre": "Pedro",
-      "apellido": "Salinas",
-      "celular": "+51166784884",
-      "tipo": "profesor",
-      "titulo": "Lic en Economia",
-      "experiencia": "Senior Analyst",
-      "cursos": [],
-      "id": "PBHdX-p"
     }
   ],
   "cursos": [
@@ -125,21 +113,6 @@
       "tipo": "individual",
       "costo": 12.99,
       "calificacion": 2
-    },
-    {
-      "estado": true,
-      "nombreCurso": "Econometria",
-      "image": "https://www.apwa.net/images/PWM101.jpg",
-      "profesor": "PBHdX-p",
-      "desc": "Curso de econometria basica",
-      "alumnos": [],
-      "duracion": "2 meses",
-      "frecuencia": "semanal",
-      "calificaciones": [],
-      "tipo": "individual",
-      "costo": "300",
-      "calificacion": 5,
-      "id": "FtQY5af"
     }
   ],
   "calificaciones": [

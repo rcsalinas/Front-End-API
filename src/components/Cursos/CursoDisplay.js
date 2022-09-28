@@ -52,7 +52,7 @@ const CursoDisplay = (props) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["cursos"]);
 			queryClient.invalidateQueries(["cursos", auth.userId]);
-			if (contratacion.length == 0) {
+			if (contratacion.length === 0) {
 				navigate.push(`/${auth.userId}/cursos`);
 			}
 			for (let i = 0; i < contratacion.length; i++) {
@@ -117,7 +117,7 @@ const CursoDisplay = (props) => {
 			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
 				estado: true,
 			});
-			return response, segundoAction;
+			return [response, segundoAction];
 		}
 	}
 
@@ -140,7 +140,7 @@ const CursoDisplay = (props) => {
 			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
 				estado: false,
 			});
-			return response, segundoAction;
+			return [response, segundoAction];
 		}
 	}
 
@@ -182,9 +182,14 @@ const CursoDisplay = (props) => {
 		isLoadingEliminar ||
 		isLoadingEliminarContrataciones ||
 		isLoadingFinalizar ||
-		isLoadingReview
+		isLoadingReview ||
+		isLoadingComentarios ||
+		isLoadingPublicar
 	) {
 		return <LoadingSpinner />;
+	}
+	if (isErrorComentarios) {
+		return <div>Error! {errorComentarios.message}</div>;
 	}
 
 	if (!auth.isLoggedIn) {
@@ -214,16 +219,21 @@ const CursoDisplay = (props) => {
 
 				<div className="comentarios">
 					<ul>
-						{comentarios.map((comment) => {
-							if (comment.estado) {
-								return (
-									<div>
-										<li>{comment.comentario}</li>
-										<Rating name="read-only" value={comment.rating} readOnly />
-									</div>
-								);
-							}
-						})}
+						{comentarios.length > 0 &&
+							comentarios.map((comment) => {
+								if (comment.estado) {
+									return (
+										<div>
+											<li>{comment.comentario}</li>
+											<Rating
+												name="read-only"
+												value={comment.rating}
+												readOnly
+											/>
+										</div>
+									);
+								}
+							})}
 					</ul>
 				</div>
 
@@ -266,16 +276,21 @@ const CursoDisplay = (props) => {
 				</Card>
 				<div className="comentarios">
 					<ul>
-						{comentarios.map((comment) => {
-							if (comment.estado) {
-								return (
-									<div>
-										<li>{comment.comentario}</li>
-										<Rating name="read-only" value={comment.rating} readOnly />
-									</div>
-								);
-							}
-						})}
+						{comentarios.length > 0 &&
+							comentarios.map((comment) => {
+								if (comment.estado) {
+									return (
+										<div>
+											<li>{comment.comentario}</li>
+											<Rating
+												name="read-only"
+												value={comment.rating}
+												readOnly
+											/>
+										</div>
+									);
+								}
+							})}
 					</ul>
 				</div>
 
@@ -385,16 +400,21 @@ const CursoDisplay = (props) => {
 				</Card>
 				<div className="comentarios">
 					<ul>
-						{comentarios.map((comment) => {
-							if (comment.estado) {
-								return (
-									<div>
-										<li>{comment.comentario}</li>
-										<Rating name="read-only" value={comment.rating} readOnly />
-									</div>
-								);
-							}
-						})}
+						{comentarios.length > 0 &&
+							comentarios.map((comment) => {
+								if (comment.estado) {
+									return (
+										<div>
+											<li>{comment.comentario}</li>
+											<Rating
+												name="read-only"
+												value={comment.rating}
+												readOnly
+											/>
+										</div>
+									);
+								}
+							})}
 					</ul>
 				</div>
 				<div className="botones">
@@ -435,16 +455,21 @@ const CursoDisplay = (props) => {
 				</Card>
 				<div className="comentarios">
 					<ul>
-						{comentarios.map((comment) => {
-							if (comment.estado) {
-								return (
-									<div>
-										<li>{comment.comentario}</li>
-										<Rating name="read-only" value={comment.rating} readOnly />
-									</div>
-								);
-							}
-						})}
+						{comentarios.length > 0 &&
+							comentarios.map((comment) => {
+								if (comment.estado) {
+									return (
+										<div>
+											<li>{comment.comentario}</li>
+											<Rating
+												name="read-only"
+												value={comment.rating}
+												readOnly
+											/>
+										</div>
+									);
+								}
+							})}
 					</ul>
 				</div>
 				<div className="botones">
