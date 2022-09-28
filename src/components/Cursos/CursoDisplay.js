@@ -54,10 +54,11 @@ const CursoDisplay = (props) => {
 			queryClient.invalidateQueries(["cursos", auth.userId]);
 			if (contratacion.length === 0) {
 				navigate.push(`/${auth.userId}/cursos`);
-			}
-			for (let i = 0; i < contratacion.length; i++) {
-				queryClient.invalidateQueries(["cursos"], contratacion[i].alumno);
-				eliminarContrataciones(contratacion[i].id);
+			} else {
+				for (let i = 0; i < contratacion.length; i++) {
+					queryClient.invalidateQueries(["cursos"], contratacion[i].alumno);
+					eliminarContrataciones(contratacion[i].id);
+				}
 			}
 		},
 	});
@@ -70,7 +71,7 @@ const CursoDisplay = (props) => {
 	const { mutate: eliminarContrataciones, isLoading: isLoadingEliminarContrataciones } =
 		useMutation(deleteContrataciones, {
 			onSuccess: () => {
-				//queryClient.invalidateQueries(["cursos"]);
+				queryClient.invalidateQueries(["contrataciones"]);
 				//queryClient.invalidateQueries(["cursos", auth.userId]);
 				navigate.push(`/${auth.userId}/cursos`);
 			},
@@ -329,7 +330,9 @@ const CursoDisplay = (props) => {
 					)}
 
 				<div className="botones">
-					{!contratacion[0].estadoContratacion && <h3>Espere respuesta del profesor</h3>}
+					{!contratacion[0].estadoContratacion && auth.userType === "estudiante" && (
+						<h3>Espere respuesta del profesor</h3>
+					)}
 					{estaEnCurso && contratacion[0].estadoCurso && auth.userType === "estudiante" && (
 						<Button variant="contained" color="error" onClick={handleFinalizar}>
 							Finalizar Curso

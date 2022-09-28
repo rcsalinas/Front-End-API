@@ -31,7 +31,7 @@ const MisCursos = () => {
 		error: errorCursosEstudiante,
 		isError: isErrorCursosEstudiante,
 		isLoading: isLoadingCursosEstudiante,
-	} = useQuery(["cursos", auth.userId], fetchCursosEstudiante, {
+	} = useQuery(["contrataciones", auth.userId], fetchCursosEstudiante, {
 		enabled: auth.userType === "estudiante",
 	});
 
@@ -40,9 +40,8 @@ const MisCursos = () => {
 		return data;
 	}
 	async function fetchCursosEstudiante() {
-		const { data } = await axios.get(
-			`http://localhost:8000/contrataciones?estudiante${userId}`
-		);
+		const { data } = await axios.get(`http://localhost:8000/contrataciones?alumno=${userId}`);
+		console.log(data);
 		return data;
 	}
 
