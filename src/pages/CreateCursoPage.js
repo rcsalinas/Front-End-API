@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
-import { Redirect } from "react-router-dom";
+
 import { useHistory } from "react-router-dom";
 
 import {
@@ -22,7 +22,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "react-query";
+import { useQueryClient, useMutation } from "react-query";
 
 const CreateCursoPage = () => {
 	let navigate = useHistory();

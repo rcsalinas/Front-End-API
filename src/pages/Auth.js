@@ -20,6 +20,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useHttpClient } from "../hooks/http-hook";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import { Link } from "react-router-dom";
+import { MDBCheckbox } from "mdb-react-ui-kit";
 
 import Checkbox from "@mui/material/Checkbox";
 
@@ -225,85 +227,6 @@ const Auth = () => {
 				alert(err);
 			}
 		}
-
-		/*
-		let encontrado = false;
-		let validacion = false;
-		let usuarioEncontrado;
-
-		if (isLoginMode) {
-			for (let i = 0; i < dummy_users.length && encontrado === false; i++) {
-				if (dummy_users[i].mail === formState.inputs.email.value) {
-					encontrado = true;
-					usuarioEncontrado = dummy_users[i];
-					if (dummy_users[i].password === formState.inputs.password.value) {
-						validacion = true;
-					} else {
-						validacion = false;
-					}
-				}
-			}
-
-			if (validacion === true) {
-				auth.login(usuarioEncontrado.tipo, usuarioEncontrado.id);
-			} else {
-				alert("ocurrio un error");
-			}
-		} else {
-			//es signup y le doy submit
-			if (tipoUsuario === "estudiante") {
-				let existe = false;
-				let user = {
-					id: `alu${dummy_users.length + 1}`,
-					tipo: "estudiante",
-					nombre: formState.inputs.nombre.value,
-					apellido: formState.inputs.apellido.value,
-					password: formState.inputs.password.value,
-					mail: formState.inputs.email.value,
-					celular: formState.inputs.telefono.value,
-					fechaNacimiento: formState.inputs.date.value,
-					estudiosCursados: datosEstudios,
-					cursos: [],
-				};
-				dummy_users.forEach((user) => {
-					if (user.mail === formState.inputs.email.value) {
-						existe = true;
-					}
-				});
-				if (!existe) {
-					dummy_users.push(user);
-					auth.login(tipoUsuario, user.id);
-				} else {
-					alert("Ya existe un usuario asociado a ese mail");
-				}
-			} else {
-				let existe = false;
-				let user = {
-					id: `profesor${dummy_users.length + 1}`,
-					tipo: "profesor",
-					nombre: formState.inputs.nombre.value,
-					apellido: formState.inputs.apellido.value,
-					password: formState.inputs.password.value,
-					mail: formState.inputs.email.value,
-					celular: formState.inputs.telefono.value,
-					titulo: formState.inputs.titulo.value,
-					experiencia: formState.inputs.experiencia.value,
-					cursos: [],
-				};
-				dummy_users.forEach((user) => {
-					if (user.mail === formState.inputs.email.value) {
-						existe = true;
-					}
-				});
-				if (!existe) {
-					dummy_users.push(user);
-					auth.login(tipoUsuario, formState.inputs.email.value);
-				} else {
-					alert("Ya existe un usuario asociado a ese mail");
-				}
-			}
-		}
-		*/
 	};
 
 	const handleChange = (event, value) => {
@@ -514,9 +437,20 @@ const Auth = () => {
 						type="password"
 						label="Password"
 						validators={[VALIDATOR_MINLENGTH(6)]}
-						errorText="Porfavor ingresar contraseña valida, minimo 6 caracteres"
+						errorText="Porfavor ingresar contraseña"
 						onInput={inputHandler}
 					/>
+					{isLoginMode && (
+						<div className="d-flex justify-content-between mx-3 mb-4">
+							<MDBCheckbox
+								name="flexCheck"
+								value=""
+								id="flexCheckDefault"
+								label="Remember me"
+							/>
+							<Link to="/forgotPassword">Forgot Password?</Link>
+						</div>
+					)}
 					<MDBBtn type="submit" disabled={!formState.isValid}>
 						{isLoginMode ? "LOGIN" : "SIGNUP"}
 					</MDBBtn>

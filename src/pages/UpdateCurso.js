@@ -27,8 +27,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
-//const cursos = database_Dummy.cursos_dummy;
-
 const UpdateCurso = () => {
 	let navigate = useHistory();
 	const queryClient = useQueryClient();
@@ -54,11 +52,7 @@ const UpdateCurso = () => {
 		}
 	}, [data, isLoading]);
 
-	const {
-		mutate,
-		isLoading: isLoadingUpdate,
-		isSuccess,
-	} = useMutation(updateCurso, {
+	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateCurso, {
 		onSuccess: (data) => {
 			queryClient.setQueryData(["curso", cursoId], data);
 			queryClient.invalidateQueries(["curso", cursoId]);

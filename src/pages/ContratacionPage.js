@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
@@ -35,7 +35,6 @@ const ContratacionPage = () => {
 		error: errorC,
 		isError: isErrorC,
 		isLoading: isLoadingC,
-		isSuccess,
 	} = useQuery(["contrataciones"], fetchContrataciones, {
 		refetchOnMount: true,
 		refetchOnWindowFocus: true,
@@ -86,7 +85,11 @@ const ContratacionPage = () => {
 		return <LoadingSpinner />;
 	}
 	if (isError || isErrorC) {
-		return <div>Error! {error.message}</div>;
+		if (isError) {
+			return <div>Error! {error.message}</div>;
+		} else {
+			return <div>Error! {errorC.message}</div>;
+		}
 	}
 	const handleTelefonoChange = (event) => {
 		setTelefono(event.target.value);

@@ -1,9 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth-context";
-import { Redirect, useHistory } from "react-router-dom";
-
-import { database_Dummy } from "../util/sharedData";
+import { useHistory } from "react-router-dom";
 
 import {
 	MDBBtn,
@@ -27,8 +25,6 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import axios from "axios";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 
-const dummy_users = database_Dummy.dummy_users;
-
 const UpdateUser = () => {
 	let navigate = useHistory();
 	const auth = useContext(AuthContext);
@@ -48,9 +44,6 @@ const UpdateUser = () => {
 	});
 	const { primario, secundario, universidad } = estudios;
 
-	//let identifiedUser;
-	//identifiedUser = dummy_users.find((u) => u.id === auth.userId);
-
 	const {
 		data: identifiedUser,
 		error,
@@ -66,7 +59,12 @@ const UpdateUser = () => {
 			setTelefono(identifiedUser.celular);
 			if (auth.userType === "estudiante") {
 				setFechaNacimiento(identifiedUser.fechaNacimiento);
-				setEstudiosCursados(identifiedUser.estudiosCursados);
+				setDatosEstudios(identifiedUser.estudiosCursados);
+				setEstudiosCursados({
+					primario: identifiedUser.estudiosCursados.includes("primario"),
+					secundario: identifiedUser.estudiosCursados.includes("secundario"),
+					universidad: identifiedUser.estudiosCursados.includes("universidad"),
+				});
 			} else {
 				setExperiencia(identifiedUser.experiencia);
 				setTitulo(identifiedUser.titulo);
@@ -74,11 +72,7 @@ const UpdateUser = () => {
 		}
 	}, []);
 
-	const {
-		mutate,
-		isLoading: isLoadingUpdate,
-		isSuccess,
-	} = useMutation(updateUser, {
+	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateUser, {
 		onSuccess: (data) => {
 			queryClient.setQueryData(["user", auth.userId], identifiedUser);
 			queryClient.invalidateQueries(["user", auth.userId]);
@@ -168,7 +162,7 @@ const UpdateUser = () => {
 		return <div>Error! {error.message}</div>;
 	}
 
-	if (isLoading) {
+	if (isLoading || isLoadingUpdate) {
 		return <LoadingSpinner />;
 	}
 

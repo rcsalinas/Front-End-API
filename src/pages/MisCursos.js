@@ -68,7 +68,7 @@ const MisCursos = () => {
 					})}
 				</div>
 
-				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
+				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none", marginBottom: "5%" }}>
 					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "5%" }}>
 						<MDBBtn>Crear Curso</MDBBtn>
 					</div>
@@ -89,7 +89,7 @@ const MisCursos = () => {
 				})}
 			</div>
 			<h3>Finalizados:</h3>
-			<div className="cursos-buscados">
+			<div className="cursos-buscados" style={{ textDecoration: "none", marginBottom: "7%" }}>
 				{cursosEstudiante.map((curso) => {
 					if (curso.estadoContratacion && !curso.estadoCurso) {
 						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;

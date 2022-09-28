@@ -104,24 +104,6 @@
 			"rating": 4,
 			"profesorCurso": "profesor1",
 			"estado": true
-		},
-		{
-			"alumno": "alu1",
-			"curso": "QtVoAgj",
-			"comentario": "Muy buen Curso",
-			"rating": 4,
-			"profesorCurso": "profesor1",
-			"estado": true,
-			"id": "9HeeKhu"
-		},
-		{
-			"alumno": "FFpEuSn",
-			"curso": "FtQY5af",
-			"comentario": "Curso muy malo.... No se merece alumnos",
-			"rating": 1,
-			"profesorCurso": "PBHdX-p",
-			"estado": true,
-			"id": "30rAgvd"
 		}
 	],
 	"notificaciones": [],

@@ -7,12 +7,7 @@ const ComoFunciona = () => {
 	const auth = useContext(AuthContext);
 	return (
 		<>
-			<h1>Como Funciona</h1>
-			<p>
-				Primero debes registrarte. Despues puedes solicitar un curso y deberas esperar a que
-				el profesor te contacte.
-			</p>
-			<section>
+			<section className="contenedorSection">
 				<h2>Preguntas Frecuentes</h2>
 				{!auth.isLoggedIn && (
 					<>
@@ -27,9 +22,8 @@ const ComoFunciona = () => {
 						<details>
 							<summary>COMO RECUPERAR CONSTRASEÑA</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Accede a la pagina de inicio de sesion y da click a "Forgot
+								Password". Sigue las instrucciones
 							</p>
 						</details>
 						<details>
@@ -42,26 +36,20 @@ const ComoFunciona = () => {
 					<>
 						<details>
 							<summary>COMO INSCRIBIRME A UN CURSO</summary>
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
-							</p>
+							<p>Busca tu curso en la pagina y solicitalo</p>
 						</details>
 						<details>
 							<summary>COMO FINALIZAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Entra a tus cursos, da click a ver detalles del curso que quieres
+								cancelar y da click a finalizar curso
 							</p>
 						</details>
 						<details>
 							<summary>COMO CALIFICAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Envia una reseña al profesor desde el curso que quieres calificar.
+								El profesor decidira si la reseña es adecuada o no
 							</p>
 						</details>
 						<details>
@@ -79,41 +67,29 @@ const ComoFunciona = () => {
 						<details>
 							<summary>COMO PUBLICAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Ve a tus cursos y da click en crear un curso. Llena el formulario
+								con los datos del curso
 							</p>
 						</details>
 						<details>
 							<summary>COMO DESPUBLICAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Ve a tus cursos, da click a ver detalles del curso que quieras
+								despublicar y da click en el boton finalizar curso
 							</p>
 						</details>
 						<details>
 							<summary>COMO ELIMINAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Ve a tus cursos, da click a ver detalles del curso que quieras
+								eliminar y da click en el boton eliminar curso
 							</p>
 						</details>
 						<details>
 							<summary>COMO MODIFICAR UN CURSO</summary>
 							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
-							</p>
-						</details>
-						<details>
-							<summary>COMO VER LA CALIFICACION DE UN CURSO</summary>
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-								quae aspernatur. Quisquam, quae aspernatur. Quisquam, quae
-								aspernatur. Quisquam, quae
+								Ve a tus cursos, da click a ver detalles del curso que quieras
+								modificar y da click en el boton modificar curso
 							</p>
 						</details>
 					</>

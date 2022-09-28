@@ -17,6 +17,7 @@ import UpdateCurso from "./pages/UpdateCurso";
 import CreateCursoPage from "./pages/CreateCursoPage";
 import ContratacionPage from "./pages/ContratacionPage";
 import ContratacionesProfesor from "./pages/ContratacionesProfesor";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
 	//const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,6 +50,9 @@ function App() {
 					<Route path="/cursos/:userId/:cursoId/ContratacionPage" exact>
 						<ContratacionPage />
 					</Route>
+					<Route path="/comoFunciona" exact>
+						<ComoFunciona />
+					</Route>
 					<Route path="/:userId/notificaciones" exact>
 						<NotificacionesProfesor />
 					</Route>
@@ -76,7 +80,9 @@ function App() {
 					<Route path="/:userId/cursos" exact>
 						<MisCursos />
 					</Route>
-
+					<Route path="/comoFunciona" exact>
+						<ComoFunciona />
+					</Route>
 					<Route path="/cursos/nuevo" exact>
 						<CreateCursoPage />
 					</Route>
@@ -110,6 +116,9 @@ function App() {
 				</Route>
 				<Route path="/comoFunciona" exact>
 					<ComoFunciona />
+				</Route>
+				<Route path="/forgotPassword" exact>
+					<ForgotPassword />
 				</Route>
 				<Route path="/cursos/:cursoId" exact>
 					<CursoPage />

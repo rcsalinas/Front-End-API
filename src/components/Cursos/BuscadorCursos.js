@@ -15,6 +15,7 @@ import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import "./SearchForm.css";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 const BuscadorCursos = (props) => {
 	const { encontrados } = props;
@@ -85,10 +86,15 @@ const BuscadorCursos = (props) => {
 		});
 	}
 
+	const handleResetFilters = () => {
+		setFrecuencia("");
+		setRating(null);
+		setSearchVal("");
+		setTipoClase("");
+	};
+
 	useEffect(() => {
 		if (frecuencia === "" && rating === null && searchVal === "" && tipoClase === "") {
-			//setCursos(encontrados);
-			//setCursos(cursos_dummy); //aqui voy a hacer un viaje a la base de datos una unica vez y traer todos los cursos y setearlos
 			setCursos(encontrados);
 		} else {
 			if (filters.frecuencia === "") {
@@ -179,12 +185,23 @@ const BuscadorCursos = (props) => {
 							"& > legend": { mt: 2 },
 						}}
 					>
-						<Typography component="legend">Rating</Typography>
+						<Typography component="legend" style={{ marginTop: "0px" }}>
+							Rating
+						</Typography>
 						<Rating
 							name="simple-controlled"
 							value={rating}
 							onChange={handleRatingChange}
 						/>
+					</Box>
+				</div>
+				<div className="form-element">
+					<Box
+						sx={{
+							"& > legend": { mt: 2 },
+						}}
+					>
+						<MDBBtn onClick={handleResetFilters}>Reset Filters</MDBBtn>
 					</Box>
 				</div>
 			</div>
