@@ -72,6 +72,7 @@ const UpdateCurso = () => {
 			frecuencia: frecuencia,
 			tipo: tipo,
 			duracion: duracion,
+			costo: parseFloat(costo),
 		});
 		return data;
 	}

@@ -6,7 +6,6 @@ import "./Cursos.css";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 
 const Cursos = (props) => {
-	//const auth = useContext(AuthContext);
 	const { cursos, misCursos, isLoading } = props;
 
 	return (

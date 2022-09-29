@@ -35,6 +35,30 @@
 			"titulo": "Ingeniero",
 			"experiencia": "trabaje en Uber",
 			"cursos": ["curso2"]
+		},
+		{
+			"email": "robertosalinasaguilar99@gmail.com",
+			"password": "$2a$10$c2WXwgwdNi8C8p6Q6IZNcu2jUqyBBPQT4Kymkme7z4JQUASzg8ifW",
+			"nombre": "Maria",
+			"apellido": "Castaño",
+			"celular": "541166784567",
+			"tipo": "profesor",
+			"titulo": "Lic en Economia",
+			"experiencia": "PMO",
+			"cursos": [],
+			"id": "B2xdnVr"
+		},
+		{
+			"email": "ro-ca-sa@hotmail.com",
+			"password": "$2a$10$3b.2iWL2IQno.vWQi0u5g.wl16a2CFZ3DgZnaaNgKzpuYBQejPBmq",
+			"nombre": "Roberto",
+			"apellido": "Salinas",
+			"celular": "98232873",
+			"tipo": "estudiante",
+			"fechaNacimiento": "2022-09-01",
+			"estudiosCursados": ["primario", "secundario"],
+			"cursos": [],
+			"id": "UbZEhQ-"
 		}
 	],
 	"cursos": [
@@ -49,7 +73,7 @@
 			"duracion": "1 mes",
 			"frecuencia": "mensual",
 			"tipo": "grupal",
-			"costo": 12.99,
+			"costo": 19.99,
 			"calificacion": 5
 		},
 		{
@@ -72,12 +96,12 @@
 			"nombreCurso": "API",
 			"image": "https://www.apwa.net/images/PWM101.jpg",
 			"profesor": "profesor1",
-			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
+			"desc": "Curso de aplicaciones interactivas",
 			"alumnos": [],
 			"duracion": "5 dias",
 			"frecuencia": "semanal",
 			"tipo": "individual",
-			"costo": 2.99,
+			"costo": 12.99,
 			"calificacion": 3
 		},
 		{
@@ -104,6 +128,15 @@
 			"rating": 4,
 			"profesorCurso": "profesor1",
 			"estado": true
+		},
+		{
+			"alumno": "UbZEhQ-",
+			"curso": "nmLJ9Fr",
+			"comentario": "Muy lindo curso",
+			"rating": 5,
+			"profesorCurso": "B2xdnVr",
+			"estado": true,
+			"id": "utwUt9g"
 		}
 	],
 	"notificaciones": [],

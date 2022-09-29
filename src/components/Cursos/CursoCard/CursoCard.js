@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 import { Rating } from "@mui/material";
+import { useQuery } from "react-query";
+import axios from "axios";
+import LoadingSpinner from "../../UIElements/LoadingSpinner";
 
 const CursoCard = (props) => {
 	const { id, title, image, price, teacher, rating } = props;
