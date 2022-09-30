@@ -333,11 +333,14 @@ const CursoDisplay = (props) => {
 					{!contratacion[0].estadoContratacion && auth.userType === "estudiante" && (
 						<h3>Espere respuesta del profesor</h3>
 					)}
-					{estaEnCurso && contratacion[0].estadoCurso && auth.userType === "estudiante" && (
-						<Button variant="contained" color="error" onClick={handleFinalizar}>
-							Finalizar Curso
-						</Button>
-					)}
+					{contratacion[0].estadoContratacion &&
+						estaEnCurso &&
+						contratacion[0].estadoCurso &&
+						auth.userType === "estudiante" && (
+							<Button variant="contained" color="error" onClick={handleFinalizar}>
+								Finalizar Curso
+							</Button>
+						)}
 					{!contratacion[0].estadoCurso && auth.userType === "estudiante" && (
 						<h1>El curso finalizo!</h1>
 					)}

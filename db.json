@@ -35,30 +35,6 @@
 			"titulo": "Ingeniero",
 			"experiencia": "trabaje en Uber",
 			"cursos": ["curso2"]
-		},
-		{
-			"email": "robertosalinasaguilar99@gmail.com",
-			"password": "$2a$10$c2WXwgwdNi8C8p6Q6IZNcu2jUqyBBPQT4Kymkme7z4JQUASzg8ifW",
-			"nombre": "Maria",
-			"apellido": "Castaño",
-			"celular": "541166784567",
-			"tipo": "profesor",
-			"titulo": "Lic en Economia",
-			"experiencia": "PMO",
-			"cursos": [],
-			"id": "B2xdnVr"
-		},
-		{
-			"email": "ro-ca-sa@hotmail.com",
-			"password": "$2a$10$3b.2iWL2IQno.vWQi0u5g.wl16a2CFZ3DgZnaaNgKzpuYBQejPBmq",
-			"nombre": "Roberto",
-			"apellido": "Salinas",
-			"celular": "98232873",
-			"tipo": "estudiante",
-			"fechaNacimiento": "2022-09-01",
-			"estudiosCursados": ["primario", "secundario"],
-			"cursos": [],
-			"id": "UbZEhQ-"
 		}
 	],
 	"cursos": [
@@ -128,15 +104,6 @@
 			"rating": 4,
 			"profesorCurso": "profesor1",
 			"estado": true
-		},
-		{
-			"alumno": "UbZEhQ-",
-			"curso": "nmLJ9Fr",
-			"comentario": "Muy lindo curso",
-			"rating": 5,
-			"profesorCurso": "B2xdnVr",
-			"estado": true,
-			"id": "utwUt9g"
 		}
 	],
 	"notificaciones": [],
