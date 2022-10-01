@@ -7,21 +7,18 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 import { Rating } from "@mui/material";
-import { useQuery } from "react-query";
-import axios from "axios";
-import LoadingSpinner from "../../UIElements/LoadingSpinner";
 
 const CursoCard = (props) => {
 	const { id, title, image, price, teacher, rating } = props;
 
 	return (
-		<Card sx={{ maxWidth: 345 }}>
+		<Card sx={{ maxWidth: 200 }}>
 			<CardMedia component="img" height="140" image={image} />
 			<CardContent>
 				<Typography gutterBottom variant="h4" component="div">
 					{title}
 				</Typography>
-				<Typography variant="h6" color="text">
+				<Typography variant="h6" color="text.secondary">
 					{teacher}
 				</Typography>
 				<Typography variant="h6" color="text.secondary">

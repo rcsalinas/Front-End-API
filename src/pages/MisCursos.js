@@ -61,7 +61,9 @@ const MisCursos = () => {
 	if (auth.userType === "profesor") {
 		return (
 			<>
-				<h1 style={{ marginTop: "2%" }}>Cursos del Profesor:</h1>
+				<h1 style={{ marginTop: "2%", marginBottom: "2%", textAlign: "center" }}>
+					Cursos del Profesor:
+				</h1>
 				<div className="cursos-buscados">
 					{cursosProfe.map((curso) => {
 						return <Auxiliar key={curso.id} cursoId={curso.id} />;
@@ -69,7 +71,10 @@ const MisCursos = () => {
 				</div>
 
 				<NavLink to="/cursos/nuevo" style={{ textDecoration: "none", marginBottom: "5%" }}>
-					<div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "5%" }}>
+					<div
+						className="d-grid gap-2 col-6 mx-auto"
+						style={{ marginBottom: "5%", marginTop: "2%" }}
+					>
 						<MDBBtn>Crear Curso</MDBBtn>
 					</div>
 				</NavLink>

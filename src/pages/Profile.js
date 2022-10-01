@@ -35,6 +35,7 @@ const Profile = () => {
 		let apellido = data.apellido;
 		let mail = data.email;
 		let celular = data.celular;
+		let image = data.image;
 
 		if (auth.userType === "estudiante") {
 			let fechaNacimiento = data.fechaNacimiento;
@@ -47,6 +48,7 @@ const Profile = () => {
 					celular={celular}
 					fechaNacimiento={fechaNacimiento}
 					estudiosCursados={estudiosCursados}
+					image={image}
 				/>
 			);
 		} else {
@@ -60,6 +62,7 @@ const Profile = () => {
 					celular={celular}
 					titulo={titulo}
 					experiencia={experiencia}
+					image={image}
 				/>
 			);
 		}

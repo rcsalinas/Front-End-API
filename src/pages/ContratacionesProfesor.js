@@ -5,13 +5,10 @@ import { useContext } from "react";
 
 import "./NotificacionesProfesor.css";
 
-import { MDBBtn } from "mdb-react-ui-kit";
-import { MDBTextArea } from "mdb-react-ui-kit";
-
 import axios from "axios";
 import { useQueryClient, useQuery, useMutation } from "react-query";
 
-import { MDBCard, MDBCardHeader, MDBCardBody, MDBCardTitle, MDBCardText } from "mdb-react-ui-kit";
+import { MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 const ContratacionesProfesor = () => {
@@ -77,57 +74,79 @@ const ContratacionesProfesor = () => {
 	}
 
 	return (
-		<div className="cuerpo">
-			<h1 className="fw-bold">Contrataciones Pendientes de Aprobacion:</h1>
-
-			{contrataciones.map((c) => {
-				if (!c.estadoContratacion) {
-					return (
-						<MDBCard style={{ marginBottom: "2%" }}>
-							<MDBCardHeader tag="h2">Curso: {c.curso}</MDBCardHeader>
-
-							<MDBCardBody>
-								<MDBCardTitle>Motivo de solicitud</MDBCardTitle>
-								<MDBCardText>{c.motivacion}</MDBCardText>
-								<MDBCardTitle>Datos del alumno:</MDBCardTitle>
-								<MDBTextArea
-									value={
-										"Email: " +
-										c.mail +
-										"\nTelefono: " +
-										c.telefono +
-										"\nHorario de Preferencia: " +
-										c.horario
-									}
-									id="textAreaExample"
-									rows={4}
-									readOnly
-								/>
-
-								<MDBBtn
-									outline
-									rounded
-									className="mx-2"
-									color="success"
-									onClick={() => handleAceptar(c.id)}
-								>
-									Aceptar
-								</MDBBtn>
-								<MDBBtn
-									outline
-									rounded
-									className="mx-2"
-									color="danger"
-									onClick={() => handleCancelar(c.id)}
-								>
-									Rechazar
-								</MDBBtn>
-							</MDBCardBody>
-						</MDBCard>
-					);
-				}
-			})}
-		</div>
+		<>
+			<h4
+				className="fw-bold"
+				style={{ textAlign: "center", marginTop: "2%", marginBottom: "2%" }}
+			>
+				Contrataciones Pendientes de Aprobacion:
+			</h4>
+			<MDBTable align="middle" responsive>
+				{(isLoadingContrataciones || isLoadingCambiarContratacion || isLoadingReject) && (
+					<LoadingSpinner asOverlay />
+				)}
+				<MDBTableHead>
+					<tr>
+						<th scope="col">Nombre</th>
+						<th scope="col">Motivo</th>
+						<th scope="col">Datos</th>
+						<th scope="col">Clase</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</MDBTableHead>
+				<MDBTableBody>
+					{contrataciones.map((c) => {
+						if (!c.estadoContratacion) {
+							return (
+								<tr>
+									<td>
+										<div className="d-flex align-items-center">
+											<img
+												src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+												alt=""
+												style={{ width: "45px", height: "45px" }}
+												className="rounded-circle"
+											/>
+											<div className="ms-3">
+												<p className="fw-bold mb-1">{c.alumno}</p>
+												<p className="text-muted mb-0">{c.mail}</p>
+											</div>
+										</div>
+									</td>
+									<td>
+										<p className="fw-normal mb-1">{c.motivacion}</p>
+									</td>
+									<td>
+										<p className="text-muted mb-0">Telefono: {c.telefono}</p>
+										<p className="text-muted mb-0">
+											Horario preferido: {c.horario}
+										</p>
+									</td>
+									<td>{c.curso}</td>
+									<td>
+										<div className="flex-row  flex-shrink-1 ">
+											<MDBBtn
+												color="success"
+												onClick={() => handleAceptar(c.id)}
+												style={{ marginRight: "1%" }}
+											>
+												Aceptar
+											</MDBBtn>
+											<MDBBtn
+												color="danger"
+												onClick={() => handleCancelar(c.id)}
+											>
+												Rechazar
+											</MDBBtn>
+										</div>
+									</td>
+								</tr>
+							);
+						}
+					})}
+				</MDBTableBody>
+			</MDBTable>
+		</>
 	);
 };
 

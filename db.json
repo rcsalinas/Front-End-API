@@ -10,6 +10,7 @@
 			"celular": "1234",
 			"fechaNacimiento": "2015-03-25",
 			"estudiosCursados": ["primario", "secundario", "universidad"],
+			"image": "https://mdbootstrap.com/img/new/avatars/8.jpg",
 			"cursos": ["curso1", "curso2", "curso4"]
 		},
 		{
@@ -22,6 +23,7 @@
 			"celular": "1234",
 			"titulo": "licenciado",
 			"experiencia": "trabaje en google",
+			"image": "https://mdbootstrap.com/img/new/avatars/7.jpg",
 			"cursos": ["curso1", "curso3", "curso4"]
 		},
 		{
@@ -29,11 +31,12 @@
 			"password": "$2a$10$g4ZaCXgkD2cnPInup5NuJuVbivI.u0a.UGEQJiDVclUZ9VCuE9nb6",
 			"id": "profesor2",
 			"tipo": "profesor",
-			"nombre": "Jose",
+			"nombre": "Marcia",
 			"apellido": "Aguilar",
 			"celular": "1234",
 			"titulo": "Ingeniero",
 			"experiencia": "trabaje en Uber",
+			"image": "https://mdbootstrap.com/img/new/avatars/6.jpg",
 			"cursos": ["curso2"]
 		}
 	],
@@ -42,7 +45,7 @@
 			"id": "curso1",
 			"estado": true,
 			"nombreCurso": "Mate1023",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
+			"image": "https://i.ytimg.com/vi/Kp2bYWRQylk/maxresdefault.jpg",
 			"profesor": "profesor1",
 			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
 			"alumnos": ["alu1"],
@@ -56,7 +59,7 @@
 			"id": "curso2",
 			"estado": true,
 			"nombreCurso": "Biology101",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
+			"image": "https://debrabell.com/wp-content/uploads/2021/06/Biology-1200x628-1.png",
 			"profesor": "profesor2",
 			"desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ipsa, facilis quidem aliquam molestiae earum magnam impedit, laboriosam odio fuga corporis cupiditate! Quam repudiandae neque, debitis voluptates repellendus libero molestias?",
 			"alumnos": ["alu1"],
@@ -70,7 +73,7 @@
 			"id": "curso3",
 			"estado": true,
 			"nombreCurso": "API",
-			"image": "https://www.apwa.net/images/PWM101.jpg",
+			"image": "https://media.gcflearnfree.org/content/5e31ca08bc7eff08e4063776_01_29_2020/ProgrammingIllustration.png",
 			"profesor": "profesor1",
 			"desc": "Curso de aplicaciones interactivas",
 			"alumnos": [],
@@ -111,7 +114,7 @@
 		{
 			"id": "contratacion1",
 			"motivacion": "Me gusta la matematica",
-			"estadoContratacion": false,
+			"estadoContratacion": true,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso1",
@@ -123,7 +126,7 @@
 		{
 			"id": "contratacion2",
 			"motivacion": "Me gusta la biologia",
-			"estadoContratacion": false,
+			"estadoContratacion": true,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso2",
@@ -135,7 +138,7 @@
 		{
 			"id": "contratacion3",
 			"motivacion": "Me gusta la estadistica",
-			"estadoContratacion": false,
+			"estadoContratacion": true,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso4",
