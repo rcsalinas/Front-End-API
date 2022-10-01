@@ -11,10 +11,11 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { MDBCard, MDBCardBody, MDBCardHeader } from "mdb-react-ui-kit";
 
 import { Rating } from "@mui/material";
 
-import { MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
+import { MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBCardText } from "mdb-react-ui-kit";
 
 import "./NotificacionesProfesor.css";
 
@@ -180,12 +181,6 @@ const NotificacionesProfesor = () => {
 		if (comentarios.length > 0) {
 			return (
 				<>
-					<h4
-						className="fw-bold"
-						style={{ textAlign: "center", marginTop: "2%", marginBottom: "2%" }}
-					>
-						Calificaciones Pendientes de Aprobacion:
-					</h4>
 					<Modal
 						open={open}
 						onClose={handleClose}
@@ -213,196 +208,191 @@ const NotificacionesProfesor = () => {
 							</MDBBtn>
 						</Box>
 					</Modal>
-					<MDBTable align="middle" responsive>
-						<MDBTableHead>
-							<tr>
-								<th scope="col">Alumno</th>
-								<th scope="col">Curso</th>
-								<th scope="col">Comentario</th>
-								<th scope="col">Rating</th>
-								<th scope="col">Actions</th>
-							</tr>
-						</MDBTableHead>
-						<MDBTableBody>
-							{comentarios.map((comentario) => {
-								return (
-									comentario.estado === false && (
-										<tr>
-											<td>
-												<div className="d-flex align-items-center">
-													<img
-														src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-														alt=""
-														style={{ width: "45px", height: "45px" }}
-														className="rounded-circle"
-													/>
-													<div className="ms-3">
-														<p className="fw-bold mb-1">
-															{comentario.alumno}
+
+					<MDBCard
+						shadow="0"
+						border="light"
+						background="white"
+						className="mb-3"
+						style={{ margin: "2% 2% 2% 2%" }}
+					>
+						<MDBCardHeader>Calificaciones Pendientes de aprobacion</MDBCardHeader>
+						<MDBCardBody>
+							<MDBTable align="middle" responsive>
+								<MDBTableHead>
+									<tr>
+										<th scope="col">Alumno</th>
+										<th scope="col">Curso</th>
+										<th scope="col">Comentario</th>
+										<th scope="col">Rating</th>
+										<th scope="col">Actions</th>
+									</tr>
+								</MDBTableHead>
+								<MDBTableBody>
+									{comentarios.map((comentario) => {
+										return (
+											comentario.estado === false && (
+												<tr>
+													<td>
+														<div className="d-flex align-items-center">
+															<img
+																src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+																alt=""
+																style={{
+																	width: "45px",
+																	height: "45px",
+																}}
+																className="rounded-circle"
+															/>
+															<div className="ms-3">
+																<p className="fw-bold mb-1">
+																	{comentario.alumno}
+																</p>
+															</div>
+														</div>
+													</td>
+													<td>
+														<p className="fw-normal mb-1">
+															{comentario.curso}
 														</p>
-													</div>
-												</div>
-											</td>
-											<td>
-												<p className="fw-normal mb-1">{comentario.curso}</p>
-											</td>
-											<td>
-												<p className="text-muted mb-0">
-													{comentario.comentario}
-												</p>
-											</td>
-											<td>
-												<Rating
-													name="read-only"
-													value={comentario.rating}
-													readOnly
-												/>
-											</td>
-											<td>
-												<div className="flex-row  flex-shrink-1 ">
-													<MDBBtn
-														color="success"
-														onClick={() =>
-															handleAprobarComentario(comentario.id)
-														}
-														style={{ marginRight: "1%" }}
-													>
-														Aceptar
-													</MDBBtn>
-													<MDBBtn
-														color="danger"
-														onClick={() =>
-															handleOpen(
-																comentario.alumno,
-																comentario.curso,
-																comentario.comentario,
-																comentario.id
-															)
-														}
-													>
-														Rechazar
-													</MDBBtn>
-												</div>
-											</td>
-										</tr>
-									)
-								);
-							})}
-						</MDBTableBody>
-					</MDBTable>
+													</td>
+													<td>
+														<p className="text-muted mb-0">
+															{comentario.comentario}
+														</p>
+													</td>
+													<td>
+														<Rating
+															name="read-only"
+															value={comentario.rating}
+															readOnly
+														/>
+													</td>
+													<td>
+														<div className="flex-row  flex-shrink-1 ">
+															<MDBBtn
+																color="success"
+																onClick={() =>
+																	handleAprobarComentario(
+																		comentario.id
+																	)
+																}
+																style={{ marginRight: "1%" }}
+															>
+																Aceptar
+															</MDBBtn>
+															<MDBBtn
+																color="danger"
+																onClick={() =>
+																	handleOpen(
+																		comentario.alumno,
+																		comentario.curso,
+																		comentario.comentario,
+																		comentario.id
+																	)
+																}
+															>
+																Rechazar
+															</MDBBtn>
+														</div>
+													</td>
+												</tr>
+											)
+										);
+									})}
+								</MDBTableBody>
+							</MDBTable>
+						</MDBCardBody>
+					</MDBCard>
 				</>
 			);
 		} else {
 			return (
-				<p
-					className="fw-bold"
-					style={{ textAlign: "center", marginTop: "2%", marginBottom: "2%" }}
+				<MDBCard
+					shadow="0"
+					border="light"
+					background="white"
+					className="mb-3"
+					style={{ margin: "2% 2% 2% 2%" }}
 				>
-					No tiene comentarios pendientes para aprobar
-				</p>
+					<MDBCardHeader>Calificaciones</MDBCardHeader>
+					<MDBCardBody>
+						<MDBCardText>No tiene calificaciones pendientes de aprobacion</MDBCardText>
+					</MDBCardBody>
+				</MDBCard>
 			);
 		}
 	} else {
-		/*return (
-			<div className="cuerpo">
-				<h1 className="fw-bold" style={{ textAlign: "center" }}>
-					Comentarios No Aprobados
-				</h1>
-				{notificaciones.map((n) => {
-					return (
-						<MDBCard className="tarjeta">
-							<MDBCardHeader tag="h2">Curso: {n.curso}</MDBCardHeader>
-
-							<MDBCardBody>
-								<MDBCardTitle>Contenido Comentario:</MDBCardTitle>
-
-								<MDBTextArea
-									value={n.contenidoComentario}
-									id="textAreaExample"
-									rows={4}
-									readOnly
-								/>
-								<MDBCardTitle>Mensaje del Profesor</MDBCardTitle>
-								<MDBCardText>{n.mensaje}</MDBCardText>
-								<MDBBtn
-									outline
-									rounded
-									className="mx-2"
-									color="danger"
-									onClick={() => handleBorrarNotificacion(n.id)}
-								>
-									Borrar
-								</MDBBtn>
-							</MDBCardBody>
-						</MDBCard>
-					);
-				})}
-			</div>
-		);*/
-
 		if (notificaciones.length > 0) {
-			<h4
-				className="fw-bold"
-				style={{ textAlign: "center", marginTop: "2%", marginBottom: "2%" }}
-			>
-				Notificaciones Rechazadas:
-			</h4>;
 			return (
-				<MDBTable align="middle">
-					<MDBTableHead>
-						<tr>
-							<th scope="col">Curso</th>
-							<th scope="col">Contenido</th>
-							<th scope="col">Motivo de Rechazo</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</MDBTableHead>
-					<MDBTableBody>
-						{notificaciones.map((n) => {
-							<tr>
-								<td>
-									<div className="d-flex align-items-center">
-										<img
-											src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-											alt=""
-											style={{ width: "45px", height: "45px" }}
-											className="rounded-circle"
-										/>
-										<div className="ms-3">
-											<p className="fw-bold mb-1">John Doe</p>
-											<p className="text-muted mb-0">john.doe@gmail.com</p>
-										</div>
-									</div>
-								</td>
-								<td>
-									<p className="fw-normal mb-1">Software engineer</p>
-									<p className="text-muted mb-0">IT department</p>
-								</td>
+				<MDBCard
+					shadow="0"
+					border="light"
+					background="white"
+					className="mb-3"
+					style={{ margin: "2% 2% 2% 2%" }}
+				>
+					<MDBCardHeader>Calificaciones no aprobadas</MDBCardHeader>
+					<MDBCardBody>
+						<MDBTable align="middle">
+							<MDBTableHead>
+								<tr>
+									<th scope="col">Curso</th>
+									<th scope="col">Contenido</th>
 
-								<td>Senior</td>
-								<td>
-									<MDBBtn
-										color="link"
-										rounded
-										size="sm"
-										onClick={() => handleBorrarNotificacion(n.id)}
-									>
-										Borrar
-									</MDBBtn>
-								</td>
-							</tr>;
-						})}
-					</MDBTableBody>
-				</MDBTable>
+									<th scope="col">Motivo de Rechazo</th>
+
+									<th scope="col">Action</th>
+								</tr>
+							</MDBTableHead>
+							<MDBTableBody>
+								{notificaciones.map((n) => {
+									return (
+										<tr>
+											<td>
+												<p className="fw-bold mb-1">{n.curso}</p>
+											</td>
+											<td>
+												<p className="fw-normal mb-1">
+													{n.contenidoComentario}
+												</p>
+											</td>
+											<td>
+												<p className="fw-normal mb-1">{n.mensaje}</p>
+											</td>
+
+											<td>
+												<MDBBtn
+													color="link"
+													rounded
+													size="sm"
+													onClick={() => handleBorrarNotificacion(n.id)}
+												>
+													Borrar
+												</MDBBtn>
+											</td>
+										</tr>
+									);
+								})}
+							</MDBTableBody>
+						</MDBTable>
+					</MDBCardBody>
+				</MDBCard>
 			);
 		} else {
 			return (
-				<p
-					className="fw-bold"
-					style={{ textAlign: "center", marginTop: "2%", marginBottom: "2%" }}
+				<MDBCard
+					shadow="0"
+					border="light"
+					background="white"
+					className="mb-3"
+					style={{ margin: "2% 2% 2% 2%" }}
 				>
-					No tiene Notificaciones pendientes
-				</p>
+					<MDBCardHeader>Notificaciones</MDBCardHeader>
+					<MDBCardBody>
+						<MDBCardText>No tiene notificaciones</MDBCardText>
+					</MDBCardBody>
+				</MDBCard>
 			);
 		}
 	}

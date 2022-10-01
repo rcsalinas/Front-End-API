@@ -9,15 +9,17 @@ import { useQueryClient, useMutation, useQuery } from "react-query";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useHistory, NavLink } from "react-router-dom";
-import Stack from "@mui/material/Stack";
+import { MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage } from "mdb-react-ui-kit";
+
+import Comentario from "../UIElements/Comentario";
 
 import Rating from "@mui/material/Rating";
 
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
-import { Card } from "@mui/material";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import { maxWidth } from "@mui/system";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
@@ -196,46 +198,38 @@ const CursoDisplay = (props) => {
 	if (!auth.isLoggedIn) {
 		return (
 			<>
-				<Card
-					style={{ marginTop: "2%", marginLeft: "1%", marginRight: "1%" }}
-					className="tarjeta"
+				<MDBCard
+					className="mb-3"
+					style={{ marginLeft: "10%", marginRight: "10%", marginTop: "2%" }}
 				>
-					<img
-						className="imagen img-fluid rounded img-thumbnail"
+					<MDBCardImage
+						position="top"
 						src={cursoEncontrado.image}
-						alt=""
+						alt="..."
+						style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "500px" }}
 					/>
-					<div className="detallesCurso">
-						<h1 className="fw-bold">{cursoEncontrado.nombreCurso}</h1>
-						<h2>Profesor: {cursoEncontrado.profesor}</h2>
-						<h4>Frecuencia: {cursoEncontrado.frecuencia}</h4>
-						<h4>Tipo: {cursoEncontrado.tipo}</h4>
-						<h4>Precio: ${cursoEncontrado.costo}</h4>
-						<Typography component="legend">Descripcion del Curso:</Typography>
-						<p className="fst-normal">{cursoEncontrado.desc}</p>
+					<MDBCardBody>
+						<h3>{cursoEncontrado.nombreCurso}</h3>
+						<h5>Profesor: {cursoEncontrado.profesor}</h5>
+						<MDBCardText>{cursoEncontrado.desc}</MDBCardText>
 						<Typography component="legend">Calificacion Promedio:</Typography>
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
-					</div>
-				</Card>
-
+					</MDBCardBody>
+				</MDBCard>
 				<div className="comentarios">
-					<ul>
-						{comentarios.length > 0 &&
-							comentarios.map((comment) => {
-								if (comment.estado) {
-									return (
-										<div>
-											<li>{comment.comentario}</li>
-											<Rating
-												name="read-only"
-												value={comment.rating}
-												readOnly
-											/>
-										</div>
-									);
-								}
-							})}
-					</ul>
+					<h4>Comentarios</h4>
+					{comentarios.length > 0 &&
+						comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<Comentario
+										contenido={comment.comentario}
+										autor={comment.alumno}
+										rating={comment.rating}
+									/>
+								);
+							}
+						})}
 				</div>
 
 				<div className="botones">
@@ -244,6 +238,7 @@ const CursoDisplay = (props) => {
 						onClick={() => {
 							navigate.push("/auth");
 						}}
+						style={{ margin: "0 auto" }}
 					>
 						Autenticar Para solicitar
 					</Button>
@@ -254,79 +249,79 @@ const CursoDisplay = (props) => {
 		let estaEnCurso = contratacion.length > 0;
 		return (
 			<>
-				<Card
-					style={{ marginTop: "2%", marginLeft: "1%", marginRight: "1%" }}
-					className="tarjeta"
+				<MDBCard
+					className="mb-3"
+					style={{ marginLeft: "10%", marginRight: "10%", marginTop: "2%" }}
 				>
-					<img
-						className="imagen img-fluid rounded img-thumbnail"
+					<MDBCardImage
+						position="top"
 						src={cursoEncontrado.image}
-						alt=""
+						alt="..."
+						style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "500px" }}
 					/>
-					<div className="detallesCurso">
-						<h1 className="fw-bold">{cursoEncontrado.nombreCurso}</h1>
-						<h2>Profesor: {cursoEncontrado.profesor}</h2>
-						<h4>Frecuencia: {cursoEncontrado.frecuencia}</h4>
-						<h4>Tipo: {cursoEncontrado.tipo}</h4>
-						<h4>Precio: ${cursoEncontrado.costo}</h4>
-						<Typography component="legend">Descripcion del Curso:</Typography>
-						<p className="fst-normal">{cursoEncontrado.desc}</p>
+					<MDBCardBody>
+						<h3>{cursoEncontrado.nombreCurso}</h3>
+						<h5>Profesor: {cursoEncontrado.profesor}</h5>
+						<MDBCardText>{cursoEncontrado.desc}</MDBCardText>
 						<Typography component="legend">Calificacion Promedio:</Typography>
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
-					</div>
-				</Card>
+					</MDBCardBody>
+				</MDBCard>
+
 				<div className="comentarios">
-					<ul>
-						{comentarios.length > 0 &&
-							comentarios.map((comment) => {
-								if (comment.estado) {
-									return (
-										<div>
-											<li>{comment.comentario}</li>
-											<Rating
-												name="read-only"
-												value={comment.rating}
-												readOnly
-											/>
-										</div>
-									);
-								}
-							})}
-					</ul>
+					<h4>Comentarios</h4>
+					{comentarios.length > 0 &&
+						comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<Comentario
+										contenido={comment.comentario}
+										autor={comment.alumno}
+										rating={comment.rating}
+									/>
+								);
+							}
+						})}
 				</div>
 
 				{estaEnCurso &&
 					contratacion[0].estadoContratacion &&
 					auth.userType === "estudiante" && (
-						<Card sx={display}>
-							<div className="inputComentario">
-								<MDBTextArea
-									label="Comentario"
-									id="textAreaExample"
-									rows={4}
-									columns={2}
-									onChange={handleCommentChange}
-									value={palabras}
-								/>
+						<div
+							className="inputComentario"
+							style={{
+								marginLeft: "10%",
+								marginRight: "10%",
+								marginTop: "2%",
+								display: { display },
+							}}
+						>
+							<MDBTextArea
+								label="Comentario"
+								id="textAreaExample"
+								rows={4}
+								columns={2}
+								onChange={handleCommentChange}
+								value={palabras}
+							/>
 
-								<Typography component="legend">Calificacion</Typography>
-								<Rating
-									name="simple-controlled"
-									value={value}
-									onChange={(event, newValue) => {
-										setValue(newValue);
-									}}
-								/>
+							<Typography component="legend">Calificacion</Typography>
+							<Rating
+								name="simple-controlled"
+								value={value}
+								onChange={(event, newValue) => {
+									setValue(newValue);
+								}}
+							/>
 
-								<MDBBtn
-									rounded
-									style={{ width: "20%", marginBottom: "2%", marginTop: "2%" }}
-									onClick={handleReview}
-								>
-									Submit
-								</MDBBtn>
-							</div>
-						</Card>
+							<MDBBtn
+								rounded
+								style={{ width: "20%", marginBottom: "2%", marginTop: "2%" }}
+								onClick={handleReview}
+							>
+								Submit
+							</MDBBtn>
+						</div>
 					)}
 
 				<div className="botones">
@@ -349,33 +344,14 @@ const CursoDisplay = (props) => {
 							to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.id}/ContratacionPage`}
 							style={{ textDecoration: "none" }}
 						>
-							<Button variant="contained" color="success">
+							<Button
+								variant="contained"
+								color="success"
+								style={{ margin: "0 auto" }}
+							>
 								Solicitar Curso
 							</Button>
 						</NavLink>
-					)}
-
-					{auth.userType === "profesor" && cursoEncontrado.profesor === auth.userId && (
-						<Stack direction="row" spacing={2}>
-							<Button variant="contained" color="error" onClick={handleEliminar}>
-								Eliminar
-							</Button>
-							{cursoEncontrado.estado && (
-								<Button variant="outlined" onClick={handleFinalizar}>
-									Finalizar
-								</Button>
-							)}
-							{!cursoEncontrado.estado && (
-								<Button variant="outlined" onClick={handlePublicar}>
-									Publicar
-								</Button>
-							)}
-							<NavLink to={`/cursos/update/${cursoEncontrado.id}`}>
-								<Button variant="outlined" color="secondary">
-									Modificar
-								</Button>
-							</NavLink>
-						</Stack>
 					)}
 				</div>
 			</>
@@ -383,124 +359,48 @@ const CursoDisplay = (props) => {
 	} else if (auth.isLoggedIn && contratacion.length === 0 && auth.userType === "estudiante") {
 		return (
 			<>
-				<Card
-					style={{ marginTop: "2%", marginLeft: "1%", marginRight: "1%" }}
-					className="tarjeta"
+				<MDBCard
+					className="mb-3"
+					style={{ marginLeft: "10%", marginRight: "10%", marginTop: "2%" }}
 				>
-					<img
-						className="imagen img-fluid rounded img-thumbnail"
+					<MDBCardImage
+						position="top"
 						src={cursoEncontrado.image}
-						alt=""
+						alt="..."
+						style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "500px" }}
 					/>
-					<div className="detallesCurso">
-						<h1 className="fw-bold">{cursoEncontrado.nombreCurso}</h1>
-						<h2>Profesor: {cursoEncontrado.profesor}</h2>
-						<h4>Frecuencia: {cursoEncontrado.frecuencia}</h4>
-						<h4>Tipo: {cursoEncontrado.tipo}</h4>
-						<h4>Precio: ${cursoEncontrado.costo}</h4>
-						<Typography component="legend">Descripcion del Curso:</Typography>
-						<p className="fst-normal">{cursoEncontrado.desc}</p>
+					<MDBCardBody>
+						<h3>{cursoEncontrado.nombreCurso}</h3>
+						<h5>Profesor: {cursoEncontrado.profesor}</h5>
+						<MDBCardText>{cursoEncontrado.desc}</MDBCardText>
 						<Typography component="legend">Calificacion Promedio:</Typography>
 						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
-					</div>
-				</Card>
+					</MDBCardBody>
+				</MDBCard>
 				<div className="comentarios">
-					<ul>
-						{comentarios.length > 0 &&
-							comentarios.map((comment) => {
-								if (comment.estado) {
-									return (
-										<div>
-											<li>{comment.comentario}</li>
-											<Rating
-												name="read-only"
-												value={comment.rating}
-												readOnly
-											/>
-										</div>
-									);
-								}
-							})}
-					</ul>
+					<h4>Comentarios</h4>
+					{comentarios.length > 0 &&
+						comentarios.map((comment) => {
+							if (comment.estado) {
+								return (
+									<Comentario
+										contenido={comment.comentario}
+										autor={comment.alumno}
+										rating={comment.rating}
+									/>
+								);
+							}
+						})}
 				</div>
 				<div className="botones">
 					<NavLink
 						to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.id}/ContratacionPage`}
 						style={{ textDecoration: "none" }}
 					>
-						<Button variant="contained" color="success">
+						<Button variant="contained" color="success" style={{ margin: "0 auto" }}>
 							Solicitar Curso
 						</Button>
 					</NavLink>
-				</div>
-			</>
-		);
-	} else if (auth.isLoggedIn && contratacion.length === 0 && auth.userType === "profesor") {
-		return (
-			<>
-				<Card
-					style={{ marginTop: "2%", marginLeft: "1%", marginRight: "1%" }}
-					className="tarjeta"
-				>
-					<img
-						className="imagen img-fluid rounded img-thumbnail"
-						src={cursoEncontrado.image}
-						alt=""
-					/>
-					<div className="detallesCurso">
-						<h1 className="fw-bold">{cursoEncontrado.nombreCurso}</h1>
-						<h2>Profesor: {cursoEncontrado.profesor}</h2>
-						<h4>Frecuencia: {cursoEncontrado.frecuencia}</h4>
-						<h4>Tipo: {cursoEncontrado.tipo}</h4>
-						<h4>Precio: ${cursoEncontrado.costo}</h4>
-						<Typography component="legend">Descripcion del Curso:</Typography>
-						<p className="fst-normal">{cursoEncontrado.desc}</p>
-						<Typography component="legend">Calificacion Promedio:</Typography>
-						<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
-					</div>
-				</Card>
-				<div className="comentarios">
-					<ul>
-						{comentarios.length > 0 &&
-							comentarios.map((comment) => {
-								if (comment.estado) {
-									return (
-										<div>
-											<li>{comment.comentario}</li>
-											<Rating
-												name="read-only"
-												value={comment.rating}
-												readOnly
-											/>
-										</div>
-									);
-								}
-							})}
-					</ul>
-				</div>
-				<div className="botones">
-					{auth.userType === "profesor" && cursoEncontrado.profesor === auth.userId && (
-						<Stack direction="row" spacing={2}>
-							<Button variant="contained" color="error" onClick={handleEliminar}>
-								Eliminar
-							</Button>
-							{cursoEncontrado.estado && (
-								<Button variant="outlined" onClick={handleFinalizar}>
-									Finalizar
-								</Button>
-							)}
-							{!cursoEncontrado.estado && (
-								<Button variant="outlined" onClick={handlePublicar}>
-									Publicar
-								</Button>
-							)}
-							<NavLink to={`/cursos/update/${cursoEncontrado.id}`}>
-								<Button variant="outlined" color="secondary">
-									Modificar
-								</Button>
-							</NavLink>
-						</Stack>
-					)}
 				</div>
 			</>
 		);

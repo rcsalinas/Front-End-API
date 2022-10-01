@@ -15,23 +15,16 @@
 	height: 30%;
 }
 
-@media (max-width: 767px) {
-	.imagen {
-		display: none;
-	}
-}
-
 .botones {
-	margin-bottom: 10%;
-	margin-top: 5%;
 	display: flex;
-	justify-content: flex-start;
-	margin-left: 1%;
+	justify-content: center;
+	margin-bottom: 2%;
 }
-
 .comentarios {
 	margin-top: 3%;
-	margin-left: 1%;
+	display: flex;
+	margin-left: 10%;
+	flex-direction: column;
 }
 
 .inputComentario {
