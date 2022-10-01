@@ -9,7 +9,7 @@ const Cursos = (props) => {
 	const { cursos, misCursos, isLoading } = props;
 
 	return (
-		<div className="cursos-buscados" style={{ marginBottom: "5%" }}>
+		<div className="cursos-buscados" style={{ marginBottom: "20%" }}>
 			{isLoading && <LoadingSpinner asOverlay />}
 			{!isLoading &&
 				!misCursos &&

@@ -111,7 +111,7 @@
 		{
 			"id": "contratacion1",
 			"motivacion": "Me gusta la matematica",
-			"estadoContratacion": true,
+			"estadoContratacion": false,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso1",
@@ -123,7 +123,7 @@
 		{
 			"id": "contratacion2",
 			"motivacion": "Me gusta la biologia",
-			"estadoContratacion": true,
+			"estadoContratacion": false,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso2",
@@ -135,7 +135,7 @@
 		{
 			"id": "contratacion3",
 			"motivacion": "Me gusta la estadistica",
-			"estadoContratacion": true,
+			"estadoContratacion": false,
 			"estadoCurso": true,
 			"alumno": "alu1",
 			"curso": "curso4",

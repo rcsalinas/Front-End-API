@@ -83,7 +83,7 @@ const ContratacionesProfesor = () => {
 			{contrataciones.map((c) => {
 				if (!c.estadoContratacion) {
 					return (
-						<MDBCard>
+						<MDBCard style={{ marginBottom: "2%" }}>
 							<MDBCardHeader tag="h2">Curso: {c.curso}</MDBCardHeader>
 
 							<MDBCardBody>

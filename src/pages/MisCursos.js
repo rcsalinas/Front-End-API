@@ -79,8 +79,8 @@ const MisCursos = () => {
 
 	return (
 		<>
-			<h1 style={{ marginTop: "2%" }}>Cursos del Estudiante:</h1>
-			<h3>En curso:</h3>
+			<h1 style={{ marginTop: "2%", textAlign: "center" }}>Cursos del Estudiante:</h1>
+			<h3 style={{ marginTop: "2%", textAlign: "center" }}>En curso:</h3>
 			<div className="cursos-buscados">
 				{cursosEstudiante.map((curso) => {
 					if (curso.estadoContratacion && curso.estadoCurso) {
@@ -88,7 +88,7 @@ const MisCursos = () => {
 					}
 				})}
 			</div>
-			<h3>Finalizados:</h3>
+			<h3 style={{ marginTop: "2%", textAlign: "center" }}>Finalizados:</h3>
 			<div className="cursos-buscados" style={{ textDecoration: "none", marginBottom: "7%" }}>
 				{cursosEstudiante.map((curso) => {
 					if (curso.estadoContratacion && !curso.estadoCurso) {
