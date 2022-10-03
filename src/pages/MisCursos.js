@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "react-query";
-import Auxiliar from "../components/Auxiliar";
+import { MDBBtn } from "mdb-react-ui-kit";
+
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import { MDBBadge, MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import { MDBCard, MDBCardBody, MDBCardHeader } from "mdb-react-ui-kit";
@@ -43,7 +44,7 @@ const MisCursos = () => {
 	}
 	async function fetchCursosEstudiante() {
 		const { data } = await axios.get(`http://localhost:8000/contrataciones?alumno=${userId}`);
-		console.log(data);
+
 		return data;
 	}
 
@@ -55,6 +56,9 @@ const MisCursos = () => {
 	};
 	const handleDespublicar = () => {
 		alert("despublicado");
+	};
+	const handleFinalizar = () => {
+		alert("finalizado");
 	};
 
 	if (isLoadingCursosProfe) {
@@ -72,14 +76,116 @@ const MisCursos = () => {
 
 	if (auth.userType === "profesor") {
 		return (
-			<MDBCard
-				shadow="0"
-				border="light"
-				background="white"
-				className="mb-3"
-				style={{ margin: "2% 2% 2% 2%" }}
-			>
-				<MDBCardHeader>Cursos del profesor</MDBCardHeader>
+			<section style={{ padding: "5%", height: "100vh" }}>
+				<MDBCard>
+					<MDBCardHeader>Cursos del profesor</MDBCardHeader>
+					<MDBCardBody>
+						<MDBTable align="middle">
+							<MDBTableHead>
+								<tr>
+									<th scope="col">Materia</th>
+									<th scope="col">Duracion</th>
+									<th scope="col">Frecuencia</th>
+									<th scope="col">Tipo</th>
+									<th scope="col">Rating</th>
+									<th scope="col">Estado</th>
+									<th scope="col"> Accion</th>
+								</tr>
+							</MDBTableHead>
+							<MDBTableBody>
+								{cursosProfe.map((curso) => {
+									return (
+										<tr>
+											<td>
+												<NavLink
+													to={`/cursos/${curso.id}`}
+													style={{
+														textDecoration: "none",
+														color: "black",
+													}}
+												>
+													<p className="fw-bold mb-1">
+														{curso.nombreCurso}
+													</p>
+												</NavLink>
+											</td>
+											<td>
+												<p className="fw-normal mb-1">{curso.duracion}</p>
+											</td>
+											<td>
+												<p className="fw-normal mb-1">{curso.frecuencia}</p>
+											</td>
+											<td>
+												<p className="fw-normal mb-1">{curso.tipo}</p>
+											</td>
+											<td>
+												<Rating
+													name="read-only"
+													value={curso.calificacion}
+													readOnly
+												/>
+											</td>
+											<td>
+												{curso.estado && (
+													<MDBBadge color="success" pill>
+														publicado
+													</MDBBadge>
+												)}
+												{!curso.estado && (
+													<MDBBadge color="warning" pill>
+														inactivo
+													</MDBBadge>
+												)}
+											</td>
+
+											<td>
+												<MDBDropdown group className="shadow-0">
+													<MDBDropdownToggle color="light">
+														Action
+													</MDBDropdownToggle>
+													<MDBDropdownMenu>
+														<MDBDropdownItem
+															link
+															onClick={handleEliminar}
+														>
+															Eliminar
+														</MDBDropdownItem>
+														<NavLink to={`/cursos/update/${curso.id}`}>
+															<MDBDropdownItem link>
+																Modificar
+															</MDBDropdownItem>
+														</NavLink>
+
+														<MDBDropdownItem
+															link
+															onClick={handlePublicar}
+														>
+															Publicar
+														</MDBDropdownItem>
+														<MDBDropdownItem
+															link
+															onClick={handleDespublicar}
+														>
+															Despublicar
+														</MDBDropdownItem>
+													</MDBDropdownMenu>
+												</MDBDropdown>
+											</td>
+										</tr>
+									);
+								})}
+							</MDBTableBody>
+						</MDBTable>
+					</MDBCardBody>
+				</MDBCard>
+			</section>
+		);
+	}
+	//esta se va a tener que modificar teniendo bien hecho el back
+	return (
+		<section style={{ padding: "2%", height: "100vh" }}>
+			<MDBCard>
+				<MDBCardHeader>Cursos del Alumno</MDBCardHeader>
 				<MDBCardBody>
 					<MDBTable align="middle">
 						<MDBTableHead>
@@ -94,67 +200,65 @@ const MisCursos = () => {
 							</tr>
 						</MDBTableHead>
 						<MDBTableBody>
-							{cursosProfe.map((curso) => {
+							{cursosEstudiante.map((curso) => {
 								return (
 									<tr>
 										<td>
-											<p className="fw-bold mb-1">{curso.nombreCurso}</p>
+											<NavLink
+												to={`/cursos/${curso.curso}`}
+												style={{ textDecoration: "none", color: "black" }}
+											>
+												<p className="fw-bold mb-1">{curso.curso}</p>
+											</NavLink>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">{curso.duracion}</p>
+											<p className="fw-normal mb-1">7</p>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">{curso.frecuencia}</p>
+											<p className="fw-normal mb-1">7</p>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">{curso.tipo}</p>
+											<p className="fw-normal mb-1">7</p>
 										</td>
 										<td>
-											<Rating
-												name="read-only"
-												value={curso.calificacion}
-												readOnly
-											/>
+											<Rating name="read-only" value={5} readOnly />
 										</td>
 										<td>
-											{curso.estado && (
-												<MDBBadge color="success" pill>
-													publicado
+											{curso.estadoCurso && (
+												<MDBBadge color="success" pill size="mx-2">
+													En curso
 												</MDBBadge>
 											)}
-											{!curso.estado && (
+											{!curso.estadoCurso && (
 												<MDBBadge color="warning" pill>
-													inactivo
+													Finalizado
 												</MDBBadge>
 											)}
 										</td>
 
 										<td>
-											<MDBDropdown group className="shadow-0">
-												<MDBDropdownToggle color="light">
-													Action
-												</MDBDropdownToggle>
-												<MDBDropdownMenu>
-													<MDBDropdownItem link onClick={handleEliminar}>
-														Eliminar
-													</MDBDropdownItem>
-													<NavLink to={`/cursos/update/${curso.id}`}>
-														<MDBDropdownItem link>
-															Modificar
-														</MDBDropdownItem>
-													</NavLink>
-
-													<MDBDropdownItem link onClick={handlePublicar}>
-														Publicar
-													</MDBDropdownItem>
-													<MDBDropdownItem
-														link
-														onClick={handleDespublicar}
-													>
-														Despublicar
-													</MDBDropdownItem>
-												</MDBDropdownMenu>
-											</MDBDropdown>
+											{curso.estadoCurso && (
+												<MDBBtn
+													className="mx-2"
+													color="danger"
+													onClick={handleFinalizar}
+													rounded
+													size="sm"
+												>
+													Finalizar
+												</MDBBtn>
+											)}
+											{!curso.estadoCurso && (
+												<MDBBtn
+													className="mx-2"
+													color="danger"
+													disabled
+													rounded
+													size="sm"
+												>
+													Finalizar
+												</MDBBtn>
+											)}
 										</td>
 									</tr>
 								);
@@ -163,12 +267,13 @@ const MisCursos = () => {
 					</MDBTable>
 				</MDBCardBody>
 			</MDBCard>
-		);
-	}
-	//esta se va a tener que modificar teniendo bien hecho el back
-	return (
-		<>
-			<h4 style={{ marginTop: "2%", textAlign: "center" }}>Cursos del Estudiante:</h4>
+		</section>
+	);
+};
+
+export default MisCursos;
+
+/*<h4 style={{ marginTop: "2%", textAlign: "center" }}>Cursos del Estudiante:</h4>
 			<h5 style={{ marginTop: "2%", textAlign: "center" }}>En curso:</h5>
 			<div className="cursos-buscados">
 				{cursosEstudiante.map((curso) => {
@@ -184,9 +289,4 @@ const MisCursos = () => {
 						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
 					}
 				})}
-			</div>
-		</>
-	);
-};
-
-export default MisCursos;
+			</div> */

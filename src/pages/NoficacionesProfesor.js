@@ -180,7 +180,7 @@ const NotificacionesProfesor = () => {
 	if (auth.userType === "profesor") {
 		if (comentarios.length > 0) {
 			return (
-				<>
+				<section style={{ padding: "5%", height: "100vh" }}>
 					<Modal
 						open={open}
 						onClose={handleClose}
@@ -209,13 +209,7 @@ const NotificacionesProfesor = () => {
 						</Box>
 					</Modal>
 
-					<MDBCard
-						shadow="0"
-						border="light"
-						background="white"
-						className="mb-3"
-						style={{ margin: "2% 2% 2% 2%" }}
-					>
+					<MDBCard>
 						<MDBCardHeader>Calificaciones Pendientes de aprobacion</MDBCardHeader>
 						<MDBCardBody>
 							<MDBTable align="middle" responsive>
@@ -304,17 +298,11 @@ const NotificacionesProfesor = () => {
 							</MDBTable>
 						</MDBCardBody>
 					</MDBCard>
-				</>
+				</section>
 			);
 		} else {
 			return (
-				<MDBCard
-					shadow="0"
-					border="light"
-					background="white"
-					className="mb-3"
-					style={{ margin: "2% 2% 2% 2%" }}
-				>
+				<MDBCard>
 					<MDBCardHeader>Calificaciones</MDBCardHeader>
 					<MDBCardBody>
 						<MDBCardText>No tiene calificaciones pendientes de aprobacion</MDBCardText>
@@ -325,74 +313,74 @@ const NotificacionesProfesor = () => {
 	} else {
 		if (notificaciones.length > 0) {
 			return (
-				<MDBCard
-					shadow="0"
-					border="light"
-					background="white"
-					className="mb-3"
-					style={{ margin: "2% 2% 2% 2%" }}
-				>
-					<MDBCardHeader>Calificaciones no aprobadas</MDBCardHeader>
-					<MDBCardBody>
-						<MDBTable align="middle">
-							<MDBTableHead>
-								<tr>
-									<th scope="col">Curso</th>
-									<th scope="col">Contenido</th>
+				<section style={{ padding: "5%", height: "100vh" }}>
+					<MDBCard shadow="0" border="light" background="white" className="mb-3">
+						<MDBCardHeader>Calificaciones no aprobadas</MDBCardHeader>
+						<MDBCardBody>
+							<MDBTable align="middle">
+								<MDBTableHead>
+									<tr>
+										<th scope="col">Curso</th>
+										<th scope="col">Contenido</th>
 
-									<th scope="col">Motivo de Rechazo</th>
+										<th scope="col">Motivo de Rechazo</th>
 
-									<th scope="col">Action</th>
-								</tr>
-							</MDBTableHead>
-							<MDBTableBody>
-								{notificaciones.map((n) => {
-									return (
-										<tr>
-											<td>
-												<p className="fw-bold mb-1">{n.curso}</p>
-											</td>
-											<td>
-												<p className="fw-normal mb-1">
-													{n.contenidoComentario}
-												</p>
-											</td>
-											<td>
-												<p className="fw-normal mb-1">{n.mensaje}</p>
-											</td>
+										<th scope="col">Action</th>
+									</tr>
+								</MDBTableHead>
+								<MDBTableBody>
+									{notificaciones.map((n) => {
+										return (
+											<tr>
+												<td>
+													<p className="fw-bold mb-1">{n.curso}</p>
+												</td>
+												<td>
+													<p className="fw-normal mb-1">
+														{n.contenidoComentario}
+													</p>
+												</td>
+												<td>
+													<p className="fw-normal mb-1">{n.mensaje}</p>
+												</td>
 
-											<td>
-												<MDBBtn
-													color="link"
-													rounded
-													size="sm"
-													onClick={() => handleBorrarNotificacion(n.id)}
-												>
-													Borrar
-												</MDBBtn>
-											</td>
-										</tr>
-									);
-								})}
-							</MDBTableBody>
-						</MDBTable>
-					</MDBCardBody>
-				</MDBCard>
+												<td>
+													<MDBBtn
+														color="link"
+														rounded
+														size="sm"
+														onClick={() =>
+															handleBorrarNotificacion(n.id)
+														}
+													>
+														Borrar
+													</MDBBtn>
+												</td>
+											</tr>
+										);
+									})}
+								</MDBTableBody>
+							</MDBTable>
+						</MDBCardBody>
+					</MDBCard>
+				</section>
 			);
 		} else {
 			return (
-				<MDBCard
-					shadow="0"
-					border="light"
-					background="white"
-					className="mb-3"
-					style={{ margin: "2% 2% 2% 2%" }}
-				>
-					<MDBCardHeader>Notificaciones</MDBCardHeader>
-					<MDBCardBody>
-						<MDBCardText>No tiene notificaciones</MDBCardText>
-					</MDBCardBody>
-				</MDBCard>
+				<section style={{ backgroundColor: "#eee", padding: "2%", height: "100vh" }}>
+					<MDBCard
+						shadow="0"
+						border="light"
+						background="white"
+						className="mb-3"
+						style={{ margin: "2% 2% 2% 2%" }}
+					>
+						<MDBCardHeader>Notificaciones</MDBCardHeader>
+						<MDBCardBody>
+							<MDBCardText>No tiene notificaciones</MDBCardText>
+						</MDBCardBody>
+					</MDBCard>
+				</section>
 			);
 		}
 	}

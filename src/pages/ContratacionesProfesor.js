@@ -75,14 +75,8 @@ const ContratacionesProfesor = () => {
 	}
 
 	return (
-		<>
-			<MDBCard
-				shadow="0"
-				border="light"
-				background="white"
-				className="mb-3"
-				style={{ margin: "2% 2% 2% 2%" }}
-			>
+		<section style={{ padding: "5%", height: "100vh" }}>
+			<MDBCard>
 				<MDBCardHeader>Contrataciones Pendientes de Aprobacion</MDBCardHeader>
 				<MDBCardBody>
 					<MDBTable align="middle" responsive>
@@ -154,7 +148,7 @@ const ContratacionesProfesor = () => {
 					</MDBTable>
 				</MDBCardBody>
 			</MDBCard>
-		</>
+		</section>
 	);
 };
 

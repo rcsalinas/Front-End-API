@@ -27,7 +27,7 @@ const ProfileBody = (props) => {
 		image,
 	} = props;
 	return (
-		<section style={{ backgroundColor: "#eee" }}>
+		<section>
 			<MDBContainer className="py-5">
 				<MDBRow>
 					<MDBCol lg="4">
