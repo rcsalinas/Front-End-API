@@ -10,8 +10,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useHistory, NavLink } from "react-router-dom";
 import { MDBCard, MDBCardText, MDBCardBody, MDBCardImage } from "mdb-react-ui-kit";
-
-import Comentario from "../UIElements/Comentario";
+import { Accordion, AccordionDetails, AccordionSummary, Grid } from "@mui/material";
+import { Container } from "@mui/system";
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
 
@@ -19,6 +19,7 @@ import Rating from "@mui/material/Rating";
 
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import Comentario from "../Comentario";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
@@ -213,22 +214,22 @@ const CursoDisplay = (props) => {
 			</MDBCard>
 
 			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
-				<div className="comentarios">
-					<h4>Comentarios</h4>
-					{comentarios.length > 0 &&
-						comentarios.map((comment) => {
-							if (comment.estado) {
-								return (
-									<Comentario
-										contenido={comment.comentario}
-										autor={comment.alumno}
-										rating={comment.rating}
-									/>
-								);
-							}
-						})}
-					{comentarios.length === 0 && <p>No hay comentarios para este curso</p>}
-				</div>
+				<Container>
+					<Accordion defaultExpanded elevation={0}>
+						<AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+							<Typography color="primary" variant="h6" sx={{ fontWeight: 600 }}>
+								Comentarios
+							</Typography>
+						</AccordionSummary>
+						<AccordionDetails>
+							<Grid container rowSpacing={2}>
+								{comentarios.map((review) => (
+									<Comentario key={review.id} review={review} />
+								))}
+							</Grid>
+						</AccordionDetails>
+					</Accordion>
+				</Container>
 				{auth.isLoggedIn && auth.userType == "estudiante" && (
 					<div
 						className="inputComentario"
