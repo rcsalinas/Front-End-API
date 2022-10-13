@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
 import {
 	MDBBtn,
 	MDBContainer,
@@ -25,12 +27,19 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import ImageUpload from "./ImageUpload";
-import Input from "./Input";
+import LoadingSpinner from "../UIElements/LoadingSpinner";
+
 import { useForm } from "../../hooks/form-hook";
+
+import axios from "axios";
+import { useQueryClient, useMutation, useQuery } from "react-query";
 
 import Checkbox from "@mui/material/Checkbox";
 
 const RegisterForm = (props) => {
+	const auth = useContext(AuthContext);
+	const queryClient = useQueryClient();
+
 	const [tipoUsuario, setTipoUsuario] = useState("estudiante");
 	const [date, setDate] = React.useState(dayjs("2014-08-18T21:11:54"));
 	const [datosEstudios, setDatosEstudios] = useState([]);
@@ -58,17 +67,41 @@ const RegisterForm = (props) => {
 		false
 	);
 
-	const handleRegister = () => {
-		console.log(
-			nombre,
-			apellido,
-			email,
-			telefono,
-			datosEstudios,
-			date.format("DD/MM/YYYY"),
-			titulo,
-			experiencia
+	const { mutate, error, isLoading, isError } = useMutation(registerUser, {
+		onSuccess: (data) => {
+			auth.login(data.userId, data.token, data.tipo);
+			queryClient.setQueryData(["usuario", data.userId], data);
+		},
+	});
+
+	async function registerUser(payload) {
+		const { data } = await axios.post(
+			`http://localhost:5000/api/users/signUp`,
+
+			payload,
+			{ headers: { "Content-Type": "multipart/form-data" } }
 		);
+		return data;
+	}
+
+	const handleRegister = () => {
+		const formData = new FormData();
+		formData.append("nombre", nombre);
+		formData.append("image", formState.inputs.image.value);
+		formData.append("apellido", apellido);
+		formData.append("email", email);
+		formData.append("password", password);
+		formData.append("tipo", tipoUsuario);
+		formData.append("telefono", telefono);
+		if (tipoUsuario === "estudiante") {
+			formData.append("estudiosCursados", datosEstudios);
+			formData.append("fechaNacimiento", date.format("DD/MM/YYYY"));
+		} else {
+			formData.append("titulo", titulo);
+			formData.append("experiencia", experiencia);
+		}
+
+		mutate(formData);
 	};
 
 	const handleChange = (event, value) => {
@@ -97,6 +130,13 @@ const RegisterForm = (props) => {
 			setDatosEstudios(previos);
 		}
 	};
+
+	if (isError) {
+		alert(error);
+	}
+	if (isLoading) {
+		<LoadingSpinner asOverlay />;
+	}
 
 	return (
 		<MDBContainer fluid className="h-custom">

@@ -15,7 +15,7 @@ const Profile = () => {
 	const { data, error, isError, isLoading } = useQuery(["user", auth.userId], fetchUserPerfil);
 
 	async function fetchUserPerfil() {
-		const { data } = await axios.get(`http://localhost:8000/users/${auth.userId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`);
 
 		return data;
 	}
@@ -31,15 +31,15 @@ const Profile = () => {
 	}
 
 	if (!isLoading && !isError) {
-		let nombre = data.nombre;
-		let apellido = data.apellido;
-		let mail = data.email;
-		let celular = data.celular;
-		let image = data.image;
+		let nombre = data.user.nombre;
+		let apellido = data.user.apellido;
+		let mail = data.user.email;
+		let celular = data.user.telefono;
+		let image = data.user.image;
 
 		if (auth.userType === "estudiante") {
-			let fechaNacimiento = data.fechaNacimiento;
-			let estudiosCursados = data.estudiosCursados;
+			let fechaNacimiento = data.user.fechaNacimiento;
+			let estudiosCursados = data.user.estudiosCursados;
 			return (
 				<ProfileBody
 					nombre={nombre}
@@ -52,8 +52,8 @@ const Profile = () => {
 				/>
 			);
 		} else {
-			let titulo = data.titulo;
-			let experiencia = data.experiencia;
+			let titulo = data.user.titulo;
+			let experiencia = data.user.experiencia;
 			return (
 				<ProfileBody
 					nombre={nombre}

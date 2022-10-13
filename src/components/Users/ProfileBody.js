@@ -34,7 +34,7 @@ const ProfileBody = (props) => {
 						<MDBCard className="mb-4">
 							<MDBCardBody className="text-center">
 								<MDBCardImage
-									src={image}
+									src={`http://localhost:5000/${image}`}
 									alt="avatar"
 									className="rounded-circle"
 									style={{ width: "150px" }}
