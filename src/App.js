@@ -6,7 +6,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";
 import { AuthContext } from "./context/auth-context";
 import { useAuth } from "./hooks/auth-hook";
-import Auth from "./pages/Auth";
+import LoginPage from "./pages/LoginPage";
 import ComoFunciona from "./pages/ComoFunciona";
 import Profile from "./pages/Profile";
 import NotificacionesProfesor from "./pages/NoficacionesProfesor";
@@ -18,24 +18,11 @@ import CreateCursoPage from "./pages/CreateCursoPage";
 import ContratacionPage from "./pages/ContratacionPage";
 import ContratacionesProfesor from "./pages/ContratacionesProfesor";
 import ForgotPassword from "./pages/ForgotPassword";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-	//const [isLoggedIn, setIsLoggedIn] = useState(false);
-	//const [userType, setUserType] = useState(null); //cambiar a profesor para hacer pruebas con profesor
-	//const [userId, setUserId] = useState(null);
-
 	const { token, login, logout, userId, userType } = useAuth();
 
-	/*const login = useCallback((tipo, usuario) => {
-		setIsLoggedIn(true);
-		setUserType(tipo);
-		setUserId(usuario);
-	}, []);
-	const logout = useCallback(() => {
-		setIsLoggedIn(false);
-		setUserType(null);
-		setUserId(null);
-	}, []);*/
 	let routes;
 	if (token) {
 		if (userType === "estudiante") {
@@ -123,8 +110,11 @@ function App() {
 				<Route path="/cursos/:cursoId" exact>
 					<CursoPage />
 				</Route>
+				<Route path="/register" exact>
+					<RegisterPage />
+				</Route>
 				<Route path="/auth" exact>
-					<Auth />
+					<LoginPage />
 				</Route>
 				<Redirect to="/auth" />
 			</Switch>

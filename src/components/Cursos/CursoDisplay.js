@@ -222,7 +222,7 @@ const CursoDisplay = (props) => {
 							</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
-							<Grid container rowSpacing={2}>
+							<Grid container rowSpacing={2} sx={{ flexDirection: "column" }}>
 								{comentarios.map((review) => (
 									<Comentario key={review.id} review={review} />
 								))}
