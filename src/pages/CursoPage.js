@@ -23,12 +23,12 @@ const CursoPage = () => {
 		isLoading: isLoadingCurso,
 	} = useQuery(["curso", cursoId], fetchCursoPorId); // me traigo el curso
 
-	const {
+	/*const {
 		data: contratacion,
 		error: errorFetchContratacion,
 		isError: isErrorFetchContratacion,
 		isLoading: isLoadingContratacion,
-	} = useQuery(["contrataciones", auth.userId], fetchContratacion, { enabled: auth.isLoggedIn }); // me traigo la contratacion
+	} = useQuery(["contrataciones", auth.userId], fetchContratacion, { enabled: auth.isLoggedIn });*/ // me traigo la contratacion
 
 	/*const {
 		mutate:deleteCurso,
@@ -47,7 +47,7 @@ const CursoPage = () => {
 		return data;
 	}
 
-	async function fetchContratacion() {
+	/*async function fetchContratacion() {
 		if (auth.userType === "estudiante") {
 			const { data } = await axios.get(
 				`http://localhost:8000/contrataciones?alumno=${auth.userId}&curso=${cursoId}`
@@ -59,21 +59,22 @@ const CursoPage = () => {
 			);
 			return data;
 		}
-	}
+	}*/
 
-	if (isErrorFetchCurso || isErrorFetchContratacion) {
+	if (isErrorFetchCurso /*isErrorFetchContratacion*/) {
 		return (
-			<div>
+			/*<div>
 				Error!
 				{isErrorFetchContratacion
 					? errorFetchContratacion.message
 					: errorFetchCurso.message}
-			</div>
+			</div>*/
+			<div>{errorFetchCurso}</div>
 		);
 	}
 
-	if (isLoadingCurso || isLoadingContratacion) {
-		return <LoadingSpinner />;
+	if (isLoadingCurso /*|| isLoadingContratacion*/) {
+		return <LoadingSpinner asOverlay />;
 	}
 
 	return (
@@ -82,7 +83,7 @@ const CursoPage = () => {
 			idCurso={cursoEncontrado.id}
 			idProfesor={cursoEncontrado.profesor.id}
 			image={cursoEncontrado.image}
-			contratacion={contratacion}
+			/*contratacion={contratacion}*/
 			rating={cursoEncontrado.rating}
 			descripcion={cursoEncontrado.descripcion}
 			nombreProfesor={cursoEncontrado.profesor.nombre}

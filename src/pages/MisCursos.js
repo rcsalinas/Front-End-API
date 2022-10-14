@@ -71,7 +71,7 @@ const MisCursos = () => {
 		return <div>Error! {errorCursosEstudiante.message}</div>;
 	}
 	if (isLoadingCursosEstudiante) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 
 	if (auth.userType === "profesor") {
@@ -93,7 +93,7 @@ const MisCursos = () => {
 								</tr>
 							</MDBTableHead>
 							<MDBTableBody>
-								{cursosProfe.cursos.map((curso) => {
+								{cursosProfe.map((curso) => {
 									return (
 										<tr>
 											<td>
@@ -104,9 +104,7 @@ const MisCursos = () => {
 														color: "black",
 													}}
 												>
-													<p className="fw-bold mb-1">
-														{curso.nombreCurso}
-													</p>
+													<p className="fw-bold mb-1">{curso.nombre}</p>
 												</NavLink>
 											</td>
 											<td>
@@ -121,7 +119,7 @@ const MisCursos = () => {
 											<td>
 												<Rating
 													name="read-only"
-													value={curso.calificacion}
+													value={curso.rating}
 													readOnly
 												/>
 											</td>

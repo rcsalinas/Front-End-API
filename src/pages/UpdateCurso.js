@@ -20,12 +20,13 @@ import {
 	MDBInput,
 	MDBTextArea,
 } from "mdb-react-ui-kit";
-
+import ImageUpload from "../components/FormElements/ImageUpload";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import { useForm } from "../hooks/form-hook";
 
 const UpdateCurso = () => {
 	let navigate = useHistory();
@@ -38,13 +39,21 @@ const UpdateCurso = () => {
 	const [tipo, setTipo] = React.useState("");
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
-
+	const [formState, inputHandler] = useForm(
+		{
+			image: {
+				value: null,
+				isValid: false,
+			},
+		},
+		false
+	);
 	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], fetchCurso);
 
 	useEffect(() => {
 		if (!isLoading) {
-			setNombre(data.nombreCurso);
-			setDescripcion(data.desc);
+			setNombre(data.nombre);
+			setDescripcion(data.descripcion);
 			setFrecuencia(data.frecuencia);
 			setTipo(data.tipo);
 			setDuracion(data.duracion);
@@ -54,25 +63,24 @@ const UpdateCurso = () => {
 
 	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateCurso, {
 		onSuccess: (data) => {
+			queryClient.invalidateQueries(["cursos", auth.userId]);
 			queryClient.setQueryData(["curso", cursoId], data);
 			queryClient.invalidateQueries(["curso", cursoId]);
-			queryClient.invalidateQueries(["cursos", cursoId]);
+			navigate.push(`/${auth.userId}/cursos`);
 		},
 	});
 
 	async function fetchCurso() {
-		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
-		console.log(data);
+		const { data } = await axios.get(`http://localhost:5000/api/cursos/${cursoId}`);
 		return data;
 	}
-	async function updateCurso() {
-		const { data } = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
-			nombreCurso: nombre,
-			desc: descripcion,
-			frecuencia: frecuencia,
-			tipo: tipo,
-			duracion: duracion,
-			costo: parseFloat(costo),
+	async function updateCurso(payload) {
+		const { data } = await axios.patch(`http://localhost:5000/api/cursos/${cursoId}`, payload, {
+			mode: "same-origin",
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: "Bearer " + auth.token,
+			},
 		});
 		return data;
 	}
@@ -82,7 +90,7 @@ const UpdateCurso = () => {
 	}
 
 	if (isLoading || isLoadingUpdate) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 
 	const handleNameChange = (event) => {
@@ -105,9 +113,23 @@ const UpdateCurso = () => {
 	};
 	const handleUpdateCurso = (event) => {
 		event.preventDefault();
-		mutate();
-		navigate.push(`/${auth.userId}/cursos`);
+		const formData = new FormData();
+		formData.append("nombre", nombre);
+		formData.append("image", formState.inputs.image.value);
+		formData.append("descripcion", descripcion);
+		formData.append("frecuencia", frecuencia);
+		formData.append("tipo", tipo);
+		formData.append("duracion", duracion);
+		formData.append("costo", parseFloat(costo));
+		mutate(formData);
 	};
+	if (isLoading || isLoadingUpdate) {
+		return <LoadingSpinner asOverlay />;
+	}
+
+	if (isError) {
+		alert(error);
+	}
 
 	return (
 		<MDBContainer fluid>
@@ -159,7 +181,7 @@ const UpdateCurso = () => {
 						</MDBRow>
 						<MDBRow>
 							<MDBCol md="6">
-								<FormControl fullWidth>
+								<FormControl fullWidth style={{ marginBottom: "5%" }}>
 									<InputLabel id="demo-simple-select-label">
 										Frecuencia
 									</InputLabel>
@@ -213,17 +235,33 @@ const UpdateCurso = () => {
 								<MDBTextArea
 									label="Descripcion"
 									id="textAreaExample"
-									rows={3}
+									rows={2}
 									value={descripcion}
 									onChange={handleDescripcionChange}
 									required
 								/>
 							</MDBCol>
 						</MDBRow>
+						<div
+							style={{
+								marginLeft: "20%",
+								marginRight: "20%",
+								marginBottom: "5%",
+								marginTop: "5%",
+							}}
+						>
+							<ImageUpload
+								id="image"
+								onInput={inputHandler}
+								errorText="Proveer Imagen"
+							></ImageUpload>
+						</div>
 
-						<MDBBtn type="submit" className="w-100 mb-4" size="md">
-							Modificar
-						</MDBBtn>
+						<div>
+							<MDBBtn type="submit" style={{ width: "40%" }}>
+								Modificar
+							</MDBBtn>
+						</div>
 					</form>
 				</MDBCardBody>
 			</MDBCard>

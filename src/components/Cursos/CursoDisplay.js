@@ -34,21 +34,21 @@ const CursoDisplay = (props) => {
 		idCurso,
 		idProfesor,
 		image,
-		contratacion,
+		/*contratacion,*/
 		rating,
 		descripcion,
 		nombreProfesor,
 		calificaciones,
 	} = props;
 
-	const {
+	/*const {
 		data: comentarios,
 		error: errorComentarios,
 		isError: isErrorComentarios,
 		isLoading: isLoadingComentarios,
-	} = useQuery(["comentarios", cursoId], fetchComentarios);
+	} = useQuery(["comentarios", cursoId], fetchComentarios);*/
 
-	async function fetchComentarios() {
+	/*async function fetchComentarios() {
 		const { data } = await axios.get(`http://localhost:8000/calificaciones?curso=${cursoId}`);
 		return data;
 	}
@@ -58,9 +58,9 @@ const CursoDisplay = (props) => {
 	async function submitReview(payload) {
 		const { data } = await axios.post(`http://localhost:8000/calificaciones`, payload);
 		return data;
-	}
+	}*/
 
-	const { mutate: eliminarCurso, isLoading: isLoadingEliminar } = useMutation(deleteCurso, {
+	/*const { mutate: eliminarCurso, isLoading: isLoadingEliminar } = useMutation(deleteCurso, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["cursos"]);
 			queryClient.invalidateQueries(["cursos", auth.userId]);
@@ -73,9 +73,9 @@ const CursoDisplay = (props) => {
 				}
 			}
 		},
-	});
+	});*/
 
-	async function deleteCurso(payload) {
+	/*async function deleteCurso(payload) {
 		const { data } = await axios.delete(`http://localhost:8000/cursos/${cursoId}`);
 		return data;
 	}
@@ -155,9 +155,9 @@ const CursoDisplay = (props) => {
 			});
 			return [response, segundoAction];
 		}
-	}
+	}*/
 
-	const handleCommentChange = (event) => {
+	/*const handleCommentChange = (event) => {
 		setPalabras(event.target.value);
 	};
 	const handleReview = () => {
@@ -177,9 +177,9 @@ const CursoDisplay = (props) => {
 		} else {
 			alert("Usted tiene un comentario en espera o ya comento");
 		}
-	};
+	};*/
 
-	const handleFinalizar = () => {
+	/*const handleFinalizar = () => {
 		finalizarCurso();
 	};
 
@@ -190,20 +190,20 @@ const CursoDisplay = (props) => {
 	const handlePublicar = () => {
 		publicarCurso();
 	};
-
-	if (
+*/
+	/*if (
 		isLoadingEliminar ||
 		isLoadingEliminarContrataciones ||
 		isLoadingFinalizar ||
-		isLoadingReview ||
-		isLoadingComentarios ||
-		isLoadingPublicar
+		/*isLoadingReview ||
+		isLoadingComentarios
+		//isLoadingPublicar
 	) {
-		return <LoadingSpinner />;
-	}
-	if (isErrorComentarios) {
+		return <LoadingSpinner asOverlay />;
+	}*/
+	/*if (isErrorComentarios) {
 		return <div>Error! {errorComentarios.message}</div>;
-	}
+	}*/
 
 	return (
 		<section style={{ padding: "2%" }}>
@@ -233,14 +233,14 @@ const CursoDisplay = (props) => {
 						</AccordionSummary>
 						<AccordionDetails>
 							<Grid container rowSpacing={2} sx={{ flexDirection: "column" }}>
-								{calificaciones.map((review) => (
+								{/*calificaciones.map((review) => (
 									<Comentario key={review.id} review={review} />
-								))}
+								))*/}
 							</Grid>
 						</AccordionDetails>
 					</Accordion>
 				</Container>
-				{auth.isLoggedIn && auth.userType == "estudiante" && (
+				{/*auth.isLoggedIn && auth.userType == "estudiante" && (
 					<div
 						className="inputComentario"
 						style={{
@@ -276,7 +276,7 @@ const CursoDisplay = (props) => {
 							Submit
 						</MDBBtn>
 					</div>
-				)}
+				)*/}
 			</MDBCard>
 
 			<div className="botones">

@@ -40,7 +40,7 @@ const Home = () => {
 			</>
 		);
 	} else {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 };
 
