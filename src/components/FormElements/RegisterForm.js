@@ -95,12 +95,11 @@ const RegisterForm = (props) => {
 		formData.append("telefono", telefono);
 		if (tipoUsuario === "estudiante") {
 			formData.append("estudiosCursados", datosEstudios);
-			formData.append("fechaNacimiento", date.format("DD/MM/YYYY"));
+			formData.append("fechaNacimiento", date.format());
 		} else {
 			formData.append("titulo", titulo);
 			formData.append("experiencia", experiencia);
 		}
-
 		mutate(formData);
 	};
 

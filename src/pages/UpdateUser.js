@@ -15,7 +15,15 @@ import {
 } from "mdb-react-ui-kit";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useForm } from "../hooks/form-hook";
+import ImageUpload from "../components/FormElements/ImageUpload";
+import dayjs from "dayjs";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import FormLabel from "@mui/material/FormLabel";
 
 import FormGroup from "@mui/material/FormGroup";
@@ -31,9 +39,10 @@ const UpdateUser = () => {
 	const queryClient = useQueryClient();
 	const [nombre, setNombre] = useState("");
 	const [apellido, setApellido] = useState("");
+	const [date, setDate] = React.useState(dayjs("2014-08-18T21:11:54"));
 	const [mail, setMail] = useState("");
 	const [telefono, setTelefono] = useState("");
-	const [fechaNacimiento, setFechaNacimiento] = useState("");
+
 	const [datosEstudios, setDatosEstudios] = useState([]);
 	const [experiencia, setExperiencia] = useState("");
 	const [titulo, setTitulo] = useState("");
@@ -44,6 +53,16 @@ const UpdateUser = () => {
 	});
 	const { primario, secundario, universidad } = estudios;
 
+	const [formState, inputHandler] = useForm(
+		{
+			image: {
+				value: null,
+				isValid: false,
+			},
+		},
+		false
+	);
+
 	const {
 		data: identifiedUser,
 		error,
@@ -53,41 +72,43 @@ const UpdateUser = () => {
 
 	useEffect(() => {
 		if (!isLoading) {
-			setNombre(identifiedUser.nombre);
-			setApellido(identifiedUser.apellido);
-			setMail(identifiedUser.email);
-			setTelefono(identifiedUser.celular);
+			setNombre(identifiedUser.user.nombre);
+			setApellido(identifiedUser.user.apellido);
+			setMail(identifiedUser.user.email);
+			setTelefono(identifiedUser.user.telefono);
 			if (auth.userType === "estudiante") {
-				setFechaNacimiento(identifiedUser.fechaNacimiento);
-				setDatosEstudios(identifiedUser.estudiosCursados);
+				setDate(dayjs(identifiedUser.user.fechaNacimiento));
+				setDatosEstudios(identifiedUser.user.estudiosCursados);
 				setEstudiosCursados({
-					primario: identifiedUser.estudiosCursados.includes("primario"),
-					secundario: identifiedUser.estudiosCursados.includes("secundario"),
-					universidad: identifiedUser.estudiosCursados.includes("universidad"),
+					primario: identifiedUser.user.estudiosCursados.includes("primario"),
+					secundario: identifiedUser.user.estudiosCursados.includes("secundario"),
+					universidad: identifiedUser.user.estudiosCursados.includes("universidad"),
 				});
 			} else {
-				setExperiencia(identifiedUser.experiencia);
-				setTitulo(identifiedUser.titulo);
+				setExperiencia(identifiedUser.user.experiencia);
+				setTitulo(identifiedUser.user.titulo);
 			}
 		}
 	}, []);
 
 	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateUser, {
 		onSuccess: (data) => {
-			queryClient.setQueryData(["user", auth.userId], identifiedUser);
+			queryClient.setQueryData(["user", auth.userId], data);
 			queryClient.invalidateQueries(["user", auth.userId]);
-			queryClient.invalidateQueries(["cursos"]);
 		},
 	});
 
 	async function updateUser(payload) {
-		const { data } = await axios.patch(`http://localhost:8000/users/${auth.userId}`, payload);
+		const { data } = await axios.patch(
+			`http://localhost:5000/api/users/${auth.userId}`,
+			payload,
+			{ headers: { "Content-Type": "multipart/form-data" } }
+		);
 		return data;
 	}
 
 	async function fetchUsuario() {
-		const { data } = await axios.get(`http://localhost:8000/users/${auth.userId}`);
-
+		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`);
 		return data;
 	}
 
@@ -103,8 +124,8 @@ const UpdateUser = () => {
 	const handleTelefonoChange = (event) => {
 		setTelefono(event.target.value);
 	};
-	const handleFechaChange = (event) => {
-		setFechaNacimiento(event.target.value);
+	const handleChangeDate = (newValue) => {
+		setDate(newValue);
 	};
 
 	const handleExperienciaChange = (event) => {
@@ -134,8 +155,22 @@ const UpdateUser = () => {
 
 	const placeUpdateSubmitHandler = (event) => {
 		event.preventDefault();
-
+		const formData = new FormData();
+		formData.append("nombre", nombre);
+		formData.append("image", formState.inputs.image.value);
+		formData.append("apellido", apellido);
+		formData.append("email", mail);
+		formData.append("telefono", telefono);
 		if (auth.userType === "estudiante") {
+			formData.append("estudiosCursados", datosEstudios);
+			formData.append("fechaNacimiento", date.format());
+		} else {
+			formData.append("titulo", titulo);
+			formData.append("experiencia", experiencia);
+		}
+
+		mutate(formData);
+		/*if (auth.userType === "estudiante") {
 			mutate({
 				nombre: nombre,
 				apellido: apellido,
@@ -153,7 +188,7 @@ const UpdateUser = () => {
 				titulo: titulo,
 				experiencia: experiencia,
 			});
-		}
+		}*/
 
 		navigate.push(`/${auth.userId}/perfil`);
 	};
@@ -163,7 +198,7 @@ const UpdateUser = () => {
 	}
 
 	if (isLoading || isLoadingUpdate) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 
 	return (
@@ -273,16 +308,19 @@ const UpdateUser = () => {
 										</MDBCol>
 
 										<MDBCol md="6">
-											<MDBInput
-												wrapperClass="mb-4"
-												label="Fecha Nacimiento"
-												size="lg"
-												id="form1"
-												type="date"
-												value={fechaNacimiento}
-												onChange={handleFechaChange}
-												required
-											/>
+											<LocalizationProvider dateAdapter={AdapterDayjs}>
+												<Stack spacing={3}>
+													<DesktopDatePicker
+														label="Fecha Nacimiento"
+														inputFormat="MM/DD/YYYY"
+														value={date}
+														onChange={handleChangeDate}
+														renderInput={(params) => (
+															<TextField {...params} />
+														)}
+													/>
+												</Stack>
+											</LocalizationProvider>
 										</MDBCol>
 									</MDBRow>
 								)}
@@ -314,11 +352,28 @@ const UpdateUser = () => {
 										</MDBCol>
 									</MDBRow>
 								)}
-
-								<MDBBtn type="submit" className="mb-4" size="lg">
-									Submit
-								</MDBBtn>
+								<div
+									style={{
+										marginLeft: "20%",
+										marginRight: "20%",
+										marginBottom: "4%",
+									}}
+								>
+									<ImageUpload
+										id="image"
+										onInput={inputHandler}
+										errorText="Proveer Imagen"
+									/>
+								</div>
 							</MDBCardBody>
+							<MDBBtn
+								type="submit"
+								className="mb-4"
+								size="lg"
+								style={{ margin: "0 auto" }}
+							>
+								Update
+							</MDBBtn>
 						</MDBCard>
 					</MDBRow>
 				</MDBContainer>
