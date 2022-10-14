@@ -29,7 +29,17 @@ const CursoDisplay = (props) => {
 	const [display, setDisplay] = React.useState({});
 	const [palabras, setPalabras] = useState("");
 	const cursoId = useParams().cursoId;
-	const { cursoEncontrado, contratacion } = props;
+	const {
+		nombreCurso,
+		idCurso,
+		idProfesor,
+		image,
+		contratacion,
+		rating,
+		descripcion,
+		nombreProfesor,
+		calificaciones,
+	} = props;
 
 	const {
 		data: comentarios,
@@ -158,10 +168,10 @@ const CursoDisplay = (props) => {
 		if (!encontrado) {
 			enviarComentario({
 				alumno: `${auth.userId}`,
-				curso: `${cursoEncontrado.id}`,
+				curso: `${idCurso}`,
 				comentario: palabras,
 				rating: value,
-				profesorCurso: `${cursoEncontrado.profesor}`,
+				profesorCurso: `${idProfesor}`,
 				estado: false,
 			});
 		} else {
@@ -200,16 +210,16 @@ const CursoDisplay = (props) => {
 			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
 				<MDBCardImage
 					position="top"
-					src={cursoEncontrado.image}
+					src={image}
 					alt="..."
 					style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "500px" }}
 				/>
 				<MDBCardBody>
-					<h3>{cursoEncontrado.nombreCurso}</h3>
-					<h5>Profesor: {cursoEncontrado.profesor}</h5>
-					<MDBCardText>{cursoEncontrado.desc}</MDBCardText>
+					<h3>{nombreCurso}</h3>
+					<h5>Profesor: {nombreProfesor}</h5>
+					<MDBCardText>{descripcion}</MDBCardText>
 					<Typography component="legend">Calificacion Promedio:</Typography>
-					<Rating name="read-only" value={cursoEncontrado.calificacion} readOnly />
+					<Rating name="read-only" value={rating} readOnly />
 				</MDBCardBody>
 			</MDBCard>
 
@@ -223,7 +233,7 @@ const CursoDisplay = (props) => {
 						</AccordionSummary>
 						<AccordionDetails>
 							<Grid container rowSpacing={2} sx={{ flexDirection: "column" }}>
-								{comentarios.map((review) => (
+								{calificaciones.map((review) => (
 									<Comentario key={review.id} review={review} />
 								))}
 							</Grid>
@@ -283,7 +293,7 @@ const CursoDisplay = (props) => {
 				)}
 				{auth.isLoggedIn && auth.userType === "estudiante" && (
 					<NavLink
-						to={`/cursos/${cursoEncontrado.profesor}/${cursoEncontrado.id}/ContratacionPage`}
+						to={`/cursos/${idProfesor}/${idCurso}/ContratacionPage`}
 						style={{ textDecoration: "none" }}
 					>
 						<Button variant="contained" color="success" style={{ margin: "0 auto" }}>

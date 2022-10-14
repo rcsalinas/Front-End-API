@@ -22,7 +22,7 @@ const Home = () => {
 	});
 
 	async function fetchCursos() {
-		const { data } = await axios.get(`http://localhost:8000/cursos`);
+		const { data } = await axios.get(`http://localhost:5000/api/cursos`);
 		return data;
 	}
 
@@ -36,7 +36,7 @@ const Home = () => {
 			<>
 				<ComoFuncionaBanner post={mainFeaturedPost} />
 				<h2 style={{ textAlign: "center" }}>Cursos: </h2>
-				<BuscadorCursos encontrados={data} />;
+				<BuscadorCursos encontrados={data.cursos} />;
 			</>
 		);
 	} else {

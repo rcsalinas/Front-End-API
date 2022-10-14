@@ -23,8 +23,8 @@ const Cursos = (props) => {
 								image={curso.image}
 								description={curso.desc}
 								price={curso.costo}
-								teacher={curso.profesor}
-								rating={curso.calificacion}
+								teacher={curso.profesor.nombre}
+								rating={curso.rating}
 							/>
 						)
 				)}

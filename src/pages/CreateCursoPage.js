@@ -16,6 +16,7 @@ import {
 	MDBTextArea,
 } from "mdb-react-ui-kit";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import ImageUpload from "../components/FormElements/ImageUpload";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,6 +24,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "axios";
 import { useQueryClient, useMutation } from "react-query";
+import { useForm } from "../hooks/form-hook";
 
 const CreateCursoPage = () => {
 	let navigate = useHistory();
@@ -43,9 +45,19 @@ const CreateCursoPage = () => {
 			navigate.push("/");
 		},
 	});
-
 	async function crearCurso(payload) {
-		const { data } = await axios.post(`http://localhost:8000/cursos/`, payload);
+		const { data } = await axios.post(
+			`http://localhost:5000/api/cursos/`,
+
+			payload,
+
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 		return data;
 	}
 
@@ -71,21 +83,27 @@ const CreateCursoPage = () => {
 	const handleCrearCurso = (event) => {
 		event.preventDefault();
 
-		mutate({
-			estado: true,
-			nombreCurso: nombre,
-			image: "https://www.apwa.net/images/PWM101.jpg",
-			profesor: `${auth.userId}`,
-			desc: descripcion,
-			alumnos: [],
-			duracion: duracion,
-			frecuencia: frecuencia,
-			calificaciones: [],
-			tipo: tipo,
-			costo: costo,
-			calificacion: 5,
-		});
+		const formData = new FormData();
+		formData.append("nombre", nombre);
+		formData.append("image", formState.inputs.image.value);
+		formData.append("descripcion", descripcion);
+		formData.append("tipo", tipo);
+		formData.append("frecuencia", frecuencia);
+		formData.append("duracion", duracion);
+		formData.append("costo", costo);
+
+		mutate(formData);
 	};
+
+	const [formState, inputHandler] = useForm(
+		{
+			image: {
+				value: null,
+				isValid: false,
+			},
+		},
+		false
+	);
 
 	if (isError) {
 		return <div>Error! {error.message}</div>;
@@ -122,7 +140,6 @@ const CreateCursoPage = () => {
 									wrapperClass="mb-4"
 									label="Nombre"
 									size="lg"
-									id="form1"
 									type="text"
 									onChange={handleNameChange}
 									value={nombre}
@@ -135,7 +152,6 @@ const CreateCursoPage = () => {
 									wrapperClass="mb-4"
 									label="Duracion"
 									size="lg"
-									id="form1"
 									type="text"
 									onChange={handleDuracionChange}
 									value={duracion}
@@ -145,7 +161,7 @@ const CreateCursoPage = () => {
 						</MDBRow>
 						<MDBRow>
 							<MDBCol md="6">
-								<FormControl fullWidth>
+								<FormControl fullWidth style={{ marginBottom: "5%" }}>
 									<InputLabel id="demo-simple-select-label">
 										Frecuencia
 									</InputLabel>
@@ -199,17 +215,26 @@ const CreateCursoPage = () => {
 								<MDBTextArea
 									label="Descripcion"
 									id="textAreaExample"
-									rows={3}
+									rows={2}
 									value={descripcion}
 									onChange={handleDescripcionChange}
 									required
+									wrapperClass="mb-4"
 								/>
 							</MDBCol>
 						</MDBRow>
-
-						<MDBBtn type="submit" className="w-100 mb-4" size="md">
-							Crear
-						</MDBBtn>
+						<div style={{ marginLeft: "20%", marginRight: "20%", marginBottom: "2%" }}>
+							<ImageUpload
+								id="image"
+								onInput={inputHandler}
+								errorText="Proveer Imagen"
+							></ImageUpload>
+						</div>
+						<div>
+							<MDBBtn type="submit" style={{ width: "40%" }}>
+								Crear
+							</MDBBtn>
+						</div>
 					</form>
 				</MDBCardBody>
 			</MDBCard>

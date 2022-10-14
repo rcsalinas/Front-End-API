@@ -43,7 +43,7 @@ const CursoPage = () => {
 	});*/
 
 	async function fetchCursoPorId() {
-		const { data } = await axios.get(`http://localhost:8000/cursos/${cursoId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/cursos/${cursoId}`);
 		return data;
 	}
 
@@ -76,7 +76,19 @@ const CursoPage = () => {
 		return <LoadingSpinner />;
 	}
 
-	return <CursoDisplay cursoEncontrado={cursoEncontrado} contratacion={contratacion} />;
+	return (
+		<CursoDisplay
+			nombreCurso={cursoEncontrado.nombre}
+			idCurso={cursoEncontrado.id}
+			idProfesor={cursoEncontrado.profesor.id}
+			image={cursoEncontrado.image}
+			contratacion={contratacion}
+			rating={cursoEncontrado.rating}
+			descripcion={cursoEncontrado.descripcion}
+			nombreProfesor={cursoEncontrado.profesor.nombre}
+			calificaciones={cursoEncontrado.calificaciones}
+		/>
+	);
 };
 //Producto y comentarios
 export default CursoPage;

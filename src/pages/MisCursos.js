@@ -39,7 +39,7 @@ const MisCursos = () => {
 	});
 
 	async function fetchCursosProfesor() {
-		const { data } = await axios.get(`http://localhost:8000/cursos?profesor=${userId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/cursos/user/${userId}`);
 		return data;
 	}
 	async function fetchCursosEstudiante() {
@@ -93,7 +93,7 @@ const MisCursos = () => {
 								</tr>
 							</MDBTableHead>
 							<MDBTableBody>
-								{cursosProfe.map((curso) => {
+								{cursosProfe.cursos.map((curso) => {
 									return (
 										<tr>
 											<td>
@@ -176,6 +176,14 @@ const MisCursos = () => {
 								})}
 							</MDBTableBody>
 						</MDBTable>
+						<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
+							<div
+								className="d-grid gap-2 col-6 mx-auto"
+								style={{ marginBottom: "10%" }}
+							>
+								<MDBBtn>Crear Curso</MDBBtn>
+							</div>
+						</NavLink>
 					</MDBCardBody>
 				</MDBCard>
 			</section>
@@ -272,21 +280,3 @@ const MisCursos = () => {
 };
 
 export default MisCursos;
-
-/*<h4 style={{ marginTop: "2%", textAlign: "center" }}>Cursos del Estudiante:</h4>
-			<h5 style={{ marginTop: "2%", textAlign: "center" }}>En curso:</h5>
-			<div className="cursos-buscados">
-				{cursosEstudiante.map((curso) => {
-					if (curso.estadoContratacion && curso.estadoCurso) {
-						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
-					}
-				})}
-			</div>
-			<h5 style={{ marginTop: "2%", textAlign: "center" }}>Finalizados:</h5>
-			<div className="cursos-buscados" style={{ textDecoration: "none", marginBottom: "7%" }}>
-				{cursosEstudiante.map((curso) => {
-					if (curso.estadoContratacion && !curso.estadoCurso) {
-						return <Auxiliar key={curso.curso} cursoId={curso.curso} />;
-					}
-				})}
-			</div> */
