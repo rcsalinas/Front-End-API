@@ -88,6 +88,8 @@ const CursoPage = () => {
 			descripcion={cursoEncontrado.descripcion}
 			nombreProfesor={cursoEncontrado.profesor.nombre}
 			calificaciones={cursoEncontrado.calificaciones}
+			duracion={cursoEncontrado.duracion}
+			apellido={cursoEncontrado.profesor.apellido}
 		/>
 	);
 };

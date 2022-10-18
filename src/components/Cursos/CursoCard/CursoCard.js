@@ -12,10 +12,10 @@ const CursoCard = (props) => {
 	const { id, title, image, price, teacher, rating } = props;
 
 	return (
-		<Card sx={{ maxWidth: 200 }}>
+		<Card sx={{ maxWidth: 200, minWidth: 200 }}>
 			<CardMedia component="img" height="140" image={image} />
 			<CardContent>
-				<Typography gutterBottom variant="h4" component="div">
+				<Typography gutterBottom variant="h5" component="div">
 					{title}
 				</Typography>
 				<Typography variant="h6" color="text.secondary">

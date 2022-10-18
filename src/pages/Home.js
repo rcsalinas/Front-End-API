@@ -35,7 +35,6 @@ const Home = () => {
 		return (
 			<>
 				<ComoFuncionaBanner post={mainFeaturedPost} />
-				<h2 style={{ textAlign: "center" }}>Cursos: </h2>
 				<BuscadorCursos encontrados={data.cursos} />;
 			</>
 		);

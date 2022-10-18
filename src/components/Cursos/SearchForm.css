@@ -1,8 +1,17 @@
+.contenedorHome {
+	display: flex;
+	flex-direction: row;
+}
+
 .curso-form {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	flex-direction: row;
-	margin-bottom: 1%;
-	margin-left: 1%;
+	flex-direction: column;
+	border-right: 1px solid BLACK;
+	margin-left: 2%;
+	align-items: space-around;
+}
+
+.form-element {
+	display: flex;
+	justify-content: flex-start;
 }

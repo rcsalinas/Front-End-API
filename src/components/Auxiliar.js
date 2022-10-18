@@ -33,7 +33,7 @@ const Auxiliar = (props) => {
 			/>
 		);
 	} else {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 };
 

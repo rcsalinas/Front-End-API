@@ -5,7 +5,9 @@
 	flex-wrap: wrap;
 	gap: 20px;
 	row-gap: 10px;
-	margin-left: 1%;
+	min-width: "40%";
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .caja {

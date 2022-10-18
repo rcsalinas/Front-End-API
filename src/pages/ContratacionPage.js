@@ -30,21 +30,6 @@ const ContratacionPage = () => {
 	const cursoId = useParams().cursoId;
 	const profesorId = useParams().userId;
 
-	const {
-		data: contrataciones,
-		error: errorC,
-		isError: isErrorC,
-		isLoading: isLoadingC,
-	} = useQuery(["contrataciones"], fetchContrataciones, {
-		refetchOnMount: true,
-		refetchOnWindowFocus: true,
-	});
-
-	async function fetchContrataciones() {
-		const { data } = await axios.get(`http://localhost:8000/contrataciones`);
-		return data;
-	}
-
 	const { mutate, isLoading, isError, error } = useMutation(crearContratacion, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["user", auth.userId]);
@@ -54,41 +39,36 @@ const ContratacionPage = () => {
 	});
 
 	async function crearContratacion(payload) {
-		const { data } = await axios.post(`http://localhost:8000/contrataciones/`, payload);
+		const { data } = await axios.post(
+			`http://localhost:5000/api/contrataciones/${cursoId}`,
+			payload,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 		return data;
 	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		let found = contrataciones.find((c) => {
-			return c.alumno === auth.userId && c.curso === cursoId;
+		mutate({
+			motivacion: `${motivacion}`,
+			profesor: `${profesorId}`,
+			email: `${mail}`,
+			telefono: `${telefono}`,
+			horario: `${horario}`,
 		});
-
-		if (!found) {
-			mutate({
-				estadoContratacion: false,
-				estadoCurso: true,
-				motivacion: `${motivacion}`,
-				alumno: `${auth.userId}`,
-				curso: `${cursoId}`,
-				profesor: `${profesorId}`,
-				mail: `${mail}`,
-				telefono: `${telefono}`,
-				horario: `${horario}`,
-			});
-		} else {
-			alert("Ya hizo uno solicitud para este curso. Espere una respuesta!");
-		}
 	};
-	if (isLoading || isLoadingC) {
-		return <LoadingSpinner />;
+	if (isLoading) {
+		return <LoadingSpinner asOverlay />;
 	}
-	if (isError || isErrorC) {
+	if (isError) {
 		if (isError) {
 			return <div>Error! {error.message}</div>;
-		} else {
-			return <div>Error! {errorC.message}</div>;
 		}
 	}
 	const handleTelefonoChange = (event) => {

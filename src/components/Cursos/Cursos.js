@@ -19,7 +19,7 @@ const Cursos = (props) => {
 							<CursoCard
 								key={curso.id}
 								id={curso.id}
-								title={curso.nombreCurso}
+								title={curso.nombre}
 								image={curso.image}
 								description={curso.desc}
 								price={curso.costo}

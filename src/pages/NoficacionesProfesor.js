@@ -174,7 +174,7 @@ const NotificacionesProfesor = () => {
 		isLoadingBorrarNotificacion ||
 		isLoadingReject
 	) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	} else {
 		if (auth.userType === "profesor") {
 			if (comentarios.length > 0) {

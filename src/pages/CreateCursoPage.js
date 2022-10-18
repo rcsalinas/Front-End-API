@@ -110,7 +110,7 @@ const CreateCursoPage = () => {
 	}
 
 	if (isLoading) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 
 	return (

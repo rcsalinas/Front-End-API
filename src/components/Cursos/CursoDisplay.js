@@ -39,6 +39,8 @@ const CursoDisplay = (props) => {
 		descripcion,
 		nombreProfesor,
 		calificaciones,
+		duracion,
+		apellido,
 	} = props;
 
 	/*const {
@@ -212,14 +214,25 @@ const CursoDisplay = (props) => {
 					position="top"
 					src={image}
 					alt="..."
-					style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "500px" }}
+					style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "300px" }}
 				/>
 				<MDBCardBody>
-					<h3>{nombreCurso}</h3>
-					<h5>Profesor: {nombreProfesor}</h5>
-					<MDBCardText>{descripcion}</MDBCardText>
-					<Typography component="legend">Calificacion Promedio:</Typography>
-					<Rating name="read-only" value={rating} readOnly />
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+						}}
+					>
+						<h3>{nombreCurso}</h3>
+						<h5>Profesor: {nombreProfesor + " " + apellido}</h5>
+						<MDBCardText>{descripcion}</MDBCardText>
+						<MDBCardText>{duracion}</MDBCardText>
+						<Typography component="legend" style={{ textAlign: "center" }}>
+							Calificacion Promedio:
+						</Typography>
+						<Rating name="read-only" value={rating} readOnly />
+					</div>
 				</MDBCardBody>
 			</MDBCard>
 

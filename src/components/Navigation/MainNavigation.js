@@ -9,7 +9,7 @@ import {
 	MDBNavbarLink,
 	MDBCollapse,
 } from "mdb-react-ui-kit";
-import { MDBIcon } from "mdb-react-ui-kit";
+import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
@@ -32,7 +32,7 @@ export default function MainNavigation() {
 					aria-label="Toggle navigation"
 					onClick={() => setShowNav(!showNav)}
 				>
-					<MDBIcon icon="bars" fas />
+					<MenuIcon />
 				</MDBNavbarToggler>
 				<MDBCollapse navbar show={showNav}>
 					<MDBNavbarNav>

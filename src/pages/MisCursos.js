@@ -62,7 +62,7 @@ const MisCursos = () => {
 	};
 
 	if (isLoadingCursosProfe) {
-		return <LoadingSpinner />;
+		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrorCursosProfe) {
 		return <div>Error! {errorCursosProfe.message}</div>;
@@ -80,7 +80,7 @@ const MisCursos = () => {
 				<MDBCard>
 					<MDBCardHeader>Cursos del profesor</MDBCardHeader>
 					<MDBCardBody>
-						<MDBTable align="middle">
+						<MDBTable align="middle" responsive>
 							<MDBTableHead>
 								<tr>
 									<th scope="col">Materia</th>
@@ -193,7 +193,7 @@ const MisCursos = () => {
 			<MDBCard>
 				<MDBCardHeader>Cursos del Alumno</MDBCardHeader>
 				<MDBCardBody>
-					<MDBTable align="middle">
+					<MDBTable align="middle" responsive>
 						<MDBTableHead>
 							<tr>
 								<th scope="col">Materia</th>
@@ -214,7 +214,7 @@ const MisCursos = () => {
 												to={`/cursos/${curso.curso}`}
 												style={{ textDecoration: "none", color: "black" }}
 											>
-												<p className="fw-bold mb-1">{curso.curso}</p>
+												<p className="fw-bold mb-1">{curso.curso.nombre}</p>
 											</NavLink>
 										</td>
 										<td>

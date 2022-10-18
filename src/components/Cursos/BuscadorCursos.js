@@ -72,15 +72,14 @@ const BuscadorCursos = (props) => {
 				byRating: true,
 			};
 			if (filterData.nombreCurso)
-				filter.bySearchVal = item.nombreCurso
+				filter.bySearchVal = item.nombre
 					.toLowerCase()
 					.includes(filterData.nombreCurso.toLowerCase());
 			// Even if one ward_no.ward matches the value it's true
 			if (filterData.tipo) filter.byTipo = item.tipo === filterData.tipo;
 			if (filterData.frecuencia)
 				filter.byFrecuencia = item.frecuencia === filterData.frecuencia;
-			if (filterData.calificacion)
-				filter.byRating = item.calificacion === filterData.calificacion;
+			if (filterData.calificacion) filter.byRating = item.rating === filterData.calificacion;
 
 			return filter.bySearchVal && filter.byTipo && filter.byFrecuencia && filter.byRating;
 		});
@@ -123,23 +122,24 @@ const BuscadorCursos = (props) => {
 	}, [tipoClase, searchVal, rating, frecuencia, filters, encontrados]);
 
 	return (
-		<>
+		<div className="contenedorHome">
 			<div className="curso-form">
 				<div className="form-element">
 					<Box
 						component="form"
 						sx={{
-							"& > :not(style)": { m: 1, width: "25ch" },
+							"& > :not(style)": { m: 1, width: "auto" },
 						}}
 						noValidate
 						autoComplete="off"
 					>
 						<TextField
-							id="outlined-basic"
+							id="filled-hidden-label-small"
 							label="Materia"
 							variant="outlined"
 							onChange={handleSearchChange}
 							value={searchVal}
+							size="small"
 						/>
 					</Box>
 				</div>
@@ -205,10 +205,8 @@ const BuscadorCursos = (props) => {
 					</Box>
 				</div>
 			</div>
-
 			<Cursos cursos={cursos} misCursos={false} />
-			{/*Aqui le paso los cursos encontrados por parametro y ese componente los renderiza*/}
-		</>
+		</div>
 	);
 };
 
