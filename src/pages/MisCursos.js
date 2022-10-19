@@ -5,7 +5,7 @@ import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { MDBBtn } from "mdb-react-ui-kit";
 
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
@@ -19,7 +19,7 @@ import "../components/Cursos/Cursos.css";
 const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
-
+	const queryClient = useQueryClient();
 	const {
 		data: cursosProfe,
 		error: errorCursosProfe,
@@ -38,12 +38,47 @@ const MisCursos = () => {
 		enabled: auth.userType === "estudiante",
 	});
 
+	const {
+		mutate: finalizarC,
+		isLoading: isLoadingFinalizarC,
+		isError: isErrorFinalizarC,
+		error: errorFinalizarC,
+	} = useMutation(finalizarContratacion, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["contrataciones", auth.userId]);
+		},
+	});
+
+	async function finalizarContratacion(c) {
+		const { data } = await axios.patch(
+			`http://localhost:5000/api/contrataciones/${c}/finalizar`,
+			{},
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
+		return data;
+	}
+
 	async function fetchCursosProfesor() {
-		const { data } = await axios.get(`http://localhost:5000/api/cursos/user/${userId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/cursos/user/${userId}`, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
+			},
+		});
 		return data;
 	}
 	async function fetchCursosEstudiante() {
-		const { data } = await axios.get(`http://localhost:8000/contrataciones?alumno=${userId}`);
+		const { data } = await axios.get(
+			`http://localhost:5000/api/contrataciones/user/${userId}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 
 		return data;
 	}
@@ -57,11 +92,11 @@ const MisCursos = () => {
 	const handleDespublicar = () => {
 		alert("despublicado");
 	};
-	const handleFinalizar = () => {
-		alert("finalizado");
+	const handleFinalizarContratacionAlumno = (id) => {
+		finalizarC(id);
 	};
 
-	if (isLoadingCursosProfe) {
+	if (isLoadingCursosProfe || isLoadingFinalizarC || isLoadingCursosEstudiante) {
 		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrorCursosProfe) {
@@ -70,8 +105,8 @@ const MisCursos = () => {
 	if (isErrorCursosEstudiante) {
 		return <div>Error! {errorCursosEstudiante.message}</div>;
 	}
-	if (isLoadingCursosEstudiante) {
-		return <LoadingSpinner asOverlay />;
+	if (isErrorFinalizarC) {
+		return <div>Error! {errorFinalizarC.message}</div>;
 	}
 
 	if (auth.userType === "profesor") {
@@ -218,24 +253,30 @@ const MisCursos = () => {
 											</NavLink>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">7</p>
+											<p className="fw-normal mb-1">{curso.curso.duracion}</p>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">7</p>
+											<p className="fw-normal mb-1">
+												{curso.curso.frecuencia}
+											</p>
 										</td>
 										<td>
-											<p className="fw-normal mb-1">7</p>
+											<p className="fw-normal mb-1">{curso.curso.tipo}</p>
 										</td>
 										<td>
-											<Rating name="read-only" value={5} readOnly />
+											<Rating
+												name="read-only"
+												value={curso.curso.rating}
+												readOnly
+											/>
 										</td>
 										<td>
-											{curso.estadoCurso && (
+											{curso.estadoContratacion && (
 												<MDBBadge color="success" pill size="mx-2">
 													En curso
 												</MDBBadge>
 											)}
-											{!curso.estadoCurso && (
+											{!curso.estadoContratacion && (
 												<MDBBadge color="warning" pill>
 													Finalizado
 												</MDBBadge>
@@ -243,18 +284,20 @@ const MisCursos = () => {
 										</td>
 
 										<td>
-											{curso.estadoCurso && (
+											{curso.estadoContratacion && curso.curso.estado && (
 												<MDBBtn
 													className="mx-2"
 													color="danger"
-													onClick={handleFinalizar}
+													onClick={() =>
+														handleFinalizarContratacionAlumno(curso.id)
+													}
 													rounded
 													size="sm"
 												>
 													Finalizar
 												</MDBBtn>
 											)}
-											{!curso.estadoCurso && (
+											{(!curso.estadoContratacion || !curso.curso.estado) && (
 												<MDBBtn
 													className="mx-2"
 													color="danger"
