@@ -286,7 +286,7 @@ const MisCursos = () => {
 			</section>
 		);
 	}
-	//esta se va a tener que modificar teniendo bien hecho el back
+
 	return (
 		<section style={{ padding: "2%", height: "100vh" }}>
 			<MDBCard>
@@ -300,7 +300,7 @@ const MisCursos = () => {
 								<th scope="col">Frecuencia</th>
 								<th scope="col">Tipo</th>
 
-								<th scope="col">Estado</th>
+								<th scope="col">Contratacion</th>
 								<th scope="col"> Accion</th>
 							</tr>
 						</MDBTableHead>
@@ -329,20 +329,30 @@ const MisCursos = () => {
 										</td>
 
 										<td>
-											{curso.estadoContratacion && (
+											{curso.estadoContratacion === "Aceptada" && (
 												<MDBBadge color="success" pill size="mx-2">
 													En curso
 												</MDBBadge>
 											)}
-											{(!curso.estadoContratacion || !curso.curso.estado) && (
-												<MDBBadge color="warning" pill>
-													Finalizado
+											{curso.estadoContratacion === "Finalizada" && (
+												<MDBBadge color="success" pill size="mx-2">
+													Finalizada
+												</MDBBadge>
+											)}
+											{curso.estadoContratacion === "Rechazada" && (
+												<MDBBadge color="danger" pill size="mx-2">
+													Rechazada
+												</MDBBadge>
+											)}
+											{curso.estadoContratacion === "Espera" && (
+												<MDBBadge color="warning" pill size="mx-2">
+													En espera
 												</MDBBadge>
 											)}
 										</td>
 
 										<td>
-											{curso.estadoContratacion && curso.curso.estado && (
+											{curso.estadoContratacion === "Aceptada" && (
 												<MDBBtn
 													className="mx-2"
 													color="danger"
@@ -355,7 +365,9 @@ const MisCursos = () => {
 													Finalizar
 												</MDBBtn>
 											)}
-											{(!curso.estadoContratacion || !curso.curso.estado) && (
+											{(curso.estadoContratacion === "Finalizada" ||
+												curso.estadoContratacion === "Espera" ||
+												!curso.curso.estado) && (
 												<MDBBtn
 													className="mx-2"
 													color="danger"

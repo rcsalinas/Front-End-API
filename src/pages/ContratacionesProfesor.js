@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 import "./NotificacionesProfesor.css";
-
+import { MDBTextArea } from "mdb-react-ui-kit";
 import axios from "axios";
 import { useQueryClient, useQuery, useMutation } from "react-query";
 import { MDBCard, MDBCardBody, MDBCardHeader } from "mdb-react-ui-kit";
@@ -15,6 +18,11 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 const ContratacionesProfesor = () => {
 	const auth = useContext(AuthContext);
 	const queryClient = useQueryClient();
+	const [motivoBorrado, setMotivoBorrado] = useState("");
+	const [open, setOpen] = React.useState(false);
+	const [cId, setCId] = useState("");
+	const [alu, setAlu] = useState("");
+	const [auxCurso, setAuxCurso] = useState("");
 	const {
 		data: contrataciones,
 		error: errContrataciones,
@@ -24,8 +32,9 @@ const ContratacionesProfesor = () => {
 
 	const {
 		mutate: acceptContratacion,
-		isLoading: isLoadingCambiarContratacion,
-		isSuccess: isSuccessCambiarContratacion,
+		isLoading: isLoadingAcceptContratacion,
+		isError: isErrorAcceptContratacion,
+		error: errorAcceptContratacion,
 	} = useMutation(aceptarContratacion, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
@@ -34,55 +43,155 @@ const ContratacionesProfesor = () => {
 	const {
 		mutate: rejectContratacion,
 		isLoading: isLoadingReject,
-		isSuccess: isSuccessReject,
+		isError: isErrorReject,
+		error: errorReject,
 	} = useMutation(rechazarContratacion, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
 		},
 	});
 
+	const {
+		mutate: enviarNotificacion,
+		isLoading: isLoadingEnviar,
+		isError: isErrorEnviar,
+		error: errorEnviar,
+	} = useMutation(sendNotificacion, {
+		onSuccess: (data) => {
+			queryClient.invalidateQueries(["notificaciones", alu]);
+		},
+	});
+
+	async function sendNotificacion(payload) {
+		const { data } = await axios.post(`http://localhost:5000/api/notificaciones`, payload, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
+			},
+		});
+		return data;
+	}
+
 	async function fetchContrataciones() {
 		const { data } = await axios.get(
-			`http://localhost:8000/contrataciones?profesor=${auth.userId}`
+			`http://localhost:5000/api/contrataciones/user/${auth.userId}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
 		);
 
 		return data;
 	}
 
 	async function aceptarContratacion(id) {
-		const { data } = await axios.patch(`http://localhost:8000/contrataciones/${id}`, {
-			estadoContratacion: true,
-		});
+		const { data } = await axios.patch(
+			`http://localhost:5000/api/contrataciones/${id}/aceptar`,
+			{},
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 		return data;
 	}
 	async function rechazarContratacion(id) {
-		const { data } = await axios.delete(`http://localhost:8000/contrataciones/${id}`);
+		const { data } = await axios.delete(
+			`http://localhost:5000/api/contrataciones/${id}/rechazar`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 		return data;
 	}
+
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		width: 400,
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4,
+	};
 
 	const handleAceptar = (id) => {
 		acceptContratacion(id);
 	};
-	const handleCancelar = (id) => {
-		rejectContratacion(id);
+	const handleClose = () => setOpen(false);
+
+	const handleMotivoChange = (event) => {
+		setMotivoBorrado(event.target.value);
 	};
 
-	if (isLoadingContrataciones || isLoadingCambiarContratacion || isLoadingReject) {
-		return <LoadingSpinner />;
+	const handleOpen = (id) => {
+		setOpen(true);
+		setCId(id);
+	};
+
+	const handleRechazar = () => {
+		enviarNotificacion({
+			mensaje: `${motivoBorrado}`,
+			alumno: `${alu}`,
+			curso: `${auxCurso}`,
+		});
+		rejectContratacion(cId);
+		handleClose();
+	};
+
+	if (isLoadingContrataciones || isLoadingAcceptContratacion || isLoadingReject) {
+		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrContrataciones) {
 		return <div>Error! {errContrataciones.message}</div>;
 	}
+	if (isErrorAcceptContratacion) {
+		return <div>Error! {errorAcceptContratacion.message}</div>;
+	}
+	if (isErrorReject) {
+		return <div>Error! {errorReject.message}</div>;
+	}
 
 	return (
 		<section style={{ padding: "5%", height: "100vh" }}>
+			<Modal
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<Typography id="modal-modal-title" variant="h6" component="h2">
+						Indicar Motivo de Rechazo:
+					</Typography>
+					<MDBTextArea
+						value={motivoBorrado}
+						id="textAreaExample"
+						rows={4}
+						onChange={handleMotivoChange}
+					/>
+					<MDBBtn
+						outline
+						rounded
+						className="mx-2"
+						color="danger"
+						onClick={handleRechazar}
+						style={{ marginTop: "3%" }}
+					>
+						Enviar Mensaje
+					</MDBBtn>
+				</Box>
+			</Modal>
+
 			<MDBCard>
 				<MDBCardHeader>Contrataciones Pendientes de Aprobacion</MDBCardHeader>
 				<MDBCardBody>
 					<MDBTable align="middle" responsive>
-						{(isLoadingContrataciones ||
-							isLoadingCambiarContratacion ||
-							isLoadingReject) && <LoadingSpinner asOverlay />}
 						<MDBTableHead>
 							<tr>
 								<th scope="col">Nombre</th>
@@ -94,20 +203,22 @@ const ContratacionesProfesor = () => {
 						</MDBTableHead>
 						<MDBTableBody>
 							{contrataciones.map((c) => {
-								if (!c.estadoContratacion) {
+								if (c.estadoContratacion === "Espera") {
 									return (
 										<tr>
 											<td>
 												<div className="d-flex align-items-center">
 													<img
-														src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+														src={c.alumno.image}
 														alt=""
 														style={{ width: "45px", height: "45px" }}
 														className="rounded-circle"
 													/>
 													<div className="ms-3">
-														<p className="fw-bold mb-1">{c.alumno}</p>
-														<p className="text-muted mb-0">{c.mail}</p>
+														<p className="fw-bold mb-1">
+															{c.alumno.nombre}
+														</p>
+														<p className="text-muted mb-0">{c.email}</p>
 													</div>
 												</div>
 											</td>
@@ -122,7 +233,7 @@ const ContratacionesProfesor = () => {
 													Horario preferido: {c.horario}
 												</p>
 											</td>
-											<td>{c.curso}</td>
+											<td>{c.curso.nombre}</td>
 											<td>
 												<div className="flex-row  flex-shrink-1 ">
 													<MDBBtn
@@ -134,7 +245,13 @@ const ContratacionesProfesor = () => {
 													</MDBBtn>
 													<MDBBtn
 														color="danger"
-														onClick={() => handleCancelar(c.id)}
+														onClick={() =>
+															handleOpen(
+																c.id,
+																c.alumno.id,
+																c.curso.id
+															)
+														}
 													>
 														Rechazar
 													</MDBBtn>
