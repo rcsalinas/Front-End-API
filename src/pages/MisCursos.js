@@ -62,6 +62,56 @@ const MisCursos = () => {
 		return data;
 	}
 
+	const {
+		mutate: publicar,
+		isLoading: isLoadingPublicar,
+		isError: isErrorPublicar,
+		error: errorPublicar,
+	} = useMutation(publicarCurso, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["cursos", auth.userId]);
+			queryClient.invalidateQueries(["cursos"]);
+		},
+	});
+
+	async function publicarCurso(idCurso) {
+		const { data } = await axios.patch(
+			`http://localhost:5000/api/cursos/${idCurso}/publicar`,
+			{},
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
+		return data;
+	}
+
+	const {
+		mutate: despublicar,
+		isLoading: isLoadingDespublicar,
+		isError: isErrorDespublicar,
+		error: errorDespublicar,
+	} = useMutation(despublicarCurso, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["cursos", auth.userId]);
+			queryClient.invalidateQueries(["cursos"]);
+		},
+	});
+
+	async function despublicarCurso(idCurso) {
+		const { data } = await axios.patch(
+			`http://localhost:5000/api/cursos/${idCurso}/despublicar`,
+			{},
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
+		return data;
+	}
+
 	async function fetchCursosProfesor() {
 		const { data } = await axios.get(`http://localhost:5000/api/cursos/user/${userId}`, {
 			headers: {
@@ -86,17 +136,24 @@ const MisCursos = () => {
 	const handleEliminar = () => {
 		alert("eliminado");
 	};
-	const handlePublicar = () => {
-		alert("publicado");
-	};
-	const handleDespublicar = () => {
-		alert("despublicado");
+	const handlePublicar = (estado, id) => {
+		if (estado) {
+			despublicar(id);
+		} else {
+			publicar(id);
+		}
 	};
 	const handleFinalizarContratacionAlumno = (id) => {
 		finalizarC(id);
 	};
 
-	if (isLoadingCursosProfe || isLoadingFinalizarC || isLoadingCursosEstudiante) {
+	if (
+		isLoadingCursosProfe ||
+		isLoadingFinalizarC ||
+		isLoadingCursosEstudiante ||
+		isLoadingDespublicar ||
+		isLoadingPublicar
+	) {
 		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrorCursosProfe) {
@@ -107,6 +164,12 @@ const MisCursos = () => {
 	}
 	if (isErrorFinalizarC) {
 		return <div>Error! {errorFinalizarC.message}</div>;
+	}
+	if (isErrorPublicar) {
+		return <div>Error! {errorPublicar.message}</div>;
+	}
+	if (isErrorDespublicar) {
+		return <div>Error! {errorDespublicar.message}</div>;
 	}
 
 	if (auth.userType === "profesor") {
@@ -191,15 +254,16 @@ const MisCursos = () => {
 
 														<MDBDropdownItem
 															link
-															onClick={handlePublicar}
+															onClick={() =>
+																handlePublicar(
+																	curso.estado,
+																	curso.id
+																)
+															}
 														>
-															Publicar
-														</MDBDropdownItem>
-														<MDBDropdownItem
-															link
-															onClick={handleDespublicar}
-														>
-															Despublicar
+															{curso.estado
+																? "Despublicar"
+																: "Publicar"}
 														</MDBDropdownItem>
 													</MDBDropdownMenu>
 												</MDBDropdown>
@@ -235,7 +299,7 @@ const MisCursos = () => {
 								<th scope="col">Duracion</th>
 								<th scope="col">Frecuencia</th>
 								<th scope="col">Tipo</th>
-								<th scope="col">Rating</th>
+
 								<th scope="col">Estado</th>
 								<th scope="col"> Accion</th>
 							</tr>
@@ -263,20 +327,14 @@ const MisCursos = () => {
 										<td>
 											<p className="fw-normal mb-1">{curso.curso.tipo}</p>
 										</td>
-										<td>
-											<Rating
-												name="read-only"
-												value={curso.curso.rating}
-												readOnly
-											/>
-										</td>
+
 										<td>
 											{curso.estadoContratacion && (
 												<MDBBadge color="success" pill size="mx-2">
 													En curso
 												</MDBBadge>
 											)}
-											{!curso.estadoContratacion && (
+											{(!curso.estadoContratacion || !curso.curso.estado) && (
 												<MDBBadge color="warning" pill>
 													Finalizado
 												</MDBBadge>
