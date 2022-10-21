@@ -14,12 +14,19 @@ import { Accordion, AccordionDetails, AccordionSummary, Grid } from "@mui/materi
 import { Container } from "@mui/system";
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import Rating from "@mui/material/Rating";
 
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import { useParams } from "react-router-dom";
-import Comentario from "../Comentario";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
@@ -28,187 +35,95 @@ const CursoDisplay = (props) => {
 	const [value, setValue] = React.useState(0);
 	const [display, setDisplay] = React.useState({});
 	const [palabras, setPalabras] = useState("");
+	const [open, setOpen] = React.useState(true);
 	const cursoId = useParams().cursoId;
 	const {
 		nombreCurso,
 		idCurso,
 		idProfesor,
 		image,
-		/*contratacion,*/
+		estadoContratacion,
 		rating,
 		descripcion,
 		nombreProfesor,
-		calificaciones,
 		duracion,
 		apellido,
 	} = props;
+	let aux;
 
-	/*const {
+	const {
 		data: comentarios,
 		error: errorComentarios,
 		isError: isErrorComentarios,
 		isLoading: isLoadingComentarios,
-	} = useQuery(["comentarios", cursoId], fetchComentarios);*/
+	} = useQuery(["comentarios", cursoId], fetchComentarios);
 
-	/*async function fetchComentarios() {
-		const { data } = await axios.get(`http://localhost:8000/calificaciones?curso=${cursoId}`);
+	async function fetchComentarios() {
+		const { data } = await axios.get(
+			`http://localhost:5000/api/calificaciones/${cursoId}/byCurso`
+		);
 		return data;
 	}
 
-	const { mutate: enviarComentario, isLoading: isLoadingReview } = useMutation(submitReview);
+	const {
+		mutate: enviarComentario,
+		isLoading: isLoadingReview,
+		error: errorSendComentarios,
+		isError: isErrorSendComentario,
+	} = useMutation(submitReview);
 
 	async function submitReview(payload) {
-		const { data } = await axios.post(`http://localhost:8000/calificaciones`, payload);
-		return data;
-	}*/
-
-	/*const { mutate: eliminarCurso, isLoading: isLoadingEliminar } = useMutation(deleteCurso, {
-		onSuccess: () => {
-			queryClient.invalidateQueries(["cursos"]);
-			queryClient.invalidateQueries(["cursos", auth.userId]);
-			if (contratacion.length === 0) {
-				navigate.push(`/${auth.userId}/cursos`);
-			} else {
-				for (let i = 0; i < contratacion.length; i++) {
-					queryClient.invalidateQueries(["cursos"], contratacion[i].alumno);
-					eliminarContrataciones(contratacion[i].id);
-				}
-			}
-		},
-	});*/
-
-	/*async function deleteCurso(payload) {
-		const { data } = await axios.delete(`http://localhost:8000/cursos/${cursoId}`);
-		return data;
-	}
-
-	const { mutate: eliminarContrataciones, isLoading: isLoadingEliminarContrataciones } =
-		useMutation(deleteContrataciones, {
-			onSuccess: () => {
-				queryClient.invalidateQueries(["contrataciones"]);
-				//queryClient.invalidateQueries(["cursos", auth.userId]);
-				navigate.push(`/${auth.userId}/cursos`);
+		const { data } = await axios.post(`http://localhost:5000/api/calificaciones`, payload, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
 			},
 		});
-
-	async function deleteContrataciones(id) {
-		const { data } = await axios.delete(`http://localhost:8000/contrataciones/${id}`);
 		return data;
 	}
 
-	const { mutate: finalizarCurso, isLoading: isLoadingFinalizar } = useMutation(endCurso, {
-		onSuccess: () => {
-			queryClient.invalidateQueries(["contrataciones", auth.userId]);
-			queryClient.invalidateQueries(["curso", cursoId]);
-			queryClient.invalidateQueries(["cursos", cursoId]);
-		},
-	});
-
-	const { mutate: publicarCurso, isLoading: isLoadingPublicar } = useMutation(publishCurso, {
-		onSuccess: () => {
-			queryClient.invalidateQueries(["contrataciones", auth.userId]);
-			queryClient.invalidateQueries(["curso", cursoId]);
-			queryClient.invalidateQueries(["cursos", cursoId]);
-			//navigate.push(`/${auth.userId}/cursos`);
-		},
-	});
-
-	async function publishCurso() {
-		if (auth.userType === "estudiante") {
-			const response = await axios.patch(
-				`http://localhost:8000/contrataciones/${contratacion[0].id}`,
-				{ estadoCurso: true }
-			);
-			return response;
-		} else {
-			let response;
-			if (contratacion.length > 0) {
-				response = await axios.patch(
-					`http://localhost:8000/contrataciones/${contratacion[0].id}`,
-					{ estadoCurso: true }
-				);
-			}
-
-			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
-				estado: true,
-			});
-			return [response, segundoAction];
-		}
-	}
-
-	async function endCurso() {
-		if (auth.userType === "estudiante") {
-			const response = await axios.patch(
-				`http://localhost:8000/contrataciones/${contratacion[0].id}`,
-				{ estadoCurso: false }
-			);
-			return response;
-		} else {
-			let response;
-			if (contratacion.length > 0) {
-				response = await axios.patch(
-					`http://localhost:8000/contrataciones/${contratacion[0].id}`,
-					{ estadoCurso: false }
-				);
-			}
-
-			const segundoAction = await axios.patch(`http://localhost:8000/cursos/${cursoId}`, {
-				estado: false,
-			});
-			return [response, segundoAction];
-		}
-	}*/
-
-	/*const handleCommentChange = (event) => {
+	const handleCommentChange = (event) => {
 		setPalabras(event.target.value);
 	};
 	const handleReview = () => {
 		setDisplay({ display: "none" });
-		let encontrado = comentarios.find((comment) => {
-			return comment.alumno === auth.userId && comment.curso === cursoId;
+		enviarComentario({
+			alumno: `${auth.userId}`,
+			curso: `${idCurso}`,
+			comentario: palabras,
+			rating: value,
 		});
-		if (!encontrado) {
-			enviarComentario({
-				alumno: `${auth.userId}`,
-				curso: `${idCurso}`,
-				comentario: palabras,
-				rating: value,
-				profesorCurso: `${idProfesor}`,
-				estado: false,
-			});
-		} else {
-			alert("Usted tiene un comentario en espera o ya comento");
-		}
-	};*/
-
-	/*const handleFinalizar = () => {
-		finalizarCurso();
 	};
 
-	const handleEliminar = () => {
-		eliminarCurso();
-	};
-
-	const handlePublicar = () => {
-		publicarCurso();
-	};
-*/
-	/*if (
-		isLoadingEliminar ||
-		isLoadingEliminarContrataciones ||
-		isLoadingFinalizar ||
-		/*isLoadingReview ||
-		isLoadingComentarios
-		//isLoadingPublicar
-	) {
+	if (isLoadingReview || isLoadingComentarios) {
 		return <LoadingSpinner asOverlay />;
-	}*/
-	/*if (isErrorComentarios) {
-		return <div>Error! {errorComentarios.message}</div>;
-	}*/
+	}
 
 	return (
 		<section style={{ padding: "2%" }}>
+			{isErrorSendComentario && (
+				<Box sx={{ width: "100%" }}>
+					<Collapse in={open}>
+						<Alert
+							action={
+								<IconButton
+									aria-label="close"
+									color="inherit"
+									size="small"
+									onClick={() => {
+										setOpen(false);
+									}}
+								>
+									<CloseIcon fontSize="inherit" />
+								</IconButton>
+							}
+							sx={{ mb: 2 }}
+							severity="error"
+						>
+							{errorSendComentarios.response.data.message}
+						</Alert>
+					</Collapse>
+				</Box>
+			)}
 			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
 				<MDBCardImage
 					position="top"
@@ -253,43 +168,51 @@ const CursoDisplay = (props) => {
 						</AccordionDetails>
 					</Accordion>
 				</Container>
-				{/*auth.isLoggedIn && auth.userType == "estudiante" && (
-					<div
-						className="inputComentario"
-						style={{
-							marginLeft: "10%",
-							marginRight: "40%",
-							marginTop: "2%",
-							display: { display },
-						}}
-					>
-						<MDBTextArea
-							label="Comentario"
-							id="textAreaExample"
-							rows={4}
-							columns={2}
-							onChange={handleCommentChange}
-							value={palabras}
-						/>
-
-						<Typography component="legend">Calificacion</Typography>
-						<Rating
-							name="simple-controlled"
-							value={value}
-							onChange={(event, newValue) => {
-								setValue(newValue);
+				{auth.isLoggedIn &&
+					auth.userType == "estudiante" &&
+					(estadoContratacion.estadoContratacion === "Aceptada" ||
+						estadoContratacion === "Finalizada") && (
+						<div
+							className="inputComentario"
+							style={{
+								marginLeft: "10%",
+								marginRight: "40%",
+								marginTop: "2%",
+								display: { display },
 							}}
-						/>
-
-						<MDBBtn
-							rounded
-							style={{ width: "20%", marginBottom: "2%", marginTop: "2%" }}
-							onClick={handleReview}
 						>
-							Submit
-						</MDBBtn>
-					</div>
-				)*/}
+							<MDBTextArea
+								label="Comentario"
+								id="textAreaExample"
+								rows={4}
+								columns={2}
+								onChange={handleCommentChange}
+								value={palabras}
+							/>
+
+							<Typography component="legend">Calificacion</Typography>
+							<Rating
+								name="simple-controlled"
+								value={value}
+								onChange={(event, newValue) => {
+									setValue(newValue);
+								}}
+							/>
+
+							<MDBBtn
+								rounded
+								style={{
+									width: "auto",
+									marginBottom: "2%",
+									marginTop: "2%",
+									maxWidth: "100px",
+								}}
+								onClick={handleReview}
+							>
+								Submit
+							</MDBBtn>
+						</div>
+					)}
 			</MDBCard>
 
 			<div className="botones">
@@ -304,16 +227,22 @@ const CursoDisplay = (props) => {
 						Autenticar Para solicitar
 					</Button>
 				)}
-				{auth.isLoggedIn && auth.userType === "estudiante" && (
-					<NavLink
-						to={`/cursos/${idProfesor}/${idCurso}/ContratacionPage`}
-						style={{ textDecoration: "none" }}
-					>
-						<Button variant="contained" color="success" style={{ margin: "0 auto" }}>
-							Solicitar Curso
-						</Button>
-					</NavLink>
-				)}
+				{auth.isLoggedIn &&
+					auth.userType === "estudiante" &&
+					estadoContratacion.length === 0 && (
+						<NavLink
+							to={`/cursos/${idProfesor}/${idCurso}/ContratacionPage`}
+							style={{ textDecoration: "none" }}
+						>
+							<Button
+								variant="contained"
+								color="success"
+								style={{ margin: "0 auto" }}
+							>
+								Solicitar Curso
+							</Button>
+						</NavLink>
+					)}
 			</div>
 		</section>
 	);

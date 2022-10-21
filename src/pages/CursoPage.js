@@ -22,59 +22,50 @@ const CursoPage = () => {
 		isError: isErrorFetchCurso,
 		isLoading: isLoadingCurso,
 	} = useQuery(["curso", cursoId], fetchCursoPorId); // me traigo el curso
+	let estadoContratacion;
 
-	/*const {
+	const {
 		data: contratacion,
 		error: errorFetchContratacion,
 		isError: isErrorFetchContratacion,
 		isLoading: isLoadingContratacion,
-	} = useQuery(["contrataciones", auth.userId], fetchContratacion, { enabled: auth.isLoggedIn });*/ // me traigo la contratacion
-
-	/*const {
-		mutate:deleteCurso,
-		isLoading: isLoadingDelete,
-		isSuccess,
-	} = useMutation(updateCurso, {
-		onSuccess: (data) => {
-			queryClient.setQueryData(["curso", cursoId], data);
-			queryClient.invalidateQueries(["curso", cursoId]);
-			queryClient.invalidateQueries(["cursos", cursoId]);
-		},
-	});*/
+	} = useQuery(["contrataciones", auth.userId], fetchContratacion, {
+		enabled: auth.isLoggedIn && auth.userType === "estudiante",
+	}); // me traigo la contratacion
 
 	async function fetchCursoPorId() {
 		const { data } = await axios.get(`http://localhost:5000/api/cursos/${cursoId}`);
 		return data;
 	}
 
-	/*async function fetchContratacion() {
-		if (auth.userType === "estudiante") {
-			const { data } = await axios.get(
-				`http://localhost:8000/contrataciones?alumno=${auth.userId}&curso=${cursoId}`
-			);
-			return data;
-		} else {
-			const { data } = await axios.get(
-				`http://localhost:8000/contrataciones?profesor=${auth.userId}&curso=${cursoId}`
-			);
-			return data;
-		}
-	}*/
-
-	if (isErrorFetchCurso /*isErrorFetchContratacion*/) {
-		return (
-			/*<div>
-				Error!
-				{isErrorFetchContratacion
-					? errorFetchContratacion.message
-					: errorFetchCurso.message}
-			</div>*/
-			<div>{errorFetchCurso}</div>
+	async function fetchContratacion() {
+		const { data } = await axios.get(
+			`http://localhost:5000/api/contrataciones/user/${auth.userId}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
 		);
+
+		return data;
 	}
 
-	if (isLoadingCurso /*|| isLoadingContratacion*/) {
+	if (isErrorFetchCurso || isErrorFetchContratacion) {
+		return <div>Ocurrio Error</div>;
+	}
+
+	if (isLoadingCurso || isLoadingContratacion) {
 		return <LoadingSpinner asOverlay />;
+	}
+	if (auth.userType === "estudiante") {
+		if (contratacion[0].curso.id === cursoEncontrado.id) {
+			estadoContratacion = contratacion[0];
+		} else {
+			estadoContratacion = [];
+		}
+	} else {
+		estadoContratacion = [];
 	}
 
 	return (
@@ -83,7 +74,7 @@ const CursoPage = () => {
 			idCurso={cursoEncontrado.id}
 			idProfesor={cursoEncontrado.profesor.id}
 			image={cursoEncontrado.image}
-			/*contratacion={contratacion}*/
+			estadoContratacion={estadoContratacion}
 			rating={cursoEncontrado.rating}
 			descripcion={cursoEncontrado.descripcion}
 			nombreProfesor={cursoEncontrado.profesor.nombre}

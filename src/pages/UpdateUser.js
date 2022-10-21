@@ -108,7 +108,11 @@ const UpdateUser = () => {
 	}
 
 	async function fetchUsuario() {
-		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
+			},
+		});
 		return data;
 	}
 

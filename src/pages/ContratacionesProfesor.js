@@ -18,7 +18,6 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 const ContratacionesProfesor = () => {
 	const auth = useContext(AuthContext);
 	const queryClient = useQueryClient();
-	const [motivoBorrado, setMotivoBorrado] = useState("");
 	const [open, setOpen] = React.useState(false);
 	const [cId, setCId] = useState("");
 	const [alu, setAlu] = useState("");
@@ -50,26 +49,6 @@ const ContratacionesProfesor = () => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
 		},
 	});
-
-	const {
-		mutate: enviarNotificacion,
-		isLoading: isLoadingEnviar,
-		isError: isErrorEnviar,
-		error: errorEnviar,
-	} = useMutation(sendNotificacion, {
-		onSuccess: (data) => {
-			queryClient.invalidateQueries(["notificaciones", alu]);
-		},
-	});
-
-	async function sendNotificacion(payload) {
-		const { data } = await axios.post(`http://localhost:5000/api/notificaciones`, payload, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
 
 	async function fetchContrataciones() {
 		const { data } = await axios.get(
@@ -103,7 +82,8 @@ const ContratacionesProfesor = () => {
 				headers: {
 					Authorization: "Bearer " + auth.token,
 				},
-			}
+			},
+			{}
 		);
 		return data;
 	}
@@ -125,21 +105,14 @@ const ContratacionesProfesor = () => {
 	};
 	const handleClose = () => setOpen(false);
 
-	const handleMotivoChange = (event) => {
-		setMotivoBorrado(event.target.value);
-	};
-
-	const handleOpen = (id) => {
+	const handleOpen = (id, alumno, curso) => {
+		setAlu(alumno);
+		setAuxCurso(curso);
 		setOpen(true);
 		setCId(id);
 	};
 
 	const handleRechazar = () => {
-		enviarNotificacion({
-			mensaje: `${motivoBorrado}`,
-			alumno: `${alu}`,
-			curso: `${auxCurso}`,
-		});
 		rejectContratacion(cId);
 		handleClose();
 	};
@@ -167,14 +140,9 @@ const ContratacionesProfesor = () => {
 			>
 				<Box sx={style}>
 					<Typography id="modal-modal-title" variant="h6" component="h2">
-						Indicar Motivo de Rechazo:
+						Seguro en rechazar contratacion?
 					</Typography>
-					<MDBTextArea
-						value={motivoBorrado}
-						id="textAreaExample"
-						rows={4}
-						onChange={handleMotivoChange}
-					/>
+
 					<MDBBtn
 						outline
 						rounded

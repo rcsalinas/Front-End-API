@@ -39,6 +39,8 @@ const NotificacionesProfesor = () => {
 	const [auxCurso, setAuxCurso] = useState("");
 	const [auxContenido, setAuxContenido] = useState("");
 	const [auxId, setAuxId] = useState("");
+	const [auxComentario, setAuxComentario] = useState("");
+
 	const queryClient = useQueryClient();
 
 	const {
@@ -58,14 +60,6 @@ const NotificacionesProfesor = () => {
 	} = useQuery(["comentarios", auth.userId], fetchComentarios, {
 		enabled: auth.userType === "profesor",
 	});
-	const { mutate: enviarNotificacion, isLoading: isLoadingReject } = useMutation(
-		sendNotificacion,
-		{
-			onSuccess: (data) => {
-				queryClient.invalidateQueries(["notificaciones", alu]);
-			},
-		}
-	);
 
 	const { mutate: borrarCalificacion, isLoading: isLoadingBorrandoCalificacion } = useMutation(
 		deleteCalificacion,
@@ -92,39 +86,86 @@ const NotificacionesProfesor = () => {
 			},
 		}
 	);
+	const {
+		mutate: enviarNotificacion,
+		isLoading: isLoadingEnviar,
+		isError: isErrorEnviar,
+		error: errorEnviar,
+	} = useMutation(sendNotificacion, {
+		onSuccess: (data) => {
+			queryClient.invalidateQueries(["notificaciones", alu]);
+		},
+	});
+
 	async function sendNotificacion(payload) {
-		const { data } = await axios.post(`http://localhost:8000/notificaciones`, payload);
+		const { data } = await axios.post(`http://localhost:5000/api/notificaciones`, payload, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
+			},
+		});
 		return data;
 	}
 	async function deleteNotificacion(id) {
-		const { data } = await axios.delete(`http://localhost:8000/notificaciones/${id}`);
+		const { data } = await axios.delete(
+			`http://localhost:5000/api/notificaciones/${id}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			},
+			{}
+		);
 		return data;
 	}
 
 	async function aprobarCalificacion(id) {
-		const { data } = await axios.patch(`http://localhost:8000/calificaciones/${id}`, {
-			estado: true,
-		});
+		const { data } = await axios.patch(
+			`http://localhost:8000/calificaciones/${id}/aceptar`,
+			{
+				estado: true,
+			},
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
+		);
 		return data;
 	}
 
 	async function deleteCalificacion(idCalificacion) {
 		const { data } = await axios.delete(
-			`http://localhost:8000/calificaciones/${idCalificacion}`
+			`http://localhost:5000/api/calificaciones/${idCalificacion}/rechazar`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			},
+			{}
 		);
 		return data;
 	}
 
 	async function fetchNotificaciones() {
 		const { data } = await axios.get(
-			`http://localhost:8000/notificaciones?alumno=${auth.userId}`
+			`http://localhost:5000/api/notificaciones/${auth.userId}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
 		);
 		return data;
 	}
 
 	async function fetchComentarios() {
 		const { data } = await axios.get(
-			`http://localhost:8000/calificaciones?profesorCurso=${auth.userId}`
+			`http://localhost:5000/api/calificaciones/${auth.userId}`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			}
 		);
 		return data;
 	}
@@ -134,7 +175,7 @@ const NotificacionesProfesor = () => {
 		setAlu(al);
 		setAuxCurso(cur);
 		setAuxContenido(mens);
-		setAuxId(id);
+		setAuxComentario(id);
 	};
 	const handleClose = () => setOpen(false);
 
@@ -143,7 +184,7 @@ const NotificacionesProfesor = () => {
 	};
 
 	const handleAprobarComentario = (identidad) => {
-		//setAuxId(id);
+		setAuxId(identidad);
 
 		acceptCalificacion(identidad);
 	};
@@ -153,9 +194,9 @@ const NotificacionesProfesor = () => {
 			mensaje: `${motivoBorrado}`,
 			alumno: `${alu}`,
 			curso: `${auxCurso}`,
-			contenidoComentario: `${auxContenido}`,
+			comentario: `${auxContenido}`,
 		});
-		borrarCalificacion(auxId);
+		borrarCalificacion(auxComentario);
 		handleClose();
 	};
 
@@ -163,7 +204,7 @@ const NotificacionesProfesor = () => {
 		borrarNotificacion(notId);
 	};
 
-	if (isErrNotis || isErrComments) {
+	if (isErrNotis || isErrComments || isErrorEnviar) {
 		return <div>Error! {errComments ? errComments.message : errNotis}</div>;
 	}
 	if (
@@ -172,7 +213,7 @@ const NotificacionesProfesor = () => {
 		isLoadingAcceptCalificacion ||
 		isLoadingBorrandoCalificacion ||
 		isLoadingBorrarNotificacion ||
-		isLoadingReject
+		isLoadingEnviar
 	) {
 		return <LoadingSpinner asOverlay />;
 	} else {
@@ -202,6 +243,7 @@ const NotificacionesProfesor = () => {
 									className="mx-2"
 									color="danger"
 									onClick={handleRechazar}
+									style={{ marginTop: "3%" }}
 								>
 									Enviar Mensaje
 								</MDBBtn>
@@ -229,7 +271,7 @@ const NotificacionesProfesor = () => {
 														<td>
 															<div className="d-flex align-items-center">
 																<img
-																	src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+																	src={comentario.alumno.image}
 																	alt=""
 																	style={{
 																		width: "45px",
@@ -239,14 +281,14 @@ const NotificacionesProfesor = () => {
 																/>
 																<div className="ms-3">
 																	<p className="fw-bold mb-1">
-																		{comentario.alumno}
+																		{comentario.alumno.nombre}
 																	</p>
 																</div>
 															</div>
 														</td>
 														<td>
 															<p className="fw-normal mb-1">
-																{comentario.curso}
+																{comentario.curso.nombre}
 															</p>
 														</td>
 														<td>
@@ -278,8 +320,8 @@ const NotificacionesProfesor = () => {
 																	color="danger"
 																	onClick={() =>
 																		handleOpen(
-																			comentario.alumno,
-																			comentario.curso,
+																			comentario.alumno.id,
+																			comentario.curso.id,
 																			comentario.comentario,
 																			comentario.id
 																		)
@@ -322,8 +364,8 @@ const NotificacionesProfesor = () => {
 									<MDBTableHead>
 										<tr>
 											<th scope="col">Curso</th>
-											<th scope="col">Contenido</th>
-
+											<th scope="col">Profesor</th>
+											<th scope="col">Contenido Comentario</th>
 											<th scope="col">Motivo de Rechazo</th>
 
 											<th scope="col">Action</th>
@@ -334,11 +376,18 @@ const NotificacionesProfesor = () => {
 											return (
 												<tr>
 													<td>
-														<p className="fw-bold mb-1">{n.curso}</p>
+														<p className="fw-bold mb-1">
+															{n.curso.nombre}
+														</p>
 													</td>
 													<td>
 														<p className="fw-normal mb-1">
-															{n.contenidoComentario}
+															{n.curso.profesor.nombre}
+														</p>
+													</td>
+													<td>
+														<p className="fw-normal mb-1">
+															{n.comentario}
 														</p>
 													</td>
 													<td>

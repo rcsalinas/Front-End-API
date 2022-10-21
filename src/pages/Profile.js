@@ -15,7 +15,11 @@ const Profile = () => {
 	const { data, error, isError, isLoading } = useQuery(["user", auth.userId], fetchUserPerfil);
 
 	async function fetchUserPerfil() {
-		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`);
+		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`, {
+			headers: {
+				Authorization: "Bearer " + auth.token,
+			},
+		});
 
 		return data;
 	}
