@@ -15,11 +15,10 @@ import { Container } from "@mui/system";
 import { MDBTextArea } from "mdb-react-ui-kit";
 import { MDBBtn } from "mdb-react-ui-kit";
 import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
+import Comentario from "../UIElements/Comentario";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -36,7 +35,10 @@ const CursoDisplay = (props) => {
 	const [display, setDisplay] = React.useState({});
 	const [palabras, setPalabras] = useState("");
 	const [open, setOpen] = React.useState(true);
+	const [submitted, setSubmitted] = useState(false);
+
 	const cursoId = useParams().cursoId;
+
 	const {
 		nombreCurso,
 		idCurso,
@@ -48,22 +50,8 @@ const CursoDisplay = (props) => {
 		nombreProfesor,
 		duracion,
 		apellido,
+		calificaciones,
 	} = props;
-	let aux;
-
-	const {
-		data: comentarios,
-		error: errorComentarios,
-		isError: isErrorComentarios,
-		isLoading: isLoadingComentarios,
-	} = useQuery(["comentarios", cursoId], fetchComentarios);
-
-	async function fetchComentarios() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/calificaciones/${cursoId}/byCurso`
-		);
-		return data;
-	}
 
 	const {
 		mutate: enviarComentario,
@@ -85,7 +73,7 @@ const CursoDisplay = (props) => {
 		setPalabras(event.target.value);
 	};
 	const handleReview = () => {
-		setDisplay({ display: "none" });
+		setSubmitted(true);
 		enviarComentario({
 			alumno: `${auth.userId}`,
 			curso: `${idCurso}`,
@@ -94,7 +82,7 @@ const CursoDisplay = (props) => {
 		});
 	};
 
-	if (isLoadingReview || isLoadingComentarios) {
+	if (isLoadingReview) {
 		return <LoadingSpinner asOverlay />;
 	}
 
@@ -161,14 +149,23 @@ const CursoDisplay = (props) => {
 						</AccordionSummary>
 						<AccordionDetails>
 							<Grid container rowSpacing={2} sx={{ flexDirection: "column" }}>
-								{/*calificaciones.map((review) => (
-									<Comentario key={review.id} review={review} />
-								))*/}
+								{calificaciones.map((review) => (
+									<Comentario
+										key={review.id}
+										alumno={review.alumno}
+										comentario={review.comentario}
+										rating={review.rating}
+										fecha={review.fecha}
+									/>
+								))}
 							</Grid>
 						</AccordionDetails>
 					</Accordion>
 				</Container>
+			</MDBCard>
+			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
 				{auth.isLoggedIn &&
+					!submitted &&
 					auth.userType == "estudiante" &&
 					(estadoContratacion.estadoContratacion === "Aceptada" ||
 						estadoContratacion === "Finalizada") && (

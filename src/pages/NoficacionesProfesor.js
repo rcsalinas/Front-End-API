@@ -120,7 +120,7 @@ const NotificacionesProfesor = () => {
 
 	async function aprobarCalificacion(id) {
 		const { data } = await axios.patch(
-			`http://localhost:8000/calificaciones/${id}/aceptar`,
+			`http://localhost:5000/api/calificaciones/${id}/aceptar`,
 			{
 				estado: true,
 			},

@@ -310,7 +310,7 @@ const MisCursos = () => {
 									<tr>
 										<td>
 											<NavLink
-												to={`/cursos/${curso.curso}`}
+												to={`/cursos/${curso.curso.id}`}
 												style={{ textDecoration: "none", color: "black" }}
 											>
 												<p className="fw-bold mb-1">{curso.curso.nombre}</p>
@@ -357,7 +357,9 @@ const MisCursos = () => {
 													className="mx-2"
 													color="danger"
 													onClick={() =>
-														handleFinalizarContratacionAlumno(curso.id)
+														handleFinalizarContratacionAlumno(
+															curso.curso.id
+														)
 													}
 													rounded
 													size="sm"
