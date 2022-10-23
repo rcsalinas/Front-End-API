@@ -13,7 +13,7 @@ const CursoCard = (props) => {
 
 	return (
 		<Card sx={{ maxWidth: 200, minWidth: 200 }}>
-			<CardMedia component="img" height="140" image={image} />
+			<CardMedia component="img" height="140" image={`http://localhost:5000/${image}`} />
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
 					{title}

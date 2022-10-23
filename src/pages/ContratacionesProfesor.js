@@ -177,7 +177,7 @@ const ContratacionesProfesor = () => {
 											<td>
 												<div className="d-flex align-items-center">
 													<img
-														src={c.alumno.image}
+														src={`http://localhost:5000/${c.alumno.image}`}
 														alt=""
 														style={{ width: "45px", height: "45px" }}
 														className="rounded-circle"

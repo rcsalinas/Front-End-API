@@ -9,6 +9,7 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
 import axios from "axios";
 import { useQuery } from "react-query";
+import dayjs from "dayjs";
 
 const Profile = () => {
 	const auth = useContext(AuthContext);
@@ -42,7 +43,8 @@ const Profile = () => {
 		let image = data.user.image;
 
 		if (auth.userType === "estudiante") {
-			let fechaNacimiento = data.user.fechaNacimiento;
+			//dayjs("12-25-1995", "MM-DD-YYYY")
+			let fechaNacimiento = dayjs(data.user.fechaNacimiento).format("DD/MM/YYYY");
 			let estudiosCursados = data.user.estudiosCursados;
 			return (
 				<ProfileBody

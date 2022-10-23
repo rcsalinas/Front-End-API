@@ -271,7 +271,7 @@ const NotificacionesProfesor = () => {
 														<td>
 															<div className="d-flex align-items-center">
 																<img
-																	src={comentario.alumno.image}
+																	src={`http://localhost:5000/${comentario.alumno.image}`}
 																	alt=""
 																	style={{
 																		width: "45px",

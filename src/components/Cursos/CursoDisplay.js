@@ -115,7 +115,7 @@ const CursoDisplay = (props) => {
 			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
 				<MDBCardImage
 					position="top"
-					src={image}
+					src={`http://localhost:5000/${image}`}
 					alt="..."
 					style={{ maxWidth: "500px", margin: "0 auto", maxHeight: "300px" }}
 				/>
@@ -166,9 +166,9 @@ const CursoDisplay = (props) => {
 			<MDBCard className="mb-3" style={{ marginLeft: "10%", marginRight: "10%" }}>
 				{auth.isLoggedIn &&
 					!submitted &&
-					auth.userType == "estudiante" &&
+					auth.userType === "estudiante" &&
 					(estadoContratacion.estadoContratacion === "Aceptada" ||
-						estadoContratacion === "Finalizada") && (
+						estadoContratacion.estadoContratacion === "Finalizada") && (
 						<div
 							className="inputComentario"
 							style={{

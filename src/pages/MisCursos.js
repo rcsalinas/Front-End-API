@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
@@ -13,6 +13,9 @@ import { MDBBadge, MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit
 import { MDBCard, MDBCardBody, MDBCardHeader } from "mdb-react-ui-kit";
 import { MDBDropdown, MDBDropdownMenu, MDBDropdownToggle, MDBDropdownItem } from "mdb-react-ui-kit";
 import { Rating } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 import "../components/Cursos/Cursos.css";
 
@@ -20,6 +23,8 @@ const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
 	const queryClient = useQueryClient();
+	const [open, setOpen] = React.useState(false);
+	const [cId, setCId] = useState("");
 	const {
 		data: cursosProfe,
 		error: errorCursosProfe,
@@ -99,6 +104,30 @@ const MisCursos = () => {
 		},
 	});
 
+	const {
+		mutate: eliminarCurso,
+		isLoading: isLoadingEliminarCurso,
+		isError: isErrorEliminarCurso,
+		error: errorEliminarCurso,
+	} = useMutation(deleteClass, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["cursos", auth.userId]);
+		},
+	});
+
+	async function deleteClass(idCurso) {
+		const { data } = await axios.delete(
+			`http://localhost:5000/api/cursos/${idCurso}/eliminar`,
+			{
+				headers: {
+					Authorization: "Bearer " + auth.token,
+				},
+			},
+			{}
+		);
+		return data;
+	}
+
 	async function despublicarCurso(idCurso) {
 		const { data } = await axios.patch(
 			`http://localhost:5000/api/cursos/${idCurso}/despublicar`,
@@ -133,8 +162,21 @@ const MisCursos = () => {
 		return data;
 	}
 
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		width: 400,
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4,
+	};
+
 	const handleEliminar = () => {
-		alert("eliminado");
+		eliminarCurso(cId);
+		setOpen(false);
 	};
 	const handlePublicar = (estado, id) => {
 		if (estado) {
@@ -147,12 +189,20 @@ const MisCursos = () => {
 		finalizarC(id);
 	};
 
+	const handleClose = () => setOpen(false);
+
+	const handleOpen = (id) => {
+		setOpen(true);
+		setCId(id);
+	};
+
 	if (
 		isLoadingCursosProfe ||
 		isLoadingFinalizarC ||
 		isLoadingCursosEstudiante ||
 		isLoadingDespublicar ||
-		isLoadingPublicar
+		isLoadingPublicar ||
+		isLoadingEliminarCurso
 	) {
 		return <LoadingSpinner asOverlay />;
 	}
@@ -171,10 +221,37 @@ const MisCursos = () => {
 	if (isErrorDespublicar) {
 		return <div>Error! {errorDespublicar.message}</div>;
 	}
+	if (isErrorEliminarCurso) {
+		return <div>Error! {errorEliminarCurso.message}</div>;
+	}
 
 	if (auth.userType === "profesor") {
 		return (
 			<section style={{ padding: "5%", height: "100vh" }}>
+				<Modal
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<Typography id="modal-modal-title" variant="h6" component="h2">
+							Seguro que quiere eliminar el curso?
+						</Typography>
+
+						<MDBBtn
+							outline
+							rounded
+							className="mx-2"
+							color="danger"
+							onClick={handleEliminar}
+							style={{ marginTop: "3%" }}
+						>
+							Eliminar
+						</MDBBtn>
+					</Box>
+				</Modal>
+
 				<MDBCard>
 					<MDBCardHeader>Cursos del profesor</MDBCardHeader>
 					<MDBCardBody>
@@ -242,7 +319,7 @@ const MisCursos = () => {
 													<MDBDropdownMenu>
 														<MDBDropdownItem
 															link
-															onClick={handleEliminar}
+															onClick={() => handleOpen(curso.id)}
 														>
 															Eliminar
 														</MDBDropdownItem>
@@ -357,9 +434,7 @@ const MisCursos = () => {
 													className="mx-2"
 													color="danger"
 													onClick={() =>
-														handleFinalizarContratacionAlumno(
-															curso.curso.id
-														)
+														handleFinalizarContratacionAlumno(curso.id)
 													}
 													rounded
 													size="sm"
