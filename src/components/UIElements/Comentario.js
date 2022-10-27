@@ -14,7 +14,7 @@ const Comentario = (props) => {
 		<Paper elevation={0} style={{ padding: "20px" }}>
 			<Grid container wrap="nowrap" spacing={2}>
 				<Grid item>
-					<Avatar alt="Remy Sharp" src={alumno.image} />
+					<Avatar alt="Remy Sharp" src={`http://localhost:5000/${alumno.image}`} />
 				</Grid>
 				<Grid justifyContent="left" item xs zeroMinWidth>
 					<Typography variant="h6" sx={{ textAlign: "left" }}>

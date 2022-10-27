@@ -51,14 +51,15 @@ const CursoPage = () => {
 		return data;
 	}
 
+	if (isLoadingCurso || isLoadingContratacion) {
+		return <LoadingSpinner asOverlay />;
+	}
+
 	if (isErrorFetchCurso || isErrorFetchContratacion) {
 		return <div>Ocurrio Error</div>;
 	}
 
-	if (isLoadingCurso || isLoadingContratacion) {
-		return <LoadingSpinner asOverlay />;
-	}
-	if (auth.userType === "estudiante") {
+	if (auth.userType === "estudiante" && contratacion.length > 0) {
 		if (contratacion[0].curso.id === cursoEncontrado.id) {
 			estadoContratacion = contratacion[0];
 		} else {

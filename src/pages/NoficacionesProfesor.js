@@ -220,7 +220,7 @@ const NotificacionesProfesor = () => {
 		if (auth.userType === "profesor") {
 			if (comentarios.length > 0) {
 				return (
-					<section style={{ padding: "5%", height: "100vh" }}>
+					<section style={{ padding: "2%", height: "100vh" }}>
 						<Modal
 							open={open}
 							onClose={handleClose}
@@ -343,20 +343,23 @@ const NotificacionesProfesor = () => {
 				);
 			} else {
 				return (
-					<MDBCard>
-						<MDBCardHeader>Calificaciones</MDBCardHeader>
-						<MDBCardBody>
-							<MDBCardText>
-								No tiene calificaciones pendientes de aprobacion
-							</MDBCardText>
-						</MDBCardBody>
-					</MDBCard>
+					<section style={{ padding: "2%", height: "100vh" }}>
+						{" "}
+						<MDBCard>
+							<MDBCardHeader>Calificaciones</MDBCardHeader>
+							<MDBCardBody>
+								<MDBCardText>
+									No tiene calificaciones pendientes de aprobacion
+								</MDBCardText>
+							</MDBCardBody>
+						</MDBCard>
+					</section>
 				);
 			}
 		} else {
 			if (notificaciones.length > 0) {
 				return (
-					<section style={{ padding: "5%", height: "100vh" }}>
+					<section style={{ padding: "2%", height: "100vh" }}>
 						<MDBCard shadow="0" border="light" background="white" className="mb-3">
 							<MDBCardHeader>Calificaciones no aprobadas</MDBCardHeader>
 							<MDBCardBody>
