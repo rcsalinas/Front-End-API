@@ -33,6 +33,8 @@ import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import axios from "axios";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 
+import * as api from "../MiAppApi";
+
 const UpdateUser = () => {
 	let navigate = useHistory();
 	const auth = useContext(AuthContext);
@@ -68,7 +70,7 @@ const UpdateUser = () => {
 		error,
 		isError,
 		isLoading,
-	} = useQuery(["user", auth.userId], fetchUsuario);
+	} = useQuery(["user", auth.userId], api.fetchUserPerfil);
 
 	useEffect(() => {
 		if (!isLoading) {
@@ -91,30 +93,12 @@ const UpdateUser = () => {
 		}
 	}, []);
 
-	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateUser, {
+	const { mutate, isLoading: isLoadingUpdate } = useMutation(api.updateUser, {
 		onSuccess: (data) => {
 			queryClient.setQueryData(["user", auth.userId], data);
 			queryClient.invalidateQueries(["user", auth.userId]);
 		},
 	});
-
-	async function updateUser(payload) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/users/${auth.userId}`,
-			payload,
-			{ headers: { "Content-Type": "multipart/form-data" } }
-		);
-		return data;
-	}
-
-	async function fetchUsuario() {
-		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
 
 	const handleNameChange = (event) => {
 		setNombre(event.target.value);

@@ -22,9 +22,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import axios from "axios";
 import { useQueryClient, useMutation } from "react-query";
 import { useForm } from "../hooks/form-hook";
+import * as api from "../MiAppApi";
 
 const CreateCursoPage = () => {
 	let navigate = useHistory();
@@ -38,28 +38,13 @@ const CreateCursoPage = () => {
 	const [duracion, setDuracion] = React.useState("");
 	const [costo, setCosto] = React.useState("");
 
-	const { mutate, isLoading, isError, error } = useMutation(crearCurso, {
+	const { mutate, isLoading, isError, error } = useMutation(api.crearCurso, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["user", auth.userId]);
 			queryClient.invalidateQueries(["cursos"]);
 			navigate.push("/");
 		},
 	});
-	async function crearCurso(payload) {
-		const { data } = await axios.post(
-			`http://localhost:5000/api/cursos/`,
-
-			payload,
-
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
 
 	const handleNameChange = (event) => {
 		setNombre(event.target.value);

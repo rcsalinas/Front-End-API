@@ -2,17 +2,16 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 import CursoDisplay from "../components/Cursos/CursoDisplay";
-import { useHistory } from "react-router-dom";
 
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 
 import { useQuery } from "react-query";
-import axios from "axios";
+
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import * as api from "../MiAppApi";
 
 const CursoPage = () => {
-	let navigate = useHistory();
 	const auth = useContext(AuthContext);
 	const cursoId = useParams().cursoId;
 
@@ -21,7 +20,7 @@ const CursoPage = () => {
 		error: errorFetchCurso,
 		isError: isErrorFetchCurso,
 		isLoading: isLoadingCurso,
-	} = useQuery(["curso", cursoId], fetchCursoPorId); // me traigo el curso
+	} = useQuery(["curso", cursoId], () => api.fetchCursoPorId(cursoId)); // me traigo el curso
 	let estadoContratacion;
 
 	const {
@@ -29,27 +28,9 @@ const CursoPage = () => {
 		error: errorFetchContratacion,
 		isError: isErrorFetchContratacion,
 		isLoading: isLoadingContratacion,
-	} = useQuery(["contrataciones", auth.userId], fetchContratacion, {
+	} = useQuery(["contrataciones", auth.userId], api.fetchContrataciones, {
 		enabled: auth.isLoggedIn && auth.userType === "estudiante",
 	}); // me traigo la contratacion
-
-	async function fetchCursoPorId() {
-		const { data } = await axios.get(`http://localhost:5000/api/cursos/${cursoId}`);
-		return data;
-	}
-
-	async function fetchContratacion() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/contrataciones/user/${auth.userId}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-
-		return data;
-	}
 
 	if (isLoadingCurso || isLoadingContratacion) {
 		return <LoadingSpinner asOverlay />;

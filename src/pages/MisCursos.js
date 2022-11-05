@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { MDBBtn } from "mdb-react-ui-kit";
 
@@ -19,6 +18,8 @@ import Box from "@mui/material/Box";
 
 import "../components/Cursos/Cursos.css";
 
+import * as api from "../MiAppApi";
+
 const MisCursos = () => {
 	const auth = useContext(AuthContext);
 	const userId = useParams().userId;
@@ -30,7 +31,7 @@ const MisCursos = () => {
 		error: errorCursosProfe,
 		isError: isErrorCursosProfe,
 		isLoading: isLoadingCursosProfe,
-	} = useQuery(["cursos", auth.userId], fetchCursosProfesor, {
+	} = useQuery(["cursos", auth.userId], () => api.fetchCursosPorUserId(userId), {
 		enabled: auth.userType === "profesor",
 	});
 
@@ -39,7 +40,7 @@ const MisCursos = () => {
 		error: errorCursosEstudiante,
 		isError: isErrorCursosEstudiante,
 		isLoading: isLoadingCursosEstudiante,
-	} = useQuery(["contrataciones", auth.userId], fetchCursosEstudiante, {
+	} = useQuery(["contrataciones", auth.userId], api.fetchContrataciones, {
 		enabled: auth.userType === "estudiante",
 	});
 
@@ -48,56 +49,30 @@ const MisCursos = () => {
 		isLoading: isLoadingFinalizarC,
 		isError: isErrorFinalizarC,
 		error: errorFinalizarC,
-	} = useMutation(finalizarContratacion, {
+	} = useMutation(api.finalizarContratacion, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
 		},
 	});
-
-	async function finalizarContratacion(c) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/contrataciones/${c}/finalizar`,
-			{},
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
 
 	const {
 		mutate: publicar,
 		isLoading: isLoadingPublicar,
 		isError: isErrorPublicar,
 		error: errorPublicar,
-	} = useMutation(publicarCurso, {
+	} = useMutation(api.publicarCurso, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["cursos", auth.userId]);
 			queryClient.invalidateQueries(["cursos"]);
 		},
 	});
 
-	async function publicarCurso(idCurso) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/cursos/${idCurso}/publicar`,
-			{},
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
-
 	const {
 		mutate: despublicar,
 		isLoading: isLoadingDespublicar,
 		isError: isErrorDespublicar,
 		error: errorDespublicar,
-	} = useMutation(despublicarCurso, {
+	} = useMutation(api.despublicarCurso, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["cursos", auth.userId]);
 			queryClient.invalidateQueries(["cursos"]);
@@ -109,58 +84,11 @@ const MisCursos = () => {
 		isLoading: isLoadingEliminarCurso,
 		isError: isErrorEliminarCurso,
 		error: errorEliminarCurso,
-	} = useMutation(deleteClass, {
+	} = useMutation(api.deleteClass, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["cursos", auth.userId]);
 		},
 	});
-
-	async function deleteClass(idCurso) {
-		const { data } = await axios.delete(
-			`http://localhost:5000/api/cursos/${idCurso}/eliminar`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			},
-			{}
-		);
-		return data;
-	}
-
-	async function despublicarCurso(idCurso) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/cursos/${idCurso}/despublicar`,
-			{},
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
-
-	async function fetchCursosProfesor() {
-		const { data } = await axios.get(`http://localhost:5000/api/cursos/user/${userId}`, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
-	async function fetchCursosEstudiante() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/contrataciones/user/${userId}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-
-		return data;
-	}
 
 	const style = {
 		position: "absolute",
@@ -353,7 +281,7 @@ const MisCursos = () => {
 						<NavLink to="/cursos/nuevo" style={{ textDecoration: "none" }}>
 							<div
 								className="d-grid gap-2 col-6 mx-auto"
-								style={{ marginBottom: "10%" }}
+								style={{ marginBottom: "5%", marginTop: "5%" }}
 							>
 								<MDBBtn>Crear Curso</MDBBtn>
 							</div>

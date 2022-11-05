@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-import axios from "axios";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 
 import {
@@ -27,6 +26,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import { useForm } from "../hooks/form-hook";
+import * as api from "../MiAppApi";
 
 const UpdateCurso = () => {
 	let navigate = useHistory();
@@ -48,7 +48,9 @@ const UpdateCurso = () => {
 		},
 		false
 	);
-	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], fetchCurso);
+	const { data, error, isError, isLoading } = useQuery(["curso", cursoId], () =>
+		api.fetchCursoPorId(cursoId)
+	);
 
 	useEffect(() => {
 		if (!isLoading) {
@@ -61,7 +63,7 @@ const UpdateCurso = () => {
 		}
 	}, [data, isLoading]);
 
-	const { mutate, isLoading: isLoadingUpdate } = useMutation(updateCurso, {
+	const { mutate, isLoading: isLoadingUpdate } = useMutation(api.updateCurso, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["cursos", auth.userId]);
 			queryClient.setQueryData(["curso", cursoId], data);
@@ -69,21 +71,6 @@ const UpdateCurso = () => {
 			navigate.push(`/${auth.userId}/cursos`);
 		},
 	});
-
-	async function fetchCurso() {
-		const { data } = await axios.get(`http://localhost:5000/api/cursos/${cursoId}`);
-		return data;
-	}
-	async function updateCurso(payload) {
-		const { data } = await axios.patch(`http://localhost:5000/api/cursos/${cursoId}`, payload, {
-			mode: "same-origin",
-			headers: {
-				"Content-Type": "multipart/form-data",
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
 
 	if (isError) {
 		return <div>Error! {error.message}</div>;
@@ -121,6 +108,7 @@ const UpdateCurso = () => {
 		formData.append("tipo", tipo);
 		formData.append("duracion", duracion);
 		formData.append("costo", parseFloat(costo));
+		formData.append("cursoId", cursoId);
 		mutate(formData);
 	};
 	if (isLoading || isLoadingUpdate) {

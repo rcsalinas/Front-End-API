@@ -7,23 +7,17 @@ import { useContext } from "react";
 
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 
-import axios from "axios";
 import { useQuery } from "react-query";
 import dayjs from "dayjs";
 
+import * as api from "../MiAppApi";
+
 const Profile = () => {
 	const auth = useContext(AuthContext);
-	const { data, error, isError, isLoading } = useQuery(["user", auth.userId], fetchUserPerfil);
-
-	async function fetchUserPerfil() {
-		const { data } = await axios.get(`http://localhost:5000/api/users/${auth.userId}`, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-
-		return data;
-	}
+	const { data, error, isError, isLoading } = useQuery(
+		["user", auth.userId],
+		api.fetchUserPerfil
+	);
 
 	if (isError) {
 		return <div>Error! {error.message}</div>;

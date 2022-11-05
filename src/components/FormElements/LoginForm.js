@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-	MDBContainer,
-	MDBCol,
-	MDBRow,
-	MDBBtn,
-	MDBIcon,
-	MDBInput,
-	MDBCheckbox,
-} from "mdb-react-ui-kit";
+import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
+
 const LoginForm = (props) => {
 	const { handleLogin } = props;
 
@@ -30,7 +23,7 @@ const LoginForm = (props) => {
 					<img
 						src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
 						className="img-fluid"
-						alt="Sample image"
+						alt="Sample"
 					/>
 				</MDBCol>
 

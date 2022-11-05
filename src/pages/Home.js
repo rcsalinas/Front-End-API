@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../context/auth-context";
+import React from "react";
 import BuscadorCursos from "../components/Cursos/BuscadorCursos";
 import ComoFuncionaBanner from "../components/ComoFuncionaBanner/ComoFunciona";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
-import axios from "axios";
 import { useQuery } from "react-query";
+import * as api from "../MiAppApi";
 
 const mainFeaturedPost = {
 	title: "Teachers Market",
@@ -15,16 +14,10 @@ const mainFeaturedPost = {
 };
 
 const Home = () => {
-	const auth = useContext(AuthContext);
-	const { data, error, isError, isLoading, isSuccess } = useQuery(["cursos"], fetchCursos, {
+	const { data, error, isError, isLoading, isSuccess } = useQuery(["cursos"], api.fetchCursos, {
 		refetchOnMount: true,
 		refetchOnWindowFocus: true,
 	});
-
-	async function fetchCursos() {
-		const { data } = await axios.get(`http://localhost:5000/api/cursos`);
-		return data;
-	}
 
 	if (isLoading) {
 	}

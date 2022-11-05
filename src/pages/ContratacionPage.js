@@ -15,9 +15,10 @@ import {
 	MDBIcon,
 } from "mdb-react-ui-kit";
 import { MDBTextArea } from "mdb-react-ui-kit";
-import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "react-query";
+
+import { useQueryClient, useMutation } from "react-query";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import * as api from "../MiAppApi";
 
 const ContratacionPage = () => {
 	let navigate = useHistory();
@@ -30,27 +31,13 @@ const ContratacionPage = () => {
 	const cursoId = useParams().cursoId;
 	const profesorId = useParams().userId;
 
-	const { mutate, isLoading, isError, error } = useMutation(crearContratacion, {
+	const { mutate, isLoading, isError, error } = useMutation(api.crearContratacion, {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["user", auth.userId]);
 			queryClient.invalidateQueries(["contrataciones"]);
 			navigate.push("/");
 		},
 	});
-
-	async function crearContratacion(payload) {
-		const { data } = await axios.post(
-			`http://localhost:5000/api/contrataciones/${cursoId}`,
-			payload,
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -61,6 +48,7 @@ const ContratacionPage = () => {
 			email: `${mail}`,
 			telefono: `${telefono}`,
 			horario: `${horario}`,
+			cursoId: cursoId,
 		});
 	};
 	if (isLoading) {

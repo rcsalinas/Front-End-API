@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
+
 import {
 	MDBBtn,
 	MDBContainer,
@@ -13,28 +14,23 @@ import {
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import "./RegisterForm.css";
-
-import dayjs from "dayjs";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import ImageUpload from "./ImageUpload";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
-
-import { useForm } from "../../hooks/form-hook";
-
-import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "react-query";
-
 import Checkbox from "@mui/material/Checkbox";
+import { useForm } from "../../hooks/form-hook";
+import dayjs from "dayjs";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
+import { useQueryClient, useMutation } from "react-query";
+import * as api from "../../MiAppApi";
 
 const RegisterForm = (props) => {
 	const auth = useContext(AuthContext);
@@ -67,22 +63,12 @@ const RegisterForm = (props) => {
 		false
 	);
 
-	const { mutate, error, isLoading, isError } = useMutation(registerUser, {
+	const { mutate, error, isLoading, isError } = useMutation(api.registerUser, {
 		onSuccess: (data) => {
 			auth.login(data.userId, data.token, data.tipo);
 			queryClient.setQueryData(["usuario", data.userId], data);
 		},
 	});
-
-	async function registerUser(payload) {
-		const { data } = await axios.post(
-			`http://localhost:5000/api/users/signUp`,
-
-			payload,
-			{ headers: { "Content-Type": "multipart/form-data" } }
-		);
-		return data;
-	}
 
 	const handleRegister = () => {
 		const formData = new FormData();

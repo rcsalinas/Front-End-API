@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import { MDBTextArea } from "mdb-react-ui-kit";
 
-import axios from "axios";
+import * as api from "../MiAppApi";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import Typography from "@mui/material/Typography";
@@ -48,7 +48,7 @@ const NotificacionesProfesor = () => {
 		error: errNotis,
 		isLoading: isLoadingNotis,
 		isError: isErrNotis,
-	} = useQuery(["notificaciones", auth.userId], fetchNotificaciones, {
+	} = useQuery(["notificaciones", auth.userId], api.fetchNotificaciones, {
 		enabled: auth.userType === "estudiante",
 	});
 
@@ -57,12 +57,12 @@ const NotificacionesProfesor = () => {
 		error: errComments,
 		isError: isErrComments,
 		isLoading: isLoadingComments,
-	} = useQuery(["comentarios", auth.userId], fetchComentarios, {
+	} = useQuery(["comentarios", auth.userId], api.fetchComentarios, {
 		enabled: auth.userType === "profesor",
 	});
 
 	const { mutate: borrarCalificacion, isLoading: isLoadingBorrandoCalificacion } = useMutation(
-		deleteCalificacion,
+		api.deleteCalificacion,
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(["comentarios", auth.userId]);
@@ -71,7 +71,7 @@ const NotificacionesProfesor = () => {
 	);
 
 	const { mutate: acceptCalificacion, isLoading: isLoadingAcceptCalificacion } = useMutation(
-		aprobarCalificacion,
+		api.aprobarCalificacion,
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(["comentarios", auth.userId]);
@@ -79,7 +79,7 @@ const NotificacionesProfesor = () => {
 		}
 	);
 	const { mutate: borrarNotificacion, isLoading: isLoadingBorrarNotificacion } = useMutation(
-		deleteNotificacion,
+		api.deleteNotificacion,
 		{
 			onSuccess: () => {
 				queryClient.invalidateQueries(["notificaciones", auth.userId]);
@@ -91,84 +91,11 @@ const NotificacionesProfesor = () => {
 		isLoading: isLoadingEnviar,
 		isError: isErrorEnviar,
 		error: errorEnviar,
-	} = useMutation(sendNotificacion, {
+	} = useMutation(api.sendNotificacion, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["notificaciones", alu]);
 		},
 	});
-
-	async function sendNotificacion(payload) {
-		const { data } = await axios.post(`http://localhost:5000/api/notificaciones`, payload, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
-	async function deleteNotificacion(id) {
-		const { data } = await axios.delete(
-			`http://localhost:5000/api/notificaciones/${id}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			},
-			{}
-		);
-		return data;
-	}
-
-	async function aprobarCalificacion(id) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/calificaciones/${id}/aceptar`,
-			{
-				estado: true,
-			},
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
-
-	async function deleteCalificacion(idCalificacion) {
-		const { data } = await axios.delete(
-			`http://localhost:5000/api/calificaciones/${idCalificacion}/rechazar`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			},
-			{}
-		);
-		return data;
-	}
-
-	async function fetchNotificaciones() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/notificaciones/${auth.userId}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
-
-	async function fetchComentarios() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/calificaciones/${auth.userId}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
 
 	const handleOpen = (al, cur, mens, id) => {
 		setOpen(true);

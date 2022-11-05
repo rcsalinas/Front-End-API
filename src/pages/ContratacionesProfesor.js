@@ -7,13 +7,14 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
 import "./NotificacionesProfesor.css";
-import { MDBTextArea, MDBCardText } from "mdb-react-ui-kit";
-import axios from "axios";
+import { MDBCardText } from "mdb-react-ui-kit";
 import { useQueryClient, useQuery, useMutation } from "react-query";
 import { MDBCard, MDBCardBody, MDBCardHeader } from "mdb-react-ui-kit";
 
 import { MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+
+import * as api from "../MiAppApi";
 
 const ContratacionesProfesor = () => {
 	const auth = useContext(AuthContext);
@@ -27,14 +28,14 @@ const ContratacionesProfesor = () => {
 		error: errContrataciones,
 		isError: isErrContrataciones,
 		isLoading: isLoadingContrataciones,
-	} = useQuery(["contrataciones", auth.userId], fetchContrataciones, {});
+	} = useQuery(["contrataciones", auth.userId], api.fetchContrataciones, {});
 
 	const {
 		mutate: acceptContratacion,
 		isLoading: isLoadingAcceptContratacion,
 		isError: isErrorAcceptContratacion,
 		error: errorAcceptContratacion,
-	} = useMutation(aceptarContratacion, {
+	} = useMutation(api.aceptarContratacion, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
 		},
@@ -44,49 +45,11 @@ const ContratacionesProfesor = () => {
 		isLoading: isLoadingReject,
 		isError: isErrorReject,
 		error: errorReject,
-	} = useMutation(rechazarContratacion, {
+	} = useMutation(api.rechazarContratacion, {
 		onSuccess: (data) => {
 			queryClient.invalidateQueries(["contrataciones", auth.userId]);
 		},
 	});
-
-	async function fetchContrataciones() {
-		const { data } = await axios.get(
-			`http://localhost:5000/api/contrataciones/user/${auth.userId}`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-
-		return data;
-	}
-
-	async function aceptarContratacion(id) {
-		const { data } = await axios.patch(
-			`http://localhost:5000/api/contrataciones/${id}/aceptar`,
-			{},
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			}
-		);
-		return data;
-	}
-	async function rechazarContratacion(id) {
-		const { data } = await axios.delete(
-			`http://localhost:5000/api/contrataciones/${id}/rechazar`,
-			{
-				headers: {
-					Authorization: "Bearer " + auth.token,
-				},
-			},
-			{}
-		);
-		return data;
-	}
 
 	const style = {
 		position: "absolute",

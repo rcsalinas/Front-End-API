@@ -3,8 +3,7 @@ import { AuthContext } from "../../context/auth-context";
 import { useContext } from "react";
 import "./CursoDisplay.css";
 
-import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "react-query";
+import { useQueryClient, useMutation } from "react-query";
 
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -26,6 +25,8 @@ import Rating from "@mui/material/Rating";
 
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import { useParams } from "react-router-dom";
+
+import * as api from "../../MiAppApi";
 
 const CursoDisplay = (props) => {
 	let navigate = useHistory();
@@ -58,16 +59,7 @@ const CursoDisplay = (props) => {
 		isLoading: isLoadingReview,
 		error: errorSendComentarios,
 		isError: isErrorSendComentario,
-	} = useMutation(submitReview);
-
-	async function submitReview(payload) {
-		const { data } = await axios.post(`http://localhost:5000/api/calificaciones`, payload, {
-			headers: {
-				Authorization: "Bearer " + auth.token,
-			},
-		});
-		return data;
-	}
+	} = useMutation(api.submitReview);
 
 	const handleCommentChange = (event) => {
 		setPalabras(event.target.value);

@@ -1,27 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 import LoginForm from "../components/FormElements/LoginForm";
 
-import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "react-query";
+import { useQueryClient, useMutation } from "react-query";
 
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+
+import * as api from "../MiAppApi";
 
 const LoginPage = () => {
 	const auth = useContext(AuthContext);
 	const queryClient = useQueryClient();
 
-	const { mutate, error, isLoading, isError } = useMutation(loginUser, {
+	const { mutate, error, isLoading, isError } = useMutation(api.loginUser, {
 		onSuccess: (data) => {
 			auth.login(data.userId, data.token, data.tipo);
 			queryClient.setQueryData(["usuario", data.userId], data);
 		},
 	});
-
-	async function loginUser(payload) {
-		const { data } = await axios.post(`http://localhost:5000/api/users/login`, payload);
-		return data;
-	}
 
 	const handleLogin = (email, password) => {
 		mutate({
