@@ -272,3 +272,12 @@ export async function submitReview(payload) {
 	});
 	return data;
 }
+
+export async function sendRecoveryEmail(payload) {
+	const { data } = await api.post(`/api/users/forgot-password`, payload);
+	return data;
+}
+export async function resetPassword(payload) {
+	const { data } = await api.post(`/api/users/reset-password`, payload);
+	return data;
+}

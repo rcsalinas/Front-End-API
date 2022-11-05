@@ -19,6 +19,7 @@ import ContratacionPage from "./pages/ContratacionPage";
 import ContratacionesProfesor from "./pages/ContratacionesProfesor";
 import ForgotPassword from "./pages/ForgotPassword";
 import RegisterPage from "./pages/RegisterPage";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
 	const { token, login, logout, userId, userType } = useAuth();
@@ -106,6 +107,9 @@ function App() {
 				</Route>
 				<Route path="/forgotPassword" exact>
 					<ForgotPassword />
+				</Route>
+				<Route path="/resetPassword/:userId/:token" exact>
+					<ResetPassword />
 				</Route>
 				<Route path="/cursos/:cursoId" exact>
 					<CursoPage />
