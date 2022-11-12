@@ -138,6 +138,7 @@ const CreateCursoPage = () => {
 									label="Duracion"
 									size="lg"
 									type="text"
+									placeholder="1 mes"
 									onChange={handleDuracionChange}
 									value={duracion}
 									required
@@ -191,6 +192,7 @@ const CreateCursoPage = () => {
 									size="lg"
 									id="form1"
 									type="text"
+									placeholder="200"
 									onChange={handleCostoChange}
 									value={costo}
 									required

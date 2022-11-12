@@ -129,7 +129,7 @@ export async function aprobarCalificacion(id) {
 }
 
 export async function deleteCalificacion(idCalificacion) {
-	const { data } = await axios.delete(
+	const { data } = await api.delete(
 		`/api/calificaciones/${idCalificacion}/rechazar`,
 		{
 			headers: {

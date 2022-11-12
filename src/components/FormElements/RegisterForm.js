@@ -202,6 +202,7 @@ const RegisterForm = (props) => {
 												type="text"
 												wrapperClass="mb-4"
 												size="lg"
+												placeholder="+5411000000"
 												value={telefono}
 												onChange={(event) => {
 													setTelefono(event.target.value);
