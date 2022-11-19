@@ -20,7 +20,7 @@ const Profile = () => {
 	);
 
 	if (isError) {
-		return <div>Error! {error.message}</div>;
+		return <div>{error.response.data.message}</div>;
 	}
 
 	//aqui voy a traer el usuario segun el id y le paso los datos a el componente

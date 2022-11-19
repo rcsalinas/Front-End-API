@@ -135,22 +135,22 @@ const MisCursos = () => {
 		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrorCursosProfe) {
-		return <div>Error! {errorCursosProfe.message}</div>;
+		return <div>Error! {errorCursosProfe.response.data.message}</div>;
 	}
 	if (isErrorCursosEstudiante) {
-		return <div>Error! {errorCursosEstudiante.message}</div>;
+		return <div>Error! {errorCursosEstudiante.response.data.message}</div>;
 	}
 	if (isErrorFinalizarC) {
-		return <div>Error! {errorFinalizarC.message}</div>;
+		return <div>Error! {errorFinalizarC.response.data.message}</div>;
 	}
 	if (isErrorPublicar) {
-		return <div>Error! {errorPublicar.message}</div>;
+		return <div>Error! {errorPublicar.response.data.message}</div>;
 	}
 	if (isErrorDespublicar) {
-		return <div>Error! {errorDespublicar.message}</div>;
+		return <div>Error! {errorDespublicar.response.data.message}</div>;
 	}
 	if (isErrorEliminarCurso) {
-		return <div>Error! {errorEliminarCurso.message}</div>;
+		return <div>Error! {errorEliminarCurso.response.data.message}</div>;
 	}
 
 	if (auth.userType === "profesor") {

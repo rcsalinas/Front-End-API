@@ -16,6 +16,7 @@ const ResetPassword = () => {
 
 	const { mutate, error, isLoading, isError } = useMutation(api.resetPassword, {
 		onSuccess: () => {
+			alert("Contraseña cambiada con exito");
 			navigate.push(`/auth`);
 		},
 	});

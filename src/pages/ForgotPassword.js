@@ -16,6 +16,7 @@ const ForgotPassword = () => {
 
 	const { mutate, error, isLoading, isError } = useMutation(api.sendRecoveryEmail, {
 		onSuccess: () => {
+			alert("Email enviado revise su casilla");
 			navigate.push(`/auth`);
 		},
 	});

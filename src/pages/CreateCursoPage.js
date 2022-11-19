@@ -91,7 +91,7 @@ const CreateCursoPage = () => {
 	);
 
 	if (isError) {
-		return <div>Error! {error.message}</div>;
+		return <div>Error! {error.response.data.message}</div>;
 	}
 
 	if (isLoading) {

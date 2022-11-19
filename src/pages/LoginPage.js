@@ -27,7 +27,8 @@ const LoginPage = () => {
 	};
 
 	if (isError) {
-		alert(error);
+		alert("Usuario o contraseña incorrectos");
+		console.log(error);
 	}
 	if (isLoading) {
 		<LoadingSpinner asOverlay />;

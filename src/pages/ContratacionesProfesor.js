@@ -84,13 +84,13 @@ const ContratacionesProfesor = () => {
 		return <LoadingSpinner asOverlay />;
 	}
 	if (isErrContrataciones) {
-		return <div>Error! {errContrataciones.message}</div>;
+		return <div>Error! {errContrataciones.response.data.message}</div>;
 	}
 	if (isErrorAcceptContratacion) {
-		return <div>Error! {errorAcceptContratacion.message}</div>;
+		return <div>Error! {errorAcceptContratacion.response.data.message}</div>;
 	}
 	if (isErrorReject) {
-		return <div>Error! {errorReject.message}</div>;
+		return <div>Error! {errorReject.response.data.message}</div>;
 	}
 	if (contrataciones.length > 0) {
 		return (

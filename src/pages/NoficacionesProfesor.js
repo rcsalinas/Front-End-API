@@ -131,8 +131,14 @@ const NotificacionesProfesor = () => {
 		borrarNotificacion(notId);
 	};
 
-	if (isErrNotis || isErrComments || isErrorEnviar) {
-		return <div>Error! {errComments ? errComments.message : errNotis}</div>;
+	if (isErrNotis) {
+		return <div>{errNotis.response.data.message}</div>;
+	}
+	if (isErrComments) {
+		return <div>{errComments.response.data.message}</div>;
+	}
+	if (isErrorEnviar) {
+		return <div>{errorEnviar.response.data.message}</div>;
 	}
 	if (
 		isLoadingComments ||

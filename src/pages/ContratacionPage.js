@@ -35,6 +35,7 @@ const ContratacionPage = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries(["user", auth.userId]);
 			queryClient.invalidateQueries(["contrataciones"]);
+			alert("Solicitud enviada con exito");
 			navigate.push("/");
 		},
 	});
@@ -55,9 +56,8 @@ const ContratacionPage = () => {
 		return <LoadingSpinner asOverlay />;
 	}
 	if (isError) {
-		if (isError) {
-			return <div>Error! {error.message}</div>;
-		}
+		alert(error.response.data.message);
+		navigate.push("/");
 	}
 	const handleTelefonoChange = (event) => {
 		setTelefono(event.target.value);

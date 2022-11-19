@@ -37,7 +37,7 @@ const CursoPage = () => {
 	}
 
 	if (isErrorFetchCurso || isErrorFetchContratacion) {
-		return <div>Ocurrio Error</div>;
+		return <div>{errorFetchContratacion.response.data.message}</div>;
 	}
 
 	if (auth.userType === "estudiante" && contratacion.length > 0) {
