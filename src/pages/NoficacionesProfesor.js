@@ -57,7 +57,7 @@ const NotificacionesProfesor = () => {
 		error: errComments,
 		isError: isErrComments,
 		isLoading: isLoadingComments,
-	} = useQuery(["comentarios", auth.userId], api.fetchComentarios, {
+	} = useQuery(["comentarios", auth.userId], api.fetchComentariosByUser, {
 		enabled: auth.userType === "profesor",
 	});
 

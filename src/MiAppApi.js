@@ -128,9 +128,21 @@ export async function aprobarCalificacion(id) {
 	return data;
 }
 
-export async function deleteCalificacion(idCalificacion) {
+export async function rechazarCalificacion(idCalificacion) {
 	const { data } = await api.delete(
 		`/api/calificaciones/${idCalificacion}/rechazar`,
+		{
+			headers: {
+				Authorization: "Bearer " + JSON.parse(localStorage.getItem("userData")).token,
+			},
+		},
+		{}
+	);
+	return data;
+}
+export async function deleteCalificacion(idCalificacion) {
+	const { data } = await api.delete(
+		`/api/calificaciones/${idCalificacion}/eliminar`,
 		{
 			headers: {
 				Authorization: "Bearer " + JSON.parse(localStorage.getItem("userData")).token,
@@ -153,7 +165,7 @@ export async function fetchNotificaciones() {
 	return data;
 }
 
-export async function fetchComentarios() {
+export async function fetchComentariosByUser() {
 	const { data } = await api.get(
 		`api/calificaciones/${JSON.parse(localStorage.getItem("userData")).userId}`,
 		{
@@ -175,6 +187,20 @@ export async function fetchUserPerfil() {
 		}
 	);
 
+	return data;
+}
+
+export async function editarComentario(payload) {
+	const { data } = await api.patch(
+		`/api/calificaciones/${payload.comentarioId}/editar`,
+		payload,
+		{
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + JSON.parse(localStorage.getItem("userData")).token,
+			},
+		}
+	);
 	return data;
 }
 

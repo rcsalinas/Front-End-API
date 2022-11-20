@@ -71,6 +71,7 @@ const CursoDisplay = (props) => {
 			curso: `${idCurso}`,
 			comentario: palabras,
 			rating: value,
+			profesor: `${idProfesor}`,
 		});
 	};
 

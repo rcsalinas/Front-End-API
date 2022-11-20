@@ -20,6 +20,7 @@ import ContratacionesProfesor from "./pages/ContratacionesProfesor";
 import ForgotPassword from "./pages/ForgotPassword";
 import RegisterPage from "./pages/RegisterPage";
 import ResetPassword from "./pages/ResetPassword";
+import MisComentarios from "./pages/MisComentarios";
 
 function App() {
 	const { token, login, logout, userId, userType } = useAuth();
@@ -52,6 +53,9 @@ function App() {
 					</Route>
 					<Route path="/:userId/perfil" exact>
 						<Profile />
+					</Route>
+					<Route path="/:userId/comentarios" exact>
+						<MisComentarios />
 					</Route>
 					<Redirect to="/" />
 				</Switch>

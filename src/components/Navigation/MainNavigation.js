@@ -50,6 +50,14 @@ export default function MainNavigation() {
 							</MDBNavbarItem>
 						</NavLink>
 
+						{auth.isLoggedIn && auth.userType === "estudiante" && (
+							<NavLink to={`/${auth.userId}/comentarios`}>
+								<MDBNavbarItem>
+									<MDBNavbarLink>Mis Comentarios</MDBNavbarLink>
+								</MDBNavbarItem>
+							</NavLink>
+						)}
+
 						{auth.userType === "profesor" && (
 							<NavLink to={`/${auth.userId}/contrataciones`}>
 								<MDBNavbarItem>
