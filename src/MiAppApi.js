@@ -31,6 +31,21 @@ export async function fetchContrataciones() {
 	return data;
 }
 
+export async function fetchContratacionPorCurso(cursoId) {
+	const { data } = await api.get(
+		`/api/contrataciones/user/${
+			JSON.parse(localStorage.getItem("userData")).userId
+		}/${cursoId}`,
+		{
+			headers: {
+				Authorization: "Bearer " + JSON.parse(localStorage.getItem("userData")).token,
+			},
+		}
+	);
+
+	return data;
+}
+
 export async function aceptarContratacion(id) {
 	const { data } = await api.patch(
 		`/api/contrataciones/${id}/aceptar`,

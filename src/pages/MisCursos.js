@@ -43,6 +43,7 @@ const MisCursos = () => {
 	} = useQuery(["contrataciones", auth.userId], api.fetchContrataciones, {
 		enabled: auth.userType === "estudiante",
 	});
+	console.log(cursosEstudiante);
 
 	const {
 		mutate: finalizarC,

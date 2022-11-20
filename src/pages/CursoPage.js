@@ -28,7 +28,7 @@ const CursoPage = () => {
 		error: errorFetchContratacion,
 		isError: isErrorFetchContratacion,
 		isLoading: isLoadingContratacion,
-	} = useQuery(["contrataciones", auth.userId], api.fetchContrataciones, {
+	} = useQuery(["contrataciones", auth.userId], () => api.fetchContratacionPorCurso(cursoId), {
 		enabled: auth.isLoggedIn && auth.userType === "estudiante",
 	}); // me traigo la contratacion
 
@@ -36,20 +36,17 @@ const CursoPage = () => {
 		return <LoadingSpinner asOverlay />;
 	}
 
-	if (isErrorFetchCurso || isErrorFetchContratacion) {
+	if (isErrorFetchContratacion) {
 		return <div>{errorFetchContratacion.response.data.message}</div>;
 	}
-
-	if (auth.userType === "estudiante" && contratacion.length > 0) {
-		if (contratacion[0].curso.id === cursoEncontrado.id) {
-			estadoContratacion = contratacion[0];
-		} else {
-			estadoContratacion = [];
-		}
-	} else {
-		estadoContratacion = [];
+	if (isErrorFetchCurso) {
+		return <div>{errorFetchCurso.response.data.message}</div>;
 	}
 
+	if (auth.userType === "estudiante" && contratacion) {
+		estadoContratacion = contratacion.estadoContratacion;
+	}
+	console.log(estadoContratacion);
 	return (
 		<CursoDisplay
 			nombreCurso={cursoEncontrado.nombre}

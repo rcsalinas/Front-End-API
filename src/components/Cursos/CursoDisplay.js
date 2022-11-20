@@ -74,7 +74,7 @@ const CursoDisplay = (props) => {
 			profesor: `${idProfesor}`,
 		});
 	};
-
+	console.log(estadoContratacion);
 	if (isLoadingReview) {
 		return <LoadingSpinner asOverlay />;
 	}
@@ -160,8 +160,7 @@ const CursoDisplay = (props) => {
 				{auth.isLoggedIn &&
 					!submitted &&
 					auth.userType === "estudiante" &&
-					(estadoContratacion.estadoContratacion === "Aceptada" ||
-						estadoContratacion.estadoContratacion === "Finalizada") && (
+					(estadoContratacion === "Aceptada" || estadoContratacion === "Finalizada") && (
 						<div
 							className="inputComentario"
 							style={{
@@ -217,22 +216,16 @@ const CursoDisplay = (props) => {
 						Autenticar Para solicitar
 					</Button>
 				)}
-				{auth.isLoggedIn &&
-					auth.userType === "estudiante" &&
-					estadoContratacion.length === 0 && (
-						<NavLink
-							to={`/cursos/${idProfesor}/${idCurso}/ContratacionPage`}
-							style={{ textDecoration: "none" }}
-						>
-							<Button
-								variant="contained"
-								color="success"
-								style={{ margin: "0 auto" }}
-							>
-								Solicitar Curso
-							</Button>
-						</NavLink>
-					)}
+				{auth.isLoggedIn && auth.userType === "estudiante" && !estadoContratacion && (
+					<NavLink
+						to={`/cursos/${idProfesor}/${idCurso}/ContratacionPage`}
+						style={{ textDecoration: "none" }}
+					>
+						<Button variant="contained" color="success" style={{ margin: "0 auto" }}>
+							Solicitar Curso
+						</Button>
+					</NavLink>
+				)}
 			</div>
 		</section>
 	);
