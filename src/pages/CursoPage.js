@@ -28,9 +28,13 @@ const CursoPage = () => {
 		error: errorFetchContratacion,
 		isError: isErrorFetchContratacion,
 		isLoading: isLoadingContratacion,
-	} = useQuery(["contrataciones", auth.userId], () => api.fetchContratacionPorCurso(cursoId), {
-		enabled: auth.isLoggedIn && auth.userType === "estudiante",
-	}); // me traigo la contratacion
+	} = useQuery(
+		["contratacion", auth.userId + cursoId],
+		() => api.fetchContratacionPorCurso(cursoId),
+		{
+			enabled: auth.isLoggedIn && auth.userType === "estudiante",
+		}
+	); // me traigo la contratacion
 
 	if (isLoadingCurso || isLoadingContratacion) {
 		return <LoadingSpinner asOverlay />;
