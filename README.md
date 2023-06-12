@@ -1,4 +1,4 @@
-# TPO - Aplicaciones Interactivas - Teachers Market
+Teachers Market
 
 # Tabla de Contenidos
 
