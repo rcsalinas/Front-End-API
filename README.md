@@ -8,7 +8,6 @@ Teachers Market
 4. [Funcionalidades](#funcionalidades)
 5. [Documentacion](#documentacion)
 6. [Documentacion de Postman](#documentacion-de-postman)
-7. [Integrantes](#integrantes)
 
 # Introduccion
 Este proyecto es una página web llamada "Teachers Market", que se basa en conectar estudiantes y profesores particulares para la contratación de clases de diferentes materias. En la misma, también existe un sistema de calificación, puntuación y comentarios entre profesores y estudiantes. 
